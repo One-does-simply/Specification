@@ -15,6 +15,11 @@ Many low-code and no-code platforms fail for a few key reasons:
  * They create lock-in. Moving an application out of a proprietary ecosystem often means starting over from scratch.
  * They trap your data. Data is often held in expensive, proprietary databases that are difficult to access or migrate.
 
+Recently, many citizen developers are trying to build apps by "vibe coding" with AI. This creates another set of problems:
+ * AI agents build things the citizen developer may not understand
+ * AI agents build things that are not safe
+ * AI agents build things using
+
 The ODS Solution
 
 ODS solves these problems by separating concerns into a clear, three-part ecosystem:
