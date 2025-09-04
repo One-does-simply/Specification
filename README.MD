@@ -1,6 +1,9 @@
 One Does Simply (ODS)
+
 "One does not simply do complex things, but One Does Simply do simple things."
+
 What is ODS?
+
 One Does Simply (ODS) is an open-source project dedicated to a simple truth: most applications can and should be defined simply. ODS provides a clear, concise specification for defining simple, data-driven applications using a JSON file.
 This specification can then be rendered by any compatible Framework, giving citizen developers the power to create useful applications without getting bogged down by the complexities of UI/UX design, proprietary ecosystems, or vendor lock-in.
 The Problem
