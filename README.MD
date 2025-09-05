@@ -13,7 +13,7 @@ Many low-code and no-code platforms fail for a few key reasons:
  * They try to do too much. They start simple but quickly add overwhelming complexity.
  * They expect users to be designers. Good UI/UX is incredibly difficult, yet most platforms leave it to the user.
  * They create lock-in. Moving an application out of a proprietary ecosystem often means starting over from scratch.
- * They trap your data. Data is often held in expensive, proprietary databases that are difficult to access or migrate.
+ * They trap your data. Data is often held in expensive, proprietary data stores that are difficult to access or migrate.
 
 Recently, many citizen developers are trying to build apps by "vibe coding" with AI. This creates another set of problems:
  * AI agents build things the citizen developer may not understand
@@ -25,8 +25,8 @@ The ODS Solution
 
 ODS solves these problems by separating concerns into a clear, three-part ecosystem:
  * The Specification: A simple, open-source JSON schema that defines the structure and logic of an application. It's the universal blueprint.
- * Frameworks: Real-time renderers for the ODS specification. A framework handles the complex parts—UI/UX, security, and data management—allowing the citizen developer to focus on the "what," not the "how." Frameworks also provide an "off-ramp" code-generation frature that generates professional source code, ensuring you are never locked in.
- * The Build Helper: A conversational AI tool that guides users through the process of creating an ODS JSON file, turning their ideas into a well-structured application definition. It's lokr vibe coding but with guardrails.
+ * Frameworks: Real-time renderers for the ODS specification. A framework handles the complex parts—UI/UX, security, and data management—allowing the citizen developer to focus on the "what," not the "how." Frameworks also provide an "off-ramp" code-generation feature that generates professional source code, ensuring you are never locked in.
+ * The Build Helper: A conversational AI tool that guides users through the process of creating an ODS JSON file, turning their ideas into a well-structured application definition. It's like vibe coding but with guardrails.
 
 Getting Started
 
