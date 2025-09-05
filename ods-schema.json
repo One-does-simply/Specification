@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/ods-app.schema.json",
+  "title": "ODS Application Schema",
+  "description": "Defines the structure for a dynamic application rendered from a JSON definition.",
+  "type": "object",
+  "properties": {
+    "appName": {
+      "description": "The display name of the application.",
+      "type": "string"
+    },
+    "startPage": {
+      "description": "The ID of the page to load when the app starts.",
+      "type": "string"
+    },
+    "auth": {
+      "description": "RESERVED FOR FUTURE USE: Defines authentication requirements for the app.",
+      "type": "object"
+    },
+    "menu": {
+      "description": "Defines the primary navigation menu.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "mapsTo": { "type": "string" }
+        },
+        "required": ["label", "mapsTo"]
+      }
+    },
+    "pages": {
+      "description": "A dictionary of all pages available in the application.",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/page" }
+    },
+    "dataSources": {
+      "description": "A dictionary of all data sources used by the application.",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/dataSource" }
+    }
+  },
+  "required": ["appName", "startPage", "pages"],
+  "$defs": {
+    "dataSource": {
+      "title": "DataSource Object",
+      "description": "Defines a REST API endpoint or a framework-managed alias.",
+      "type": "object",
+      "properties": {
+        "url": {
+          "description": "The URL of the endpoint or an alias for a pre-configured data source.",
+          "type": "string"
+        },
+        "method": {
+          "description": "The HTTP method to use.",
+          "type": "string",
+          "enum": ["GET", "POST"]
+        }
+      },
+      "required": ["url", "method"]
+    },
+    "page": {
+      "title": "Page Object",
+      "type": "object",
+      "properties": {
+        "component": { "const": "page" },
+        "title": { "description": "The title displayed for the page.", "type": "string" },
+        "content": {
+          "description": "An array of components to render on the page.",
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/textComponent" },
+              { "$ref": "#/$defs/listComponent" },
+              { "$ref": "#/$defs/formComponent" },
+              { "$ref": "#/$defs/buttonComponent" }
+            ]
+          }
+        }
+      },
+      "required": ["component", "title", "content"]
+    },
+    "textComponent": {
+      "title": "Text Component",
+      "type": "object",
+      "properties": {
+        "component": { "const": "text" },
+        "content": { "type": "string" },
+        "styleHint": { "$ref": "#/$defs/styleHint" }
+      },
+      "required": ["component", "content"]
+    },
+    "listComponent": {
+      "title": "List Component",
+      "type": "object",
+      "properties": {
+        "component": { "const": "list" },
+        "dataSource": { "type": "string" },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "header": { "type": "string" },
+              "field": { "type": "string" }
+            },
+            "required": ["header", "field"]
+          }
+        },
+        "styleHint": { "$ref": "#/$defs/styleHint" }
+      },
+      "required": ["component", "dataSource", "columns"]
+    },
+    "formComponent": {
+      "title": "Form Component",
+      "type": "object",
+      "properties": {
+        "component": { "const": "form" },
+        "id": { "description": "A unique identifier for the form.", "type": "string" },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "label": { "type": "string" },
+              "type": { "enum": ["text", "email", "number"] }
+            },
+            "required": ["name", "label", "type"]
+          }
+        },
+        "styleHint": { "$ref": "#/$defs/styleHint" }
+      },
+      "required": ["component", "id", "fields"]
+    },
+    "buttonComponent": {
+      "title": "Button Component",
+      "type": "object",
+      "properties": {
+        "component": { "const": "button" },
+        "label": { "type": "string" },
+        "onClick": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/action" }
+        },
+        "styleHint": { "$ref": "#/$defs/styleHint" }
+      },
+      "required": ["component", "label", "onClick"]
+    },
+    "action": {
+      "title": "Action Object",
+      "description": "Defines an action to be performed, like navigate or submit.",
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "action": { "const": "navigate" },
+            "target": { "description": "The ID of the page to navigate to.", "type": "string" },
+            "withData": {
+              "description": "An optional object of data to pass to the target page.",
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": ["action", "target"]
+        },
+        {
+          "properties": {
+            "action": { "const": "submit" },
+            "dataSource": { "description": "The ID of the dataSource to submit to.", "type": "string" },
+            "target": { "description": "The ID of the form to submit.", "type": "string" }
+          },
+          "required": ["action", "dataSource", "target"]
+        }
+      ]
+    },
+    "styleHint": {
+      "title": "StyleHint Object",
+      "description": "An optional object providing abstract styling guidance.",
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
