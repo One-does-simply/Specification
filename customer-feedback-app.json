@@ -1,0 +1,94 @@
+{
+  "appName": "Customer Feedback",
+  "startPage": "feedbackFormPage",
+  "menu": [],
+  "pages": {
+    "feedbackFormPage": {
+      "component": "page",
+      "title": "We Value Your Feedback",
+      "content": [
+        {
+          "component": "text",
+          "content": "Please let us know how we're doing. Your feedback helps us improve our service.",
+          "styleHint": {
+            "variant": "body"
+          }
+        },
+        {
+          "component": "form",
+          "id": "feedbackForm",
+          "fields": [
+            {
+              "name": "customerName",
+              "label": "Your Name",
+              "type": "text"
+            },
+            {
+              "name": "customerEmail",
+              "label": "Email Address",
+              "type": "email"
+            },
+            {
+              "name": "rating",
+              "label": "Rating (1-5)",
+              "type": "number"
+            },
+            {
+              "name": "comments",
+              "label": "Comments",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Submit Feedback",
+          "onClick": [
+            {
+              "action": "submit",
+              "dataSource": "submitFeedbackApi",
+              "target": "feedbackForm"
+            },
+            {
+              "action": "navigate",
+              "target": "thankYouPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "primary"
+          }
+        }
+      ]
+    },
+    "thankYouPage": {
+      "component": "page",
+      "title": "Thank You!",
+      "content": [
+        {
+          "component": "text",
+          "content": "Your feedback has been submitted successfully. We appreciate you taking the time to help us.",
+          "styleHint": {
+            "variant": "heading"
+          }
+        },
+        {
+          "component": "button",
+          "label": "Submit Another Response",
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "feedbackFormPage"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "dataSources": {
+    "submitFeedbackApi": {
+      "url": "https://api.example.com/feedback",
+      "method": "POST"
+    }
+  }
+}
+
