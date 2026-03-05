@@ -1,7 +1,10 @@
 {
   "appName": "Customer Feedback",
   "startPage": "feedbackFormPage",
-  "menu": [],
+  "menu": [
+    { "label": "Submit Feedback", "mapsTo": "feedbackFormPage" },
+    { "label": "View Responses", "mapsTo": "viewFeedbackPage" }
+  ],
   "pages": {
     "feedbackFormPage": {
       "component": "page",
@@ -18,26 +21,10 @@
           "component": "form",
           "id": "feedbackForm",
           "fields": [
-            {
-              "name": "customerName",
-              "label": "Your Name",
-              "type": "text"
-            },
-            {
-              "name": "customerEmail",
-              "label": "Email Address",
-              "type": "email"
-            },
-            {
-              "name": "rating",
-              "label": "Rating (1-5)",
-              "type": "number"
-            },
-            {
-              "name": "comments",
-              "label": "Comments",
-              "type": "text"
-            }
+            { "name": "customerName", "label": "Your Name", "type": "text" },
+            { "name": "customerEmail", "label": "Email Address", "type": "email" },
+            { "name": "rating", "label": "Rating (1-5)", "type": "number" },
+            { "name": "comments", "label": "Comments", "type": "text" }
           ]
         },
         {
@@ -46,7 +33,7 @@
           "onClick": [
             {
               "action": "submit",
-              "dataSource": "submitFeedbackApi",
+              "dataSource": "feedbackStore",
               "target": "feedbackForm"
             },
             {
@@ -82,13 +69,49 @@
           ]
         }
       ]
+    },
+    "viewFeedbackPage": {
+      "component": "page",
+      "title": "All Feedback",
+      "content": [
+        {
+          "component": "text",
+          "content": "Below is all feedback that has been submitted.",
+          "styleHint": {
+            "variant": "body"
+          }
+        },
+        {
+          "component": "list",
+          "dataSource": "feedbackReader",
+          "columns": [
+            { "header": "Name", "field": "customerName" },
+            { "header": "Email", "field": "customerEmail" },
+            { "header": "Rating", "field": "rating" },
+            { "header": "Comments", "field": "comments" }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Back to Form",
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "feedbackFormPage"
+            }
+          ]
+        }
+      ]
     }
   },
   "dataSources": {
-    "submitFeedbackApi": {
-      "url": "https://api.example.com/feedback",
+    "feedbackStore": {
+      "url": "local://feedback",
       "method": "POST"
+    },
+    "feedbackReader": {
+      "url": "local://feedback",
+      "method": "GET"
     }
   }
 }
-

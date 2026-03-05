@@ -35,7 +35,7 @@
       "additionalProperties": { "$ref": "#/$defs/page" }
     },
     "dataSources": {
-      "description": "A dictionary of all data sources used by the application.",
+      "description": "A dictionary of all data sources used by the application. Each key is a unique identifier referenced by components and actions.",
       "type": "object",
       "additionalProperties": { "$ref": "#/$defs/dataSource" }
     }
@@ -44,20 +44,54 @@
   "$defs": {
     "dataSource": {
       "title": "DataSource Object",
-      "description": "Defines a REST API endpoint or a framework-managed alias.",
+      "description": "Defines a data endpoint. Use 'local://<tableName>' for framework-managed local storage, or a full URL (https://) for external REST APIs.",
       "type": "object",
       "properties": {
         "url": {
-          "description": "The URL of the endpoint or an alias for a pre-configured data source.",
+          "description": "The data endpoint. Use 'local://<tableName>' for local storage managed by the framework, or a full URL for an external API.",
           "type": "string"
         },
         "method": {
-          "description": "The HTTP method to use.",
+          "description": "The access method. For local:// sources, GET reads all rows and POST inserts a new row. For external URLs, this is the HTTP method.",
           "type": "string",
           "enum": ["GET", "POST"]
+        },
+        "fields": {
+          "description": "Optional. Explicitly defines the columns/fields for a local:// data source. If omitted for a local:// source, the schema is auto-inferred from the first form that submits to it.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/fieldDefinition" }
+        },
+        "seedData": {
+          "description": "Optional. An array of objects to pre-populate a local:// data source when the table is first created. Each object's keys must match the field names.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
         }
       },
       "required": ["url", "method"]
+    },
+    "fieldDefinition": {
+      "title": "Field Definition",
+      "description": "Defines a single field/column in a data source or form.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The programmatic name of the field, used as the column name in storage.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The data type of the field. Used for input validation and display formatting.",
+          "type": "string",
+          "enum": ["text", "email", "number"]
+        },
+        "label": {
+          "description": "Optional. A human-readable label for the field.",
+          "type": "string"
+        }
+      },
+      "required": ["name", "type"]
     },
     "page": {
       "title": "Page Object",
@@ -95,7 +129,7 @@
       "type": "object",
       "properties": {
         "component": { "const": "list" },
-        "dataSource": { "type": "string" },
+        "dataSource": { "description": "The ID of the dataSource to read data from.", "type": "string" },
         "columns": {
           "type": "array",
           "items": {
@@ -119,15 +153,7 @@
         "id": { "description": "A unique identifier for the form.", "type": "string" },
         "fields": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": { "type": "string" },
-              "label": { "type": "string" },
-              "type": { "enum": ["text", "email", "number"] }
-            },
-            "required": ["name", "label", "type"]
-          }
+          "items": { "$ref": "#/$defs/fieldDefinition" }
         },
         "styleHint": { "$ref": "#/$defs/styleHint" }
       },
@@ -176,7 +202,7 @@
     },
     "styleHint": {
       "title": "StyleHint Object",
-      "description": "An optional object providing abstract styling guidance.",
+      "description": "An optional object providing abstract styling guidance. Frameworks should interpret known hints and gracefully ignore unknown ones.",
       "type": "object",
       "additionalProperties": true
     }
