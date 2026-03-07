@@ -1,0 +1,212 @@
+{
+  "appName": "To-Do List",
+  "startPage": "viewTasksPage",
+  "menu": [
+    { "label": "My Tasks", "mapsTo": "viewTasksPage" },
+    { "label": "Add Task", "mapsTo": "addTaskPage" },
+    { "label": "Update Task", "mapsTo": "updateTaskPage" }
+  ],
+  "pages": {
+    "addTaskPage": {
+      "component": "page",
+      "title": "Add a New Task",
+      "content": [
+        {
+          "component": "text",
+          "content": "Create a new task for your to-do list.",
+          "styleHint": { "variant": "body" }
+        },
+        {
+          "component": "form",
+          "id": "addTaskForm",
+          "fields": [
+            { "name": "taskName", "label": "Task", "type": "text", "required": true, "placeholder": "e.g., Buy groceries" },
+            { "name": "dueDate", "label": "Due Date", "type": "date" },
+            { "name": "priority", "label": "Priority", "type": "select", "options": ["High", "Medium", "Low"], "default": "Medium" },
+            { "name": "status", "label": "Status", "type": "select", "options": ["To Do", "In Progress", "Done", "Blocked"], "default": "To Do" },
+            { "name": "notes", "label": "Notes", "type": "multiline", "placeholder": "Any extra details..." }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Add Task",
+          "onClick": [
+            {
+              "action": "submit",
+              "dataSource": "tasksStore",
+              "target": "addTaskForm"
+            },
+            {
+              "action": "navigate",
+              "target": "viewTasksPage"
+            }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+    "viewTasksPage": {
+      "component": "page",
+      "title": "My Tasks",
+      "content": [
+        {
+          "component": "text",
+          "content": "All your tasks are listed below.",
+          "styleHint": { "variant": "body" }
+        },
+        {
+          "component": "list",
+          "dataSource": "tasksReader",
+          "columns": [
+            { "header": "Task", "field": "taskName" },
+            { "header": "Due Date", "field": "dueDate", "sortable": true },
+            { "header": "Priority", "field": "priority", "sortable": true },
+            { "header": "Status", "field": "status", "sortable": true }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Add a Task",
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "addTaskPage"
+            }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Mark a Task Complete",
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "updateTaskPage"
+            }
+          ],
+          "styleHint": { "emphasis": "secondary" }
+        }
+      ]
+    },
+    "updateTaskPage": {
+      "component": "page",
+      "title": "Update Task Status",
+      "content": [
+        {
+          "component": "text",
+          "content": "Type the name of a task and change its status. The task name must match exactly.",
+          "styleHint": { "variant": "body" }
+        },
+        {
+          "component": "form",
+          "id": "updateTaskForm",
+          "fields": [
+            { "name": "taskName", "label": "Task Name", "type": "text", "required": true, "placeholder": "Enter the exact task name" },
+            { "name": "status", "label": "New Status", "type": "select", "options": ["To Do", "In Progress", "Done", "Blocked"], "required": true, "default": "Done" }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Update Status",
+          "onClick": [
+            {
+              "action": "update",
+              "dataSource": "tasksUpdater",
+              "target": "updateTaskForm",
+              "matchField": "taskName"
+            },
+            {
+              "action": "navigate",
+              "target": "viewTasksPage"
+            }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back to Tasks",
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "viewTasksPage"
+            }
+          ],
+          "styleHint": { "emphasis": "secondary" }
+        }
+      ]
+    }
+  },
+  "dataSources": {
+    "tasksStore": {
+      "url": "local://tasks",
+      "method": "POST"
+    },
+    "tasksReader": {
+      "url": "local://tasks",
+      "method": "GET",
+      "fields": [
+        { "name": "taskName", "type": "text" },
+        { "name": "dueDate", "type": "date" },
+        { "name": "priority", "type": "select" },
+        { "name": "status", "type": "select" },
+        { "name": "notes", "type": "multiline" }
+      ],
+      "seedData": [
+        {
+          "taskName": "Buy groceries",
+          "dueDate": "2025-03-10",
+          "priority": "High",
+          "status": "To Do",
+          "notes": "Milk, eggs, bread, and fruit."
+        },
+        {
+          "taskName": "Read chapter 5",
+          "dueDate": "2025-03-12",
+          "priority": "Medium",
+          "status": "To Do",
+          "notes": "Atomic Habits — chapter on habit stacking."
+        },
+        {
+          "taskName": "Schedule dentist appointment",
+          "dueDate": "2025-03-15",
+          "priority": "Low",
+          "status": "Done",
+          "notes": ""
+        }
+      ]
+    },
+    "tasksUpdater": {
+      "url": "local://tasks",
+      "method": "PUT"
+    }
+  },
+  "help": {
+    "overview": "To-Do List helps you track tasks, set priorities, and mark them complete when you're done. Add new tasks, view your full list, and update the status of any task.",
+    "pages": {
+      "addTaskPage": "Enter a task name (required), optional due date, and notes. Use the dropdowns to select a priority (defaults to 'Medium') and status (defaults to 'To Do'). Press Add Task to save it.",
+      "viewTasksPage": "View all your tasks with their due dates, priorities, and statuses. Use the buttons to add new tasks or update existing ones.",
+      "updateTaskPage": "Select the new status from the dropdown and press Update Status to save the change."
+    }
+  },
+  "tour": [
+    {
+      "title": "Welcome to To-Do List!",
+      "content": "Keep track of everything you need to do. Add tasks, set priorities, and mark them complete when you're done."
+    },
+    {
+      "title": "Your Task List",
+      "content": "This page shows all your tasks with their due dates, priorities, and current status. The app comes with a few sample tasks to get you started.",
+      "page": "viewTasksPage"
+    },
+    {
+      "title": "Add New Tasks",
+      "content": "Use this page to create a new task. Give it a name, set a due date and priority, and it starts with a status of 'To Do'.",
+      "page": "addTaskPage"
+    },
+    {
+      "title": "Mark Tasks Complete",
+      "content": "When you finish a task, visit the Update Task page, type the task name, and select the new status from the dropdown.",
+      "page": "updateTaskPage"
+    }
+  ]
+}

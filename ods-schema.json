@@ -38,10 +38,56 @@
       "description": "A dictionary of all data sources used by the application. Each key is a unique identifier referenced by components and actions.",
       "type": "object",
       "additionalProperties": { "$ref": "#/$defs/dataSource" }
+    },
+    "help": {
+      "description": "Optional. Provides help and guidance content for the application.",
+      "$ref": "#/$defs/helpObject"
+    },
+    "tour": {
+      "description": "Optional. Defines a guided tour shown on first launch to introduce the user to the app.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/tourStep" }
     }
   },
   "required": ["appName", "startPage", "pages"],
   "$defs": {
+    "helpObject": {
+      "title": "Help Object",
+      "description": "Provides help content for the application. Includes an overview and optional per-page help.",
+      "type": "object",
+      "properties": {
+        "overview": {
+          "description": "A general description of what the app does and how to use it.",
+          "type": "string"
+        },
+        "pages": {
+          "description": "Per-page help text, keyed by page ID.",
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      },
+      "required": ["overview"]
+    },
+    "tourStep": {
+      "title": "Tour Step",
+      "description": "A single step in the guided tour.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "The title of this tour step.",
+          "type": "string"
+        },
+        "content": {
+          "description": "The explanatory text for this tour step.",
+          "type": "string"
+        },
+        "page": {
+          "description": "Optional. The page ID to navigate to for this step, so the user sees the relevant page.",
+          "type": "string"
+        }
+      },
+      "required": ["title", "content"]
+    },
     "dataSource": {
       "title": "DataSource Object",
       "description": "Defines a data endpoint. Use 'local://<tableName>' for framework-managed local storage, or a full URL (https://) for external REST APIs.",
@@ -52,9 +98,9 @@
           "type": "string"
         },
         "method": {
-          "description": "The access method. For local:// sources, GET reads all rows and POST inserts a new row. For external URLs, this is the HTTP method.",
+          "description": "The access method. For local:// sources, GET reads all rows, POST inserts a new row, and PUT updates an existing row. For external URLs, this is the HTTP method.",
           "type": "string",
-          "enum": ["GET", "POST"]
+          "enum": ["GET", "POST", "PUT"]
         },
         "fields": {
           "description": "Optional. Explicitly defines the columns/fields for a local:// data source. If omitted for a local:// source, the schema is auto-inferred from the first form that submits to it.",
@@ -82,12 +128,30 @@
           "type": "string"
         },
         "type": {
-          "description": "The data type of the field. Used for input validation and display formatting.",
+          "description": "The data type of the field. Used for input widget selection and display formatting.",
           "type": "string",
-          "enum": ["text", "email", "number"]
+          "enum": ["text", "email", "number", "date", "multiline", "select", "checkbox"]
+        },
+        "options": {
+          "description": "Required when type is 'select'. An array of string values the user can choose from, rendered as a dropdown.",
+          "type": "array",
+          "items": { "type": "string" }
         },
         "label": {
           "description": "Optional. A human-readable label for the field.",
+          "type": "string"
+        },
+        "required": {
+          "description": "Optional. When true, the field must have a non-empty value before the form can be submitted. Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "placeholder": {
+          "description": "Optional. Example or hint text shown inside the field when it is empty. Disappears once the user starts typing.",
+          "type": "string"
+        },
+        "default": {
+          "description": "Optional. A default value to pre-fill the field with when the form is first displayed. The user can change it.",
           "type": "string"
         }
       },
@@ -136,7 +200,12 @@
             "type": "object",
             "properties": {
               "header": { "type": "string" },
-              "field": { "type": "string" }
+              "field": { "type": "string" },
+              "sortable": {
+                "description": "Optional. When true, the column header becomes tappable to sort the list by this field. Defaults to false.",
+                "type": "boolean",
+                "default": false
+              }
             },
             "required": ["header", "field"]
           }
@@ -175,7 +244,7 @@
     },
     "action": {
       "title": "Action Object",
-      "description": "Defines an action to be performed, like navigate or submit.",
+      "description": "Defines an action to be performed: navigate (go to a page), submit (insert a new row), or update (modify an existing row).",
       "type": "object",
       "oneOf": [
         {
@@ -197,6 +266,15 @@
             "target": { "description": "The ID of the form to submit.", "type": "string" }
           },
           "required": ["action", "dataSource", "target"]
+        },
+        {
+          "properties": {
+            "action": { "const": "update" },
+            "dataSource": { "description": "The ID of the PUT dataSource to update.", "type": "string" },
+            "target": { "description": "The ID of the form whose values provide the update data.", "type": "string" },
+            "matchField": { "description": "The field name used to find the row to update. The row where this field matches the form value is updated.", "type": "string" }
+          },
+          "required": ["action", "dataSource", "target", "matchField"]
         }
       ]
     },

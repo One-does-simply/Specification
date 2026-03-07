@@ -13,37 +13,26 @@
         {
           "component": "text",
           "content": "Please let us know how we're doing. Your feedback helps us improve our service.",
-          "styleHint": {
-            "variant": "body"
-          }
+          "styleHint": { "variant": "body" }
         },
         {
           "component": "form",
           "id": "feedbackForm",
           "fields": [
-            { "name": "customerName", "label": "Your Name", "type": "text" },
-            { "name": "customerEmail", "label": "Email Address", "type": "email" },
-            { "name": "rating", "label": "Rating (1-5)", "type": "number" },
-            { "name": "comments", "label": "Comments", "type": "text" }
+            { "name": "customerName", "label": "Your Name", "type": "text", "required": true, "placeholder": "e.g., Jane Smith" },
+            { "name": "customerEmail", "label": "Email Address", "type": "email", "placeholder": "you@example.com" },
+            { "name": "rating", "label": "Rating (1-5)", "type": "number", "required": true },
+            { "name": "comments", "label": "Comments", "type": "multiline", "placeholder": "Tell us about your experience..." }
           ]
         },
         {
           "component": "button",
           "label": "Submit Feedback",
           "onClick": [
-            {
-              "action": "submit",
-              "dataSource": "feedbackStore",
-              "target": "feedbackForm"
-            },
-            {
-              "action": "navigate",
-              "target": "thankYouPage"
-            }
+            { "action": "submit", "dataSource": "feedbackStore", "target": "feedbackForm" },
+            { "action": "navigate", "target": "thankYouPage" }
           ],
-          "styleHint": {
-            "emphasis": "primary"
-          }
+          "styleHint": { "emphasis": "primary" }
         }
       ]
     },
@@ -54,18 +43,13 @@
         {
           "component": "text",
           "content": "Your feedback has been submitted successfully. We appreciate you taking the time to help us.",
-          "styleHint": {
-            "variant": "heading"
-          }
+          "styleHint": { "variant": "heading" }
         },
         {
           "component": "button",
           "label": "Submit Another Response",
           "onClick": [
-            {
-              "action": "navigate",
-              "target": "feedbackFormPage"
-            }
+            { "action": "navigate", "target": "feedbackFormPage" }
           ]
         }
       ]
@@ -77,9 +61,7 @@
         {
           "component": "text",
           "content": "Below is all feedback that has been submitted.",
-          "styleHint": {
-            "variant": "body"
-          }
+          "styleHint": { "variant": "body" }
         },
         {
           "component": "list",
@@ -95,10 +77,7 @@
           "component": "button",
           "label": "Back to Form",
           "onClick": [
-            {
-              "action": "navigate",
-              "target": "feedbackFormPage"
-            }
+            { "action": "navigate", "target": "feedbackFormPage" }
           ]
         }
       ]
@@ -113,5 +92,34 @@
       "url": "local://feedback",
       "method": "GET"
     }
-  }
+  },
+  "help": {
+    "overview": "This app collects customer feedback through a simple form and lets you review all responses.",
+    "pages": {
+      "feedbackFormPage": "Fill out the form with your name, email, a rating from 1-5, and any comments. Fields marked with * are required.",
+      "thankYouPage": "Your feedback was saved! You can submit another or view all responses.",
+      "viewFeedbackPage": "Browse all submitted feedback in the table below."
+    }
+  },
+  "tour": [
+    {
+      "title": "Welcome to Customer Feedback!",
+      "content": "This app lets you collect and review customer feedback. Let's take a quick look around.",
+      "page": "feedbackFormPage"
+    },
+    {
+      "title": "Submit Feedback",
+      "content": "Fill out the form on this page and tap 'Submit Feedback' to save a response.",
+      "page": "feedbackFormPage"
+    },
+    {
+      "title": "View Responses",
+      "content": "Use the menu to visit 'View Responses' and see all feedback in a table.",
+      "page": "viewFeedbackPage"
+    },
+    {
+      "title": "You're All Set!",
+      "content": "That's everything! Start collecting feedback now."
+    }
+  ]
 }
