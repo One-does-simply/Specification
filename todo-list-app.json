@@ -4,7 +4,7 @@
   "menu": [
     { "label": "My Tasks", "mapsTo": "viewTasksPage" },
     { "label": "Add Task", "mapsTo": "addTaskPage" },
-    { "label": "Update Task", "mapsTo": "updateTaskPage" }
+    { "label": "Mark Done", "mapsTo": "updateTaskPage" }
   ],
   "pages": {
     "addTaskPage": {
@@ -23,7 +23,7 @@
             { "name": "taskName", "label": "Task", "type": "text", "required": true, "placeholder": "e.g., Buy groceries" },
             { "name": "dueDate", "label": "Due Date", "type": "date" },
             { "name": "priority", "label": "Priority", "type": "select", "options": ["High", "Medium", "Low"], "default": "Medium" },
-            { "name": "status", "label": "Status", "type": "select", "options": ["To Do", "In Progress", "Done", "Blocked"], "default": "To Do" },
+            { "name": "done", "label": "Done", "type": "checkbox" },
             { "name": "notes", "label": "Notes", "type": "multiline", "placeholder": "Any extra details..." }
           ]
         },
@@ -61,7 +61,7 @@
             { "header": "Task", "field": "taskName" },
             { "header": "Due Date", "field": "dueDate", "sortable": true },
             { "header": "Priority", "field": "priority", "sortable": true },
-            { "header": "Status", "field": "status", "sortable": true }
+            { "header": "Done", "field": "done", "sortable": true }
           ]
         },
         {
@@ -77,7 +77,7 @@
         },
         {
           "component": "button",
-          "label": "Mark a Task Complete",
+          "label": "Mark a Task Done",
           "onClick": [
             {
               "action": "navigate",
@@ -90,11 +90,11 @@
     },
     "updateTaskPage": {
       "component": "page",
-      "title": "Update Task Status",
+      "title": "Mark Task Done",
       "content": [
         {
           "component": "text",
-          "content": "Type the name of a task and change its status. The task name must match exactly.",
+          "content": "Type the name of a task and toggle it done. The task name must match exactly.",
           "styleHint": { "variant": "body" }
         },
         {
@@ -102,12 +102,12 @@
           "id": "updateTaskForm",
           "fields": [
             { "name": "taskName", "label": "Task Name", "type": "text", "required": true, "placeholder": "Enter the exact task name" },
-            { "name": "status", "label": "New Status", "type": "select", "options": ["To Do", "In Progress", "Done", "Blocked"], "required": true, "default": "Done" }
+            { "name": "done", "label": "Done", "type": "checkbox", "default": "true" }
           ]
         },
         {
           "component": "button",
-          "label": "Update Status",
+          "label": "Update Task",
           "onClick": [
             {
               "action": "update",
@@ -148,7 +148,7 @@
         { "name": "taskName", "type": "text" },
         { "name": "dueDate", "type": "date" },
         { "name": "priority", "type": "select" },
-        { "name": "status", "type": "select" },
+        { "name": "done", "type": "checkbox" },
         { "name": "notes", "type": "multiline" }
       ],
       "seedData": [
@@ -156,21 +156,21 @@
           "taskName": "Buy groceries",
           "dueDate": "2025-03-10",
           "priority": "High",
-          "status": "To Do",
+          "done": "false",
           "notes": "Milk, eggs, bread, and fruit."
         },
         {
           "taskName": "Read chapter 5",
           "dueDate": "2025-03-12",
           "priority": "Medium",
-          "status": "To Do",
+          "done": "false",
           "notes": "Atomic Habits — chapter on habit stacking."
         },
         {
           "taskName": "Schedule dentist appointment",
           "dueDate": "2025-03-15",
           "priority": "Low",
-          "status": "Done",
+          "done": "true",
           "notes": ""
         }
       ]
@@ -181,31 +181,31 @@
     }
   },
   "help": {
-    "overview": "To-Do List helps you track tasks, set priorities, and mark them complete when you're done. Add new tasks, view your full list, and update the status of any task.",
+    "overview": "To-Do List helps you track tasks, set priorities, and mark them done. Add new tasks, view your full list, and toggle tasks complete when you finish them.",
     "pages": {
-      "addTaskPage": "Enter a task name (required), optional due date, and notes. Use the dropdowns to select a priority (defaults to 'Medium') and status (defaults to 'To Do'). Press Add Task to save it.",
-      "viewTasksPage": "View all your tasks with their due dates, priorities, and statuses. Use the buttons to add new tasks or update existing ones.",
-      "updateTaskPage": "Select the new status from the dropdown and press Update Status to save the change."
+      "addTaskPage": "Enter a task name (required), optional due date, and notes. Use the dropdown to select a priority (defaults to 'Medium'). Press Add Task to save it.",
+      "viewTasksPage": "View all your tasks with their due dates, priorities, and done status. Use the buttons to add new tasks or mark existing ones done.",
+      "updateTaskPage": "Type the exact task name and toggle the Done switch, then press Update Task to save the change."
     }
   },
   "tour": [
     {
       "title": "Welcome to To-Do List!",
-      "content": "Keep track of everything you need to do. Add tasks, set priorities, and mark them complete when you're done."
+      "content": "Keep track of everything you need to do. Add tasks, set priorities, and mark them done when you finish."
     },
     {
       "title": "Your Task List",
-      "content": "This page shows all your tasks with their due dates, priorities, and current status. The app comes with a few sample tasks to get you started.",
+      "content": "This page shows all your tasks with their due dates, priorities, and done status. The app comes with a few sample tasks to get you started.",
       "page": "viewTasksPage"
     },
     {
       "title": "Add New Tasks",
-      "content": "Use this page to create a new task. Give it a name, set a due date and priority, and it starts with a status of 'To Do'.",
+      "content": "Use this page to create a new task. Give it a name, set a due date and priority, and it starts as not done.",
       "page": "addTaskPage"
     },
     {
-      "title": "Mark Tasks Complete",
-      "content": "When you finish a task, visit the Update Task page, type the task name, and select the new status from the dropdown.",
+      "title": "Mark Tasks Done",
+      "content": "When you finish a task, visit Mark Done, type the task name, toggle the switch, and press Update Task.",
       "page": "updateTaskPage"
     }
   ]
