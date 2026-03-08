@@ -210,6 +210,11 @@
             "required": ["header", "field"]
           }
         },
+        "rowActions": {
+          "description": "Optional. An array of actions rendered as buttons in each row. Allows inline operations like marking a task done without navigating to a separate page.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/rowAction" }
+        },
         "styleHint": { "$ref": "#/$defs/styleHint" }
       },
       "required": ["component", "dataSource", "columns"]
@@ -277,6 +282,36 @@
           "required": ["action", "dataSource", "target", "matchField"]
         }
       ]
+    },
+    "rowAction": {
+      "title": "Row Action",
+      "description": "An action button rendered in each row of a list. Uses the row's own data to identify which record to act on.",
+      "type": "object",
+      "properties": {
+        "label": {
+          "description": "The text shown on the action button in each row.",
+          "type": "string"
+        },
+        "action": {
+          "description": "The action type. Currently only 'update' is supported for row actions.",
+          "type": "string",
+          "enum": ["update"]
+        },
+        "dataSource": {
+          "description": "The ID of the PUT dataSource to perform the update.",
+          "type": "string"
+        },
+        "matchField": {
+          "description": "The field name used to identify the row. The value is taken from the row's own data.",
+          "type": "string"
+        },
+        "values": {
+          "description": "A map of field names to values to set when the action is triggered.",
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      },
+      "required": ["label", "action", "dataSource", "matchField", "values"]
     },
     "styleHint": {
       "title": "StyleHint Object",
