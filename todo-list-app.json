@@ -188,6 +188,19 @@
       "updateTaskPage": "Type the exact task name and toggle the Done switch, then press Update Task to save the change."
     }
   },
+  "settings": {
+    "defaultPriority": {
+      "label": "Default priority for new tasks",
+      "type": "select",
+      "options": ["High", "Medium", "Low"],
+      "default": "Medium"
+    },
+    "showNotes": {
+      "label": "Show notes column in task list",
+      "type": "checkbox",
+      "default": "false"
+    }
+  },
   "tour": [
     {
       "title": "Welcome to To-Do List!",

@@ -47,6 +47,11 @@
       "description": "Optional. Defines a guided tour shown on first launch to introduce the user to the app.",
       "type": "array",
       "items": { "$ref": "#/$defs/tourStep" }
+    },
+    "settings": {
+      "description": "Optional. Defines user-configurable app settings with default values. Each key is the setting's programmatic name.",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/appSetting" }
     }
   },
   "required": ["appName", "startPage", "pages"],
@@ -98,9 +103,9 @@
           "type": "string"
         },
         "method": {
-          "description": "The access method. For local:// sources, GET reads all rows, POST inserts a new row, and PUT updates an existing row. For external URLs, this is the HTTP method.",
+          "description": "The access method. For local:// sources, GET reads all rows, POST inserts a new row, PUT updates an existing row, and DELETE removes a row. For external URLs, this is the HTTP method.",
           "type": "string",
-          "enum": ["GET", "POST", "PUT"]
+          "enum": ["GET", "POST", "PUT", "DELETE"]
         },
         "fields": {
           "description": "Optional. Explicitly defines the columns/fields for a local:// data source. If omitted for a local:// source, the schema is auto-inferred from the first form that submits to it.",
@@ -130,7 +135,7 @@
         "type": {
           "description": "The data type of the field. Used for input widget selection and display formatting.",
           "type": "string",
-          "enum": ["text", "email", "number", "date", "multiline", "select", "checkbox"]
+          "enum": ["text", "email", "number", "date", "datetime", "multiline", "select", "checkbox"]
         },
         "options": {
           "description": "Required when type is 'select'. An array of string values the user can choose from, rendered as a dropdown.",
@@ -151,7 +156,7 @@
           "type": "string"
         },
         "default": {
-          "description": "Optional. A default value to pre-fill the field with when the form is first displayed. The user can change it.",
+          "description": "Optional. A default value to pre-fill the field with when the form is first displayed. The user can change it. For date and datetime fields, use 'NOW' or 'CURRENTDATE' to default to the current date/time.",
           "type": "string"
         }
       },
@@ -285,7 +290,7 @@
     },
     "rowAction": {
       "title": "Row Action",
-      "description": "An action button rendered in each row of a list. Uses the row's own data to identify which record to act on.",
+      "description": "An action button rendered in each row of a list. Uses the row's own data to identify which record to act on. Supports 'update' (set new values) and 'delete' (remove the row).",
       "type": "object",
       "properties": {
         "label": {
@@ -293,12 +298,12 @@
           "type": "string"
         },
         "action": {
-          "description": "The action type. Currently only 'update' is supported for row actions.",
+          "description": "The action type: 'update' sets new values on the row, 'delete' removes the row (with confirmation).",
           "type": "string",
-          "enum": ["update"]
+          "enum": ["update", "delete"]
         },
         "dataSource": {
-          "description": "The ID of the PUT dataSource to perform the update.",
+          "description": "The ID of the dataSource (PUT for update, DELETE for delete) to perform the action.",
           "type": "string"
         },
         "matchField": {
@@ -306,18 +311,44 @@
           "type": "string"
         },
         "values": {
-          "description": "A map of field names to values to set when the action is triggered.",
+          "description": "A map of field names to values to set when the action is triggered. Required for 'update' actions, not needed for 'delete'.",
           "type": "object",
           "additionalProperties": { "type": "string" }
         }
       },
-      "required": ["label", "action", "dataSource", "matchField", "values"]
+      "required": ["label", "action", "dataSource", "matchField"]
     },
     "styleHint": {
       "title": "StyleHint Object",
       "description": "An optional object providing abstract styling guidance. Frameworks should interpret known hints and gracefully ignore unknown ones.",
       "type": "object",
       "additionalProperties": true
+    },
+    "appSetting": {
+      "title": "App Setting",
+      "description": "A single user-configurable setting. Uses the same type vocabulary as form fields.",
+      "type": "object",
+      "properties": {
+        "label": {
+          "description": "Human-readable label shown in the settings UI.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The setting type. Determines the input widget used.",
+          "type": "string",
+          "enum": ["text", "number", "select", "checkbox"]
+        },
+        "default": {
+          "description": "The default value used when the user hasn't changed the setting. Checkbox defaults should be 'true' or 'false'.",
+          "type": "string"
+        },
+        "options": {
+          "description": "Required when type is 'select'. The list of allowed values.",
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["label", "type", "default"]
     }
   }
 }
