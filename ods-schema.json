@@ -138,9 +138,24 @@
           "enum": ["text", "email", "number", "date", "datetime", "multiline", "select", "checkbox"]
         },
         "options": {
-          "description": "Required when type is 'select'. An array of string values the user can choose from, rendered as a dropdown.",
+          "description": "An array of string values the user can choose from, rendered as a dropdown. Required when type is 'select' unless optionsFrom is provided.",
           "type": "array",
           "items": { "type": "string" }
+        },
+        "optionsFrom": {
+          "description": "Optional. Dynamically populates dropdown options from a GET data source. When provided on a 'select' field, the framework queries the referenced data source and uses the specified column as dropdown values. Takes priority over static 'options' if both are present.",
+          "type": "object",
+          "properties": {
+            "dataSource": {
+              "description": "The ID of a GET data source to fetch options from.",
+              "type": "string"
+            },
+            "valueField": {
+              "description": "The field/column name whose values become the dropdown options.",
+              "type": "string"
+            }
+          },
+          "required": ["dataSource", "valueField"]
         },
         "label": {
           "description": "Optional. A human-readable label for the field.",
