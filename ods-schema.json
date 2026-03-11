@@ -173,6 +173,51 @@
         "default": {
           "description": "Optional. A default value to pre-fill the field with when the form is first displayed. The user can change it. For date and datetime fields, use 'NOW' or 'CURRENTDATE' to default to the current date/time.",
           "type": "string"
+        },
+        "formula": {
+          "description": "Optional. A formula that computes this field's value from other fields. Reference fields with {fieldName}. Supports basic math (+, -, *, /, parentheses) for number fields, or string interpolation for text fields. Computed fields are read-only and not stored in the database.",
+          "type": "string"
+        },
+        "visibleWhen": {
+          "description": "Optional. Makes this field conditionally visible based on another field's value. The field is hidden (and its value excluded from submission) until the condition is met.",
+          "type": "object",
+          "properties": {
+            "field": {
+              "description": "The name of another field in the same form to watch.",
+              "type": "string"
+            },
+            "equals": {
+              "description": "The value the watched field must equal for this field to be visible.",
+              "type": "string"
+            }
+          },
+          "required": ["field", "equals"]
+        },
+        "validation": {
+          "description": "Optional. Validation constraints beyond 'required'. The framework shows inline error text when the value fails validation. Validation runs on submit, not on every keystroke.",
+          "type": "object",
+          "properties": {
+            "min": {
+              "description": "Minimum numeric value (inclusive). Only applies to 'number' fields.",
+              "type": "number"
+            },
+            "max": {
+              "description": "Maximum numeric value (inclusive). Only applies to 'number' fields.",
+              "type": "number"
+            },
+            "minLength": {
+              "description": "Minimum string length (inclusive). Applies to text, email, and multiline fields.",
+              "type": "integer"
+            },
+            "pattern": {
+              "description": "A regular expression the value must match. Use for custom formats like phone numbers or postal codes.",
+              "type": "string"
+            },
+            "message": {
+              "description": "Optional. A custom error message shown when validation fails. If omitted, the framework generates a default message.",
+              "type": "string"
+            }
+          }
         }
       },
       "required": ["name", "type"]
@@ -191,7 +236,8 @@
               { "$ref": "#/$defs/textComponent" },
               { "$ref": "#/$defs/listComponent" },
               { "$ref": "#/$defs/formComponent" },
-              { "$ref": "#/$defs/buttonComponent" }
+              { "$ref": "#/$defs/buttonComponent" },
+              { "$ref": "#/$defs/chartComponent" }
             ]
           }
         }
@@ -225,6 +271,11 @@
                 "description": "Optional. When true, the column header becomes tappable to sort the list by this field. Defaults to false.",
                 "type": "boolean",
                 "default": false
+              },
+              "filterable": {
+                "description": "Optional. When true, a filter dropdown appears above the list for this column, letting the user filter rows by the column's distinct values. Defaults to false.",
+                "type": "boolean",
+                "default": false
               }
             },
             "required": ["header", "field"]
@@ -234,6 +285,29 @@
           "description": "Optional. An array of actions rendered as buttons in each row. Allows inline operations like marking a task done without navigating to a separate page.",
           "type": "array",
           "items": { "$ref": "#/$defs/rowAction" }
+        },
+        "summary": {
+          "description": "Optional. An array of aggregation rules to display as a summary row at the bottom of the list. Supported functions: sum, avg, count, min, max.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "column": {
+                "description": "The field name to aggregate.",
+                "type": "string"
+              },
+              "function": {
+                "description": "The aggregation function to apply.",
+                "type": "string",
+                "enum": ["sum", "avg", "count", "min", "max"]
+              },
+              "label": {
+                "description": "Optional. A custom label for the summary value (e.g., 'Total Spent'). If omitted, the framework generates one from the function name.",
+                "type": "string"
+              }
+            },
+            "required": ["column", "function"]
+          }
         },
         "styleHint": { "$ref": "#/$defs/styleHint" }
       },
@@ -267,6 +341,25 @@
       },
       "required": ["component", "label", "onClick"]
     },
+    "chartComponent": {
+      "title": "Chart Component",
+      "description": "Renders a data visualization chart from a data source. Supports bar, line, and pie chart types.",
+      "type": "object",
+      "properties": {
+        "component": { "const": "chart" },
+        "dataSource": { "description": "The ID of the GET dataSource to read data from.", "type": "string" },
+        "chartType": {
+          "description": "The type of chart to render.",
+          "type": "string",
+          "enum": ["bar", "line", "pie"]
+        },
+        "labelField": { "description": "The field to use for category labels (X axis or pie slice names).", "type": "string" },
+        "valueField": { "description": "The field to use for numeric values (Y axis height or pie slice size).", "type": "string" },
+        "title": { "description": "Optional. A title displayed above the chart.", "type": "string" },
+        "styleHint": { "$ref": "#/$defs/styleHint" }
+      },
+      "required": ["component", "dataSource", "chartType", "labelField", "valueField"]
+    },
     "action": {
       "title": "Action Object",
       "description": "Defines an action to be performed: navigate (go to a page), submit (insert a new row), or update (modify an existing row).",
@@ -280,7 +373,8 @@
               "description": "An optional object of data to pass to the target page.",
               "type": "object",
               "additionalProperties": true
-            }
+            },
+            "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" }
           },
           "required": ["action", "target"]
         },
@@ -288,7 +382,8 @@
           "properties": {
             "action": { "const": "submit" },
             "dataSource": { "description": "The ID of the dataSource to submit to.", "type": "string" },
-            "target": { "description": "The ID of the form to submit.", "type": "string" }
+            "target": { "description": "The ID of the form to submit.", "type": "string" },
+            "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" }
           },
           "required": ["action", "dataSource", "target"]
         },
@@ -297,7 +392,8 @@
             "action": { "const": "update" },
             "dataSource": { "description": "The ID of the PUT dataSource to update.", "type": "string" },
             "target": { "description": "The ID of the form whose values provide the update data.", "type": "string" },
-            "matchField": { "description": "The field name used to find the row to update. The row where this field matches the form value is updated.", "type": "string" }
+            "matchField": { "description": "The field name used to find the row to update. The row where this field matches the form value is updated.", "type": "string" },
+            "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" }
           },
           "required": ["action", "dataSource", "target", "matchField"]
         }
@@ -329,6 +425,10 @@
           "description": "A map of field names to values to set when the action is triggered. Required for 'update' actions, not needed for 'delete'.",
           "type": "object",
           "additionalProperties": { "type": "string" }
+        },
+        "confirm": {
+          "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the row action. Overrides the default delete confirmation for delete actions.",
+          "type": "string"
         }
       },
       "required": ["label", "action", "dataSource", "matchField"]

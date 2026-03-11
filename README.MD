@@ -1,4 +1,4 @@
-One Does Simply (ODS)
+One Does Simply (ODS) - Vibe coding with guardrails
 
 "One does not simply do complex things, but One Does Simply do simple things."
 
