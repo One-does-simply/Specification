@@ -1,0 +1,52 @@
+{
+  "examples": [
+    {
+      "id": "customer-feedback",
+      "name": "Customer Feedback",
+      "description": "Collect and view customer feedback with a simple form.",
+      "file": "customer-feedback-app.json"
+    },
+    {
+      "id": "expense-tracker",
+      "name": "Expense Tracker",
+      "description": "Log your spending and keep track of where your money goes.",
+      "file": "expense-tracker-app.json"
+    },
+    {
+      "id": "habit-tracker",
+      "name": "Habit Tracker",
+      "description": "Track daily habits and review your consistency over time.",
+      "file": "habit-tracker-app.json"
+    },
+    {
+      "id": "my-chores",
+      "name": "My Chores",
+      "description": "Track household chores, assign them to family members, and mark them done.",
+      "file": "my_chores.json"
+    },
+    {
+      "id": "personal-journal",
+      "name": "Personal Journal",
+      "description": "A private diary to capture your thoughts and moods.",
+      "file": "personal-journal-app.json"
+    },
+    {
+      "id": "reading-list",
+      "name": "Reading List",
+      "description": "Track books you want to read, are reading, or have finished.",
+      "file": "reading-list-app.json"
+    },
+    {
+      "id": "recipe-book",
+      "name": "Recipe Book",
+      "description": "Save and browse your favorite recipes.",
+      "file": "recipe-book-app.json"
+    },
+    {
+      "id": "todo-list",
+      "name": "To-Do List",
+      "description": "Track tasks, set priorities, and mark them complete.",
+      "file": "todo-list-app.json"
+    }
+  ]
+}

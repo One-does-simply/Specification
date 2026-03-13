@@ -3,8 +3,7 @@
   "startPage": "viewTasksPage",
   "menu": [
     { "label": "My Tasks", "mapsTo": "viewTasksPage" },
-    { "label": "Add Task", "mapsTo": "addTaskPage" },
-    { "label": "Mark Done", "mapsTo": "updateTaskPage" }
+    { "label": "Add Task", "mapsTo": "addTaskPage" }
   ],
   "pages": {
     "addTaskPage": {
@@ -51,7 +50,7 @@
       "content": [
         {
           "component": "text",
-          "content": "All your tasks are listed below.",
+          "content": "All your tasks are listed below. Press the button in each row to mark a task done.",
           "styleHint": { "variant": "body" }
         },
         {
@@ -62,6 +61,15 @@
             { "header": "Due Date", "field": "dueDate", "sortable": true },
             { "header": "Priority", "field": "priority", "sortable": true },
             { "header": "Done", "field": "done", "sortable": true }
+          ],
+          "rowActions": [
+            {
+              "label": "Mark Done",
+              "action": "update",
+              "dataSource": "tasksUpdater",
+              "matchField": "taskName",
+              "values": { "done": "true" }
+            }
           ]
         },
         {
@@ -74,64 +82,6 @@
             }
           ],
           "styleHint": { "emphasis": "primary" }
-        },
-        {
-          "component": "button",
-          "label": "Mark a Task Done",
-          "onClick": [
-            {
-              "action": "navigate",
-              "target": "updateTaskPage"
-            }
-          ],
-          "styleHint": { "emphasis": "secondary" }
-        }
-      ]
-    },
-    "updateTaskPage": {
-      "component": "page",
-      "title": "Mark Task Done",
-      "content": [
-        {
-          "component": "text",
-          "content": "Type the name of a task and toggle it done. The task name must match exactly.",
-          "styleHint": { "variant": "body" }
-        },
-        {
-          "component": "form",
-          "id": "updateTaskForm",
-          "fields": [
-            { "name": "taskName", "label": "Task Name", "type": "text", "required": true, "placeholder": "Enter the exact task name" },
-            { "name": "done", "label": "Done", "type": "checkbox", "default": "true" }
-          ]
-        },
-        {
-          "component": "button",
-          "label": "Update Task",
-          "onClick": [
-            {
-              "action": "update",
-              "dataSource": "tasksUpdater",
-              "target": "updateTaskForm",
-              "matchField": "taskName"
-            },
-            {
-              "action": "navigate",
-              "target": "viewTasksPage"
-            }
-          ],
-          "styleHint": { "emphasis": "primary" }
-        },
-        {
-          "component": "button",
-          "label": "Back to Tasks",
-          "onClick": [
-            {
-              "action": "navigate",
-              "target": "viewTasksPage"
-            }
-          ],
-          "styleHint": { "emphasis": "secondary" }
         }
       ]
     }
@@ -181,11 +131,10 @@
     }
   },
   "help": {
-    "overview": "To-Do List helps you track tasks, set priorities, and mark them done. Add new tasks, view your full list, and toggle tasks complete when you finish them.",
+    "overview": "To-Do List helps you track tasks, set priorities, and mark them done. Add new tasks and mark them complete right from the task list.",
     "pages": {
       "addTaskPage": "Enter a task name (required), optional due date, and notes. Use the dropdown to select a priority (defaults to 'Medium'). Press Add Task to save it.",
-      "viewTasksPage": "View all your tasks with their due dates, priorities, and done status. Use the buttons to add new tasks or mark existing ones done.",
-      "updateTaskPage": "Type the exact task name and toggle the Done switch, then press Update Task to save the change."
+      "viewTasksPage": "View all your tasks with their due dates, priorities, and done status. Press 'Mark Done' on any row to mark it complete."
     }
   },
   "settings": {
@@ -208,18 +157,13 @@
     },
     {
       "title": "Your Task List",
-      "content": "This page shows all your tasks with their due dates, priorities, and done status. The app comes with a few sample tasks to get you started.",
+      "content": "This page shows all your tasks. Press 'Mark Done' on any row to mark it complete — no need to navigate to another page.",
       "page": "viewTasksPage"
     },
     {
       "title": "Add New Tasks",
       "content": "Use this page to create a new task. Give it a name, set a due date and priority, and it starts as not done.",
       "page": "addTaskPage"
-    },
-    {
-      "title": "Mark Tasks Done",
-      "content": "When you finish a task, visit Mark Done, type the task name, toggle the switch, and press Update Task.",
-      "page": "updateTaskPage"
     }
   ]
 }
