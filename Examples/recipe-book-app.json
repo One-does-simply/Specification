@@ -50,8 +50,14 @@
       "content": [
         {
           "component": "text",
-          "content": "Your Collection",
+          "content": "Your Collection — {COUNT(recipesReader)} recipes",
           "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No recipes yet. Add your first recipe to start building your cookbook!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "recipesReader", "countEquals": 0 }
         },
         {
           "component": "text",

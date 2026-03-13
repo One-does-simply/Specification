@@ -70,8 +70,14 @@
       "content": [
         {
           "component": "text",
-          "content": "Below is all feedback that has been submitted.",
-          "styleHint": { "variant": "body" }
+          "content": "{COUNT(feedbackReader)} responses received",
+          "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No feedback yet. Share the feedback form to start collecting responses!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "feedbackReader", "countEquals": 0 }
         },
         {
           "component": "list",

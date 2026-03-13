@@ -64,8 +64,14 @@
       "content": [
         {
           "component": "text",
-          "content": "Review all your recorded expenses below.",
-          "styleHint": { "variant": "body" }
+          "content": "Total: ${SUM(expensesReader, total)} across {COUNT(expensesReader)} expenses (avg ${AVG(expensesReader, total)})",
+          "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No expenses recorded yet. Log your first expense to get started!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "expensesReader", "countEquals": 0 }
         },
         {
           "component": "chart",
@@ -73,7 +79,8 @@
           "chartType": "pie",
           "labelField": "category",
           "valueField": "unitPrice",
-          "title": "Spending by Category"
+          "title": "Spending by Category",
+          "visibleWhen": { "source": "expensesReader", "countMin": 1 }
         },
         {
           "component": "list",

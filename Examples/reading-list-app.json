@@ -50,8 +50,14 @@
       "content": [
         {
           "component": "text",
-          "content": "All the books you are tracking are listed below. Use the buttons to update their status.",
-          "styleHint": { "variant": "body" }
+          "content": "{COUNT(booksReader)} books — {COUNT(booksReader, status=Reading)} reading, {COUNT(booksReader, status=Finished)} finished",
+          "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "Your reading list is empty. Add your first book!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "booksReader", "countEquals": 0 }
         },
         {
           "component": "list",

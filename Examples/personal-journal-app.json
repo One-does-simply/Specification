@@ -60,8 +60,14 @@
       "content": [
         {
           "component": "text",
-          "content": "Browse through your past journal entries.",
-          "styleHint": { "variant": "body" }
+          "content": "{COUNT(journalReader)} journal entries",
+          "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No entries yet. Write your first journal entry to begin your journey!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "journalReader", "countEquals": 0 }
         },
         {
           "component": "list",

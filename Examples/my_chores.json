@@ -14,8 +14,14 @@
       "content": [
         {
           "component": "text",
-          "content": "Here are all your chores. Mark them done or delete ones you no longer need.",
-          "styleHint": { "variant": "body" }
+          "content": "{COUNT(choreReader)} chores — {COUNT(choreReader, status=Done)} done, {COUNT(choreReader, status=To Do)} to do",
+          "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No chores yet! Set up your rooms and family members, then add your first chore.",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "choreReader", "countEquals": 0 }
         },
         {
           "component": "list",

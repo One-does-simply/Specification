@@ -50,8 +50,14 @@
       "content": [
         {
           "component": "text",
-          "content": "All your tasks are listed below. Press the button in each row to mark a task done.",
-          "styleHint": { "variant": "body" }
+          "content": "{COUNT(tasksReader)} tasks — {COUNT(tasksReader, done=true)} done, {COUNT(tasksReader, done=false)} remaining",
+          "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No tasks yet! Add your first task to get started.",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "tasksReader", "countEquals": 0 }
         },
         {
           "component": "list",

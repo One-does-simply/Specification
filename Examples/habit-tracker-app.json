@@ -49,7 +49,7 @@
       "content": [
         {
           "component": "text",
-          "content": "These are the habits you are tracking. Use the Log page to record your daily progress.",
+          "content": "You are tracking {COUNT(habitsReader)} habits. Use the Log page to record your daily progress.",
           "styleHint": { "variant": "body" }
         },
         {
@@ -123,8 +123,14 @@
       "content": [
         {
           "component": "text",
-          "content": "Review your habit completion history.",
-          "styleHint": { "variant": "body" }
+          "content": "{COUNT(habitLogReader, completed=true)} completed out of {COUNT(habitLogReader)} total entries",
+          "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No entries yet. Start logging your habits to build your streak!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "habitLogReader", "countEquals": 0 }
         },
         {
           "component": "list",
