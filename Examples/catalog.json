@@ -43,6 +43,18 @@
       "file": "recipe-book-app.json"
     },
     {
+      "id": "science-quiz",
+      "name": "Science Quiz",
+      "description": "Test your science knowledge with auto-scored multiple-choice questions.",
+      "file": "science-quiz-app.json"
+    },
+    {
+      "id": "team-survey",
+      "name": "Team Survey",
+      "description": "Collect anonymous team feedback with aggregate results and charts.",
+      "file": "team-survey-app.json"
+    },
+    {
       "id": "todo-list",
       "name": "To-Do List",
       "description": "Track tasks, set priorities, and mark them complete.",

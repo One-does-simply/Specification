@@ -1,0 +1,400 @@
+{
+  "appName": "Science Quiz",
+  "startPage": "welcomePage",
+  "menu": [
+    { "label": "Start Quiz", "mapsTo": "welcomePage" },
+    { "label": "Results", "mapsTo": "resultsPage" }
+  ],
+  "pages": {
+    "welcomePage": {
+      "component": "page",
+      "title": "Science Quiz",
+      "content": [
+        {
+          "component": "text",
+          "content": "Test your science knowledge! Answer 5 multiple-choice questions and see how you score.",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "text",
+          "content": "Each question has four options — pick the one you think is correct. Your answer is checked automatically when you submit.",
+          "styleHint": { "variant": "body" }
+        },
+        {
+          "component": "text",
+          "content": "You have already answered {COUNT(quizAnswers)} of 5 questions.",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "quizAnswers", "countMin": 1 }
+        },
+        {
+          "component": "button",
+          "label": "Start Question 1",
+          "onClick": [{ "action": "navigate", "target": "q1Page" }],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "View My Results",
+          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
+          "styleHint": { "emphasis": "secondary" },
+          "visibleWhen": { "source": "quizAnswers", "countMin": 1 }
+        }
+      ]
+    },
+
+    "q1Page": {
+      "component": "page",
+      "title": "Question 1 of 5",
+      "content": [
+        {
+          "component": "text",
+          "content": "What planet is known as the Red Planet?",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "form",
+          "id": "q1Form",
+          "fields": [
+            {
+              "name": "question",
+              "type": "hidden",
+              "default": "What planet is known as the Red Planet?"
+            },
+            {
+              "name": "answer",
+              "label": "Your Answer",
+              "type": "select",
+              "required": true,
+              "options": ["Venus", "Mars", "Jupiter", "Saturn"]
+            },
+            {
+              "name": "correctAnswer",
+              "type": "hidden",
+              "default": "Mars"
+            }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Submit & Next",
+          "onClick": [
+            {
+              "action": "submit",
+              "dataSource": "quizStore",
+              "target": "q1Form",
+              "computedFields": [
+                { "field": "correct", "expression": "{answer} == {correctAnswer} ? '1' : '0'" }
+              ]
+            },
+            { "action": "navigate", "target": "q2Page" }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+
+    "q2Page": {
+      "component": "page",
+      "title": "Question 2 of 5",
+      "content": [
+        {
+          "component": "text",
+          "content": "What gas do plants absorb from the atmosphere?",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "form",
+          "id": "q2Form",
+          "fields": [
+            {
+              "name": "question",
+              "type": "hidden",
+              "default": "What gas do plants absorb from the atmosphere?"
+            },
+            {
+              "name": "answer",
+              "label": "Your Answer",
+              "type": "select",
+              "required": true,
+              "options": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"]
+            },
+            {
+              "name": "correctAnswer",
+              "type": "hidden",
+              "default": "Carbon Dioxide"
+            }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Submit & Next",
+          "onClick": [
+            {
+              "action": "submit",
+              "dataSource": "quizStore",
+              "target": "q2Form",
+              "computedFields": [
+                { "field": "correct", "expression": "{answer} == {correctAnswer} ? '1' : '0'" }
+              ]
+            },
+            { "action": "navigate", "target": "q3Page" }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+
+    "q3Page": {
+      "component": "page",
+      "title": "Question 3 of 5",
+      "content": [
+        {
+          "component": "text",
+          "content": "What is the chemical symbol for water?",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "form",
+          "id": "q3Form",
+          "fields": [
+            {
+              "name": "question",
+              "type": "hidden",
+              "default": "What is the chemical symbol for water?"
+            },
+            {
+              "name": "answer",
+              "label": "Your Answer",
+              "type": "select",
+              "required": true,
+              "options": ["CO2", "H2O", "NaCl", "O2"]
+            },
+            {
+              "name": "correctAnswer",
+              "type": "hidden",
+              "default": "H2O"
+            }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Submit & Next",
+          "onClick": [
+            {
+              "action": "submit",
+              "dataSource": "quizStore",
+              "target": "q3Form",
+              "computedFields": [
+                { "field": "correct", "expression": "{answer} == {correctAnswer} ? '1' : '0'" }
+              ]
+            },
+            { "action": "navigate", "target": "q4Page" }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+
+    "q4Page": {
+      "component": "page",
+      "title": "Question 4 of 5",
+      "content": [
+        {
+          "component": "text",
+          "content": "How many bones are in the adult human body?",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "form",
+          "id": "q4Form",
+          "fields": [
+            {
+              "name": "question",
+              "type": "hidden",
+              "default": "How many bones are in the adult human body?"
+            },
+            {
+              "name": "answer",
+              "label": "Your Answer",
+              "type": "select",
+              "required": true,
+              "options": ["106", "206", "306", "186"]
+            },
+            {
+              "name": "correctAnswer",
+              "type": "hidden",
+              "default": "206"
+            }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Submit & Next",
+          "onClick": [
+            {
+              "action": "submit",
+              "dataSource": "quizStore",
+              "target": "q4Form",
+              "computedFields": [
+                { "field": "correct", "expression": "{answer} == {correctAnswer} ? '1' : '0'" }
+              ]
+            },
+            { "action": "navigate", "target": "q5Page" }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+
+    "q5Page": {
+      "component": "page",
+      "title": "Question 5 of 5",
+      "content": [
+        {
+          "component": "text",
+          "content": "What force keeps us on the ground?",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "form",
+          "id": "q5Form",
+          "fields": [
+            {
+              "name": "question",
+              "type": "hidden",
+              "default": "What force keeps us on the ground?"
+            },
+            {
+              "name": "answer",
+              "label": "Your Answer",
+              "type": "select",
+              "required": true,
+              "options": ["Magnetism", "Friction", "Gravity", "Inertia"]
+            },
+            {
+              "name": "correctAnswer",
+              "type": "hidden",
+              "default": "Gravity"
+            }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Finish Quiz",
+          "onClick": [
+            {
+              "action": "submit",
+              "dataSource": "quizStore",
+              "target": "q5Form",
+              "computedFields": [
+                { "field": "correct", "expression": "{answer} == {correctAnswer} ? '1' : '0'" }
+              ]
+            },
+            { "action": "navigate", "target": "resultsPage" }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+
+    "resultsPage": {
+      "component": "page",
+      "title": "Quiz Results",
+      "content": [
+        {
+          "component": "text",
+          "content": "You scored {COUNT(quizAnswers, correct=1)} out of {COUNT(quizAnswers)}!",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "text",
+          "content": "Perfect score! You really know your science!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "quizAnswers", "countEquals": 5 }
+        },
+        {
+          "component": "text",
+          "content": "Take the quiz to see your results here.",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "quizAnswers", "countEquals": 0 }
+        },
+        {
+          "component": "text",
+          "content": "Review your answers below:",
+          "styleHint": { "variant": "subheading" },
+          "visibleWhen": { "source": "quizAnswers", "countMin": 1 }
+        },
+        {
+          "component": "list",
+          "dataSource": "quizAnswers",
+          "columns": [
+            { "header": "Question", "field": "question" },
+            { "header": "Your Answer", "field": "answer" },
+            { "header": "Correct Answer", "field": "correctAnswer" },
+            { "header": "Result", "field": "correct", "sortable": true }
+          ],
+          "summary": [
+            { "column": "correct", "function": "sum", "label": "Total Correct" }
+          ],
+          "visibleWhen": { "source": "quizAnswers", "countMin": 1 }
+        },
+        {
+          "component": "button",
+          "label": "Retake Quiz",
+          "onClick": [{ "action": "navigate", "target": "q1Page" }],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back to Start",
+          "onClick": [{ "action": "navigate", "target": "welcomePage" }],
+          "styleHint": { "emphasis": "secondary" }
+        }
+      ]
+    }
+  },
+  "dataSources": {
+    "quizStore": {
+      "url": "local://quiz_answers",
+      "method": "POST"
+    },
+    "quizAnswers": {
+      "url": "local://quiz_answers",
+      "method": "GET",
+      "fields": [
+        { "name": "question", "type": "text" },
+        { "name": "answer", "type": "text" },
+        { "name": "correctAnswer", "type": "text" },
+        { "name": "correct", "type": "number" }
+      ]
+    }
+  },
+  "help": {
+    "overview": "Science Quiz tests your knowledge with 5 multiple-choice questions. Each answer is scored automatically — pick an option, submit, and see your results at the end. The correct field is computed at submit time by comparing your answer to the correct one.",
+    "pages": {
+      "welcomePage": "Start the quiz from here. Your progress is shown if you have already answered some questions.",
+      "q1Page": "Question 1: Pick one of four options and press Submit & Next to continue.",
+      "q2Page": "Question 2: Pick one of four options and press Submit & Next to continue.",
+      "q3Page": "Question 3: Pick one of four options and press Submit & Next to continue.",
+      "q4Page": "Question 4: Pick one of four options and press Submit & Next to continue.",
+      "q5Page": "Question 5: This is the last question. Press Finish Quiz to see your score.",
+      "resultsPage": "See your final score, a breakdown of each question with your answer vs. the correct answer, and a summary total."
+    }
+  },
+  "tour": [
+    {
+      "title": "Welcome to Science Quiz!",
+      "content": "Test your science knowledge with 5 multiple-choice questions. Your answers are scored automatically using computed fields — a new ODS spec feature!"
+    },
+    {
+      "title": "Answer Questions",
+      "content": "Each page shows a question with four choices. Select your answer and press Submit & Next. The quiz compares your answer to the correct one and stores the result.",
+      "page": "q1Page"
+    },
+    {
+      "title": "See Your Score",
+      "content": "After the last question, you'll see your total score, a 'Perfect score!' message if you got them all right, and a table reviewing each question.",
+      "page": "resultsPage"
+    }
+  ]
+}
