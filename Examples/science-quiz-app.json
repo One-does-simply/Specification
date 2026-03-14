@@ -3,7 +3,6 @@
   "startPage": "browsePage",
   "menu": [
     { "label": "Browse Quizzes", "mapsTo": "browsePage" },
-    { "label": "Take Quiz", "mapsTo": "takeQuizPage" },
     { "label": "My Results", "mapsTo": "resultsPage" },
     { "label": "Progress", "mapsTo": "progressPage" },
     { "label": "Manage Quizzes", "mapsTo": "manageQuizzesPage" },
@@ -16,7 +15,7 @@
       "content": [
         {
           "component": "text",
-          "content": "Choose a quiz and test your knowledge! Answer questions, track your scores, and watch yourself improve over time.",
+          "content": "Choose a quiz and test your knowledge! Track your scores and watch yourself improve over time.",
           "styleHint": { "variant": "body" }
         },
         {
@@ -39,31 +38,285 @@
             { "header": "Category", "field": "category", "sortable": true, "filterable": true },
             { "header": "Description", "field": "description" }
           ],
-          "rowActions": [
-            {
-              "label": "Delete",
-              "action": "delete",
-              "dataSource": "quizDeleter",
-              "matchField": "_id"
-            }
-          ],
           "onRowTap": {
             "action": "navigate",
-            "target": "editQuizPage",
-            "populateForm": "editQuizForm"
+            "target": "startQuizPage",
+            "populateForm": "startQuizForm"
           }
-        },
-        {
-          "component": "button",
-          "label": "Take a Quiz",
-          "onClick": [{ "action": "navigate", "target": "takeQuizPage" }],
-          "styleHint": { "emphasis": "primary" }
         },
         {
           "component": "button",
           "label": "Create New Quiz",
           "onClick": [{ "action": "navigate", "target": "createQuizPage" }],
           "styleHint": { "emphasis": "secondary" }
+        }
+      ]
+    },
+
+    "startQuizPage": {
+      "component": "page",
+      "title": "Ready to Start!",
+      "content": [
+        {
+          "component": "form",
+          "id": "startQuizForm",
+          "fields": [
+            { "name": "quizName", "label": "Quiz", "type": "text" },
+            { "name": "category", "label": "Category", "type": "text" },
+            { "name": "description", "label": "Description", "type": "multiline" }
+          ]
+        },
+        {
+          "component": "text",
+          "content": "Press Start to step through all questions in this quiz. Your answers are scored automatically.",
+          "styleHint": { "variant": "body" }
+        },
+        {
+          "component": "button",
+          "label": "Start Quiz",
+          "onClick": [
+            {
+              "action": "navigateToRow",
+              "dataSource": "questionReader",
+              "filter": { "quizName": "{quizName}" },
+              "sort": "_id",
+              "sortOrder": "asc",
+              "offset": "0",
+              "target": "answerPage",
+              "populateForm": "answerForm",
+              "fallback": { "action": "navigate", "target": "noQuestionsPage" }
+            }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back to Quizzes",
+          "onClick": [{ "action": "navigate", "target": "browsePage" }],
+          "styleHint": { "emphasis": "secondary" }
+        }
+      ]
+    },
+
+    "noQuestionsPage": {
+      "component": "page",
+      "title": "No Questions Found",
+      "content": [
+        {
+          "component": "text",
+          "content": "This quiz doesn't have any questions yet. Go to Manage Questions to add some!",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "button",
+          "label": "Add Questions",
+          "onClick": [{ "action": "navigate", "target": "addQuestionPage" }],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back to Quizzes",
+          "onClick": [{ "action": "navigate", "target": "browsePage" }],
+          "styleHint": { "emphasis": "secondary" }
+        }
+      ]
+    },
+
+    "answerPage": {
+      "component": "page",
+      "title": "Answer Question",
+      "content": [
+        {
+          "component": "form",
+          "id": "answerForm",
+          "fields": [
+            { "name": "quizName", "type": "hidden" },
+            { "name": "questionText", "label": "Question", "type": "multiline" },
+            { "name": "optionA", "label": "A", "type": "text" },
+            { "name": "optionB", "label": "B", "type": "text" },
+            { "name": "optionC", "label": "C", "type": "text" },
+            { "name": "optionD", "label": "D", "type": "text" },
+            { "name": "correctOption", "type": "hidden" },
+            { "name": "userAnswer", "label": "Your Answer", "type": "select", "required": true, "options": ["A", "B", "C", "D"] },
+            { "name": "attemptDate", "type": "hidden", "default": "NOW" }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Submit Answer",
+          "onClick": [
+            {
+              "action": "submit",
+              "dataSource": "answerStore",
+              "target": "answerForm",
+              "computedFields": [
+                { "field": "correct", "expression": "{userAnswer} == {correctOption} ? '1' : '0'" }
+              ]
+            },
+            {
+              "action": "navigateToRow",
+              "dataSource": "questionReader",
+              "filter": { "quizName": "{quizName}" },
+              "sort": "_id",
+              "sortOrder": "asc",
+              "offset": "{_rowIndex} + 1",
+              "target": "answerPage",
+              "populateForm": "answerForm",
+              "fallback": { "action": "navigate", "target": "quizCompletePage" }
+            }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Skip to Results",
+          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
+          "styleHint": { "emphasis": "secondary" }
+        }
+      ]
+    },
+
+    "quizCompletePage": {
+      "component": "page",
+      "title": "Quiz Complete!",
+      "content": [
+        {
+          "component": "text",
+          "content": "You finished all the questions!",
+          "styleHint": { "variant": "heading" }
+        },
+        {
+          "component": "text",
+          "content": "Total: {COUNT(answerReader)} answered — {COUNT(answerReader, correct=1)} correct ({PCT(answerReader, correct=1)}%)",
+          "styleHint": { "variant": "subheading" },
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
+        },
+        {
+          "component": "button",
+          "label": "View Detailed Results",
+          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "View Progress",
+          "onClick": [{ "action": "navigate", "target": "progressPage" }],
+          "styleHint": { "emphasis": "secondary" }
+        },
+        {
+          "component": "button",
+          "label": "Take Another Quiz",
+          "onClick": [{ "action": "navigate", "target": "browsePage" }],
+          "styleHint": { "emphasis": "secondary" }
+        }
+      ]
+    },
+
+    "resultsPage": {
+      "component": "page",
+      "title": "My Results",
+      "content": [
+        {
+          "component": "text",
+          "content": "No answers recorded yet. Take a quiz to see your results!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "answerReader", "countEquals": 0 }
+        },
+        {
+          "component": "text",
+          "content": "You answered {COUNT(answerReader)} questions — {COUNT(answerReader, correct=1)} correct ({PCT(answerReader, correct=1)}%)",
+          "styleHint": { "variant": "heading" },
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
+        },
+        {
+          "component": "list",
+          "dataSource": "answerReader",
+          "columns": [
+            { "header": "Date", "field": "attemptDate", "sortable": true, "filterable": true },
+            { "header": "Quiz", "field": "quizName", "sortable": true, "filterable": true },
+            { "header": "Question", "field": "questionText" },
+            { "header": "Yours", "field": "userAnswer" },
+            { "header": "Correct", "field": "correctOption" },
+            { "header": "Result", "field": "correct", "sortable": true, "filterable": true, "colorMap": { "1": "green", "0": "red" }, "displayMap": { "1": "Correct", "0": "Wrong" } }
+          ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "action": "delete",
+              "dataSource": "answerDeleter",
+              "matchField": "_id"
+            }
+          ],
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
+        },
+        {
+          "component": "button",
+          "label": "Take a Quiz",
+          "onClick": [{ "action": "navigate", "target": "browsePage" }],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "View Progress",
+          "onClick": [{ "action": "navigate", "target": "progressPage" }],
+          "styleHint": { "emphasis": "secondary" },
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
+        }
+      ]
+    },
+
+    "progressPage": {
+      "component": "page",
+      "title": "My Progress",
+      "content": [
+        {
+          "component": "text",
+          "content": "No data yet. Complete some quiz sessions to track your progress!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "answerReader", "countEquals": 0 }
+        },
+        {
+          "component": "text",
+          "content": "Overall: {COUNT(answerReader, correct=1)} of {COUNT(answerReader)} correct ({PCT(answerReader, correct=1)}%)",
+          "styleHint": { "variant": "heading" },
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
+        },
+        {
+          "component": "chart",
+          "dataSource": "answerReader",
+          "chartType": "bar",
+          "labelField": "quizName",
+          "valueField": "correct",
+          "title": "Correct Answers by Quiz",
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
+        },
+        {
+          "component": "chart",
+          "dataSource": "answerReader",
+          "chartType": "line",
+          "labelField": "attemptDate",
+          "valueField": "correct",
+          "title": "Scores Over Time",
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
+        },
+        {
+          "component": "text",
+          "content": "Retake quizzes on different days to see your improvement trend in the line chart. Filter results by quiz and date to compare sessions.",
+          "styleHint": { "variant": "caption" },
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
+        },
+        {
+          "component": "button",
+          "label": "Start a New Session",
+          "onClick": [{ "action": "navigate", "target": "browsePage" }],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "View All Results",
+          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
+          "styleHint": { "emphasis": "secondary" },
+          "visibleWhen": { "source": "answerReader", "countMin": 1 }
         }
       ]
     },
@@ -116,14 +369,14 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "quizUpdater", "target": "editQuizForm", "matchField": "_id" },
-            { "action": "navigate", "target": "browsePage" }
+            { "action": "navigate", "target": "manageQuizzesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         },
         {
           "component": "button",
           "label": "Back",
-          "onClick": [{ "action": "navigate", "target": "browsePage" }],
+          "onClick": [{ "action": "navigate", "target": "manageQuizzesPage" }],
           "styleHint": { "emphasis": "secondary" }
         }
       ]
@@ -135,7 +388,7 @@
       "content": [
         {
           "component": "text",
-          "content": "{COUNT(quizReader)} quizzes. Tap a quiz to edit, or create a new one below.",
+          "content": "{COUNT(quizReader)} quizzes. Tap a quiz to edit, or create a new one.",
           "styleHint": { "variant": "subheading" }
         },
         {
@@ -181,7 +434,7 @@
       "content": [
         {
           "component": "text",
-          "content": "{COUNT(questionReader)} questions across all quizzes. Filter by quiz name to see questions for a specific quiz.",
+          "content": "{COUNT(questionReader)} questions across all quizzes. Filter by quiz to see a specific set.",
           "styleHint": { "variant": "subheading" },
           "visibleWhen": { "source": "questionReader", "countMin": 1 }
         },
@@ -197,6 +450,10 @@
           "columns": [
             { "header": "Quiz", "field": "quizName", "sortable": true, "filterable": true },
             { "header": "Question", "field": "questionText" },
+            { "header": "A", "field": "optionA" },
+            { "header": "B", "field": "optionB" },
+            { "header": "C", "field": "optionC" },
+            { "header": "D", "field": "optionD" },
             { "header": "Correct", "field": "correctOption", "sortable": true }
           ],
           "rowActions": [
@@ -287,211 +544,6 @@
           "label": "Back",
           "onClick": [{ "action": "navigate", "target": "manageQuestionsPage" }],
           "styleHint": { "emphasis": "secondary" }
-        }
-      ]
-    },
-
-    "takeQuizPage": {
-      "component": "page",
-      "title": "Take a Quiz",
-      "content": [
-        {
-          "component": "text",
-          "content": "Filter by quiz name, then tap any question to answer it. Come back here after each answer to continue.",
-          "styleHint": { "variant": "body" }
-        },
-        {
-          "component": "text",
-          "content": "{COUNT(questionReader)} questions available across {COUNT(quizReader)} quizzes",
-          "styleHint": { "variant": "subheading" },
-          "visibleWhen": { "source": "questionReader", "countMin": 1 }
-        },
-        {
-          "component": "text",
-          "content": "No questions available. Create a quiz and add questions first!",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "questionReader", "countEquals": 0 }
-        },
-        {
-          "component": "list",
-          "dataSource": "questionReader",
-          "columns": [
-            { "header": "Quiz", "field": "quizName", "sortable": true, "filterable": true },
-            { "header": "Question", "field": "questionText" },
-            { "header": "A", "field": "optionA" },
-            { "header": "B", "field": "optionB" },
-            { "header": "C", "field": "optionC" },
-            { "header": "D", "field": "optionD" }
-          ],
-          "onRowTap": {
-            "action": "navigate",
-            "target": "answerPage",
-            "populateForm": "answerForm"
-          }
-        },
-        {
-          "component": "button",
-          "label": "View My Results",
-          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
-          "styleHint": { "emphasis": "secondary" }
-        }
-      ]
-    },
-
-    "answerPage": {
-      "component": "page",
-      "title": "Answer Question",
-      "content": [
-        {
-          "component": "text",
-          "content": "Read the question and options below, then select your answer (A, B, C, or D).",
-          "styleHint": { "variant": "body" }
-        },
-        {
-          "component": "form",
-          "id": "answerForm",
-          "fields": [
-            { "name": "quizName", "type": "hidden" },
-            { "name": "questionText", "label": "Question", "type": "multiline" },
-            { "name": "optionA", "label": "Option A", "type": "text" },
-            { "name": "optionB", "label": "Option B", "type": "text" },
-            { "name": "optionC", "label": "Option C", "type": "text" },
-            { "name": "optionD", "label": "Option D", "type": "text" },
-            { "name": "correctOption", "type": "hidden" },
-            { "name": "userAnswer", "label": "Your Answer", "type": "select", "required": true, "options": ["A", "B", "C", "D"] },
-            { "name": "attemptDate", "type": "hidden", "default": "NOW" }
-          ]
-        },
-        {
-          "component": "button",
-          "label": "Submit Answer",
-          "onClick": [
-            {
-              "action": "submit",
-              "dataSource": "answerStore",
-              "target": "answerForm",
-              "computedFields": [
-                { "field": "correct", "expression": "{userAnswer} == {correctOption} ? '1' : '0'" }
-              ]
-            },
-            { "action": "navigate", "target": "takeQuizPage" }
-          ],
-          "styleHint": { "emphasis": "primary" }
-        },
-        {
-          "component": "button",
-          "label": "Back to Questions",
-          "onClick": [{ "action": "navigate", "target": "takeQuizPage" }],
-          "styleHint": { "emphasis": "secondary" }
-        }
-      ]
-    },
-
-    "resultsPage": {
-      "component": "page",
-      "title": "My Results",
-      "content": [
-        {
-          "component": "text",
-          "content": "No answers recorded yet. Take a quiz to see your results!",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "answerReader", "countEquals": 0 }
-        },
-        {
-          "component": "text",
-          "content": "You answered {COUNT(answerReader)} questions — {COUNT(answerReader, correct=1)} correct ({PCT(answerReader, correct=1)}%)",
-          "styleHint": { "variant": "heading" },
-          "visibleWhen": { "source": "answerReader", "countMin": 1 }
-        },
-        {
-          "component": "list",
-          "dataSource": "answerReader",
-          "columns": [
-            { "header": "Date", "field": "attemptDate", "sortable": true },
-            { "header": "Quiz", "field": "quizName", "sortable": true, "filterable": true },
-            { "header": "Question", "field": "questionText" },
-            { "header": "Yours", "field": "userAnswer" },
-            { "header": "Correct", "field": "correctOption" },
-            { "header": "Result", "field": "correct", "sortable": true, "filterable": true, "colorMap": { "1": "green", "0": "red" }, "displayMap": { "1": "Correct", "0": "Wrong" } }
-          ],
-          "rowActions": [
-            {
-              "label": "Delete",
-              "action": "delete",
-              "dataSource": "answerDeleter",
-              "matchField": "_id"
-            }
-          ],
-          "visibleWhen": { "source": "answerReader", "countMin": 1 }
-        },
-        {
-          "component": "button",
-          "label": "Take a Quiz",
-          "onClick": [{ "action": "navigate", "target": "takeQuizPage" }],
-          "styleHint": { "emphasis": "primary" }
-        },
-        {
-          "component": "button",
-          "label": "View Progress",
-          "onClick": [{ "action": "navigate", "target": "progressPage" }],
-          "styleHint": { "emphasis": "secondary" },
-          "visibleWhen": { "source": "answerReader", "countMin": 1 }
-        }
-      ]
-    },
-
-    "progressPage": {
-      "component": "page",
-      "title": "My Progress",
-      "content": [
-        {
-          "component": "text",
-          "content": "No data yet. Answer some quiz questions to track your progress!",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "answerReader", "countEquals": 0 }
-        },
-        {
-          "component": "text",
-          "content": "Overall: {COUNT(answerReader, correct=1)} of {COUNT(answerReader)} correct ({PCT(answerReader, correct=1)}%)",
-          "styleHint": { "variant": "heading" },
-          "visibleWhen": { "source": "answerReader", "countMin": 1 }
-        },
-        {
-          "component": "chart",
-          "dataSource": "answerReader",
-          "chartType": "bar",
-          "labelField": "quizName",
-          "valueField": "correct",
-          "title": "Correct Answers by Quiz",
-          "visibleWhen": { "source": "answerReader", "countMin": 1 }
-        },
-        {
-          "component": "chart",
-          "dataSource": "answerReader",
-          "chartType": "line",
-          "labelField": "attemptDate",
-          "valueField": "correct",
-          "title": "Scores Over Time",
-          "visibleWhen": { "source": "answerReader", "countMin": 1 }
-        },
-        {
-          "component": "text",
-          "content": "Tip: Retake quizzes on different days to see your improvement trend in the line chart above.",
-          "styleHint": { "variant": "caption" },
-          "visibleWhen": { "source": "answerReader", "countMin": 1 }
-        },
-        {
-          "component": "button",
-          "label": "Take a Quiz",
-          "onClick": [{ "action": "navigate", "target": "takeQuizPage" }],
-          "styleHint": { "emphasis": "primary" }
-        },
-        {
-          "component": "button",
-          "label": "View All Results",
-          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
-          "styleHint": { "emphasis": "secondary" },
-          "visibleWhen": { "source": "answerReader", "countMin": 1 }
         }
       ]
     }
@@ -592,10 +644,6 @@
       "fields": [
         { "name": "quizName", "type": "text" },
         { "name": "questionText", "type": "multiline" },
-        { "name": "optionA", "type": "text" },
-        { "name": "optionB", "type": "text" },
-        { "name": "optionC", "type": "text" },
-        { "name": "optionD", "type": "text" },
         { "name": "userAnswer", "type": "select" },
         { "name": "correctOption", "type": "select" },
         { "name": "correct", "type": "number" },
@@ -609,46 +657,53 @@
   },
 
   "help": {
-    "overview": "Quiz Master lets you take multiple-choice quizzes, create your own quizzes and questions, and track your improvement over time. It comes pre-loaded with Science, Geography, and Math quizzes — 15 questions total. Create new quizzes, add questions, and challenge yourself!",
+    "overview": "Quiz Master lets you take multiple-choice quizzes, create your own, and track improvement over time. Tap a quiz to start — questions step through automatically one at a time. Each answer is scored instantly. When you finish all questions, see your results and track progress over time.",
     "pages": {
-      "browsePage": "See all available quizzes. Tap any quiz to edit it. Use the buttons to take a quiz or create a new one.",
-      "createQuizPage": "Give your quiz a name, pick a category, and add a description. After creating, go to Manage Questions to add questions.",
-      "editQuizPage": "Edit the quiz name, category, or description. Press Save Changes when done.",
-      "manageQuizzesPage": "View all quizzes. Tap to edit, or delete quizzes you no longer need.",
-      "manageQuestionsPage": "View all questions across quizzes. Filter by quiz name to see a specific quiz's questions. Tap to edit or delete.",
-      "addQuestionPage": "Select which quiz this question belongs to, enter the question text and four options (A-D), then mark which option is correct.",
-      "editQuestionPage": "Edit any part of a question — the text, options, or correct answer.",
-      "takeQuizPage": "Filter by quiz name to see that quiz's questions, then tap any question to answer it. After answering, you return here to continue with the next question.",
-      "answerPage": "The question and all four options are shown. Select your answer (A, B, C, or D) and press Submit. Your answer is scored automatically.",
-      "resultsPage": "See all your answers with color-coded results: green for correct, red for wrong. Filter by quiz name. Delete answers to clear your history.",
-      "progressPage": "Two charts show your progress: correct answers per quiz (bar chart) and scores over time (line chart). Retake quizzes on different days to track improvement."
+      "browsePage": "All available quizzes listed by name and category. Tap a quiz to start a session.",
+      "startQuizPage": "See the quiz details and press Start to begin. Questions will step through one at a time automatically.",
+      "answerPage": "The question and all four options are shown. Pick A, B, C, or D and press Submit. You auto-advance to the next question.",
+      "quizCompletePage": "You finished all questions! See your score and navigate to detailed results or progress charts.",
+      "noQuestionsPage": "The selected quiz has no questions yet. Add some from Manage Questions.",
+      "resultsPage": "All answers with color-coded results: green = correct, red = wrong. Filter by quiz or date.",
+      "progressPage": "Bar chart shows correct answers per quiz. Line chart shows scores over time.",
+      "createQuizPage": "Name your quiz, pick a category, and add a description.",
+      "editQuizPage": "Edit quiz name, category, or description.",
+      "manageQuizzesPage": "View, edit, and delete quizzes. Tap a quiz to edit it.",
+      "manageQuestionsPage": "View all questions with options and correct answers. Filter by quiz. Tap to edit.",
+      "addQuestionPage": "Select a quiz, enter the question and four options, then mark which is correct.",
+      "editQuestionPage": "Edit any part of a question."
     }
   },
 
   "tour": [
     {
       "title": "Welcome to Quiz Master!",
-      "content": "Test your knowledge across multiple quiz topics. Create your own quizzes, add questions, and track your improvement over time."
+      "content": "Test your knowledge across multiple topics. Create your own quizzes and track improvement over time."
     },
     {
-      "title": "Browse Quizzes",
-      "content": "The home page shows all available quizzes. It comes with Science, Geography, and Math — 15 questions total. Tap any quiz to edit it.",
+      "title": "Choose a Quiz",
+      "content": "The home page shows available quizzes. Tap any quiz to see its details and start a session.",
       "page": "browsePage"
     },
     {
-      "title": "Take a Quiz",
-      "content": "Filter by quiz name to focus on one topic. Tap a question to answer it. You'll see the question, four options, and a dropdown to pick A, B, C, or D.",
-      "page": "takeQuizPage"
+      "title": "Auto-Stepping Questions",
+      "content": "Press Start and questions step through one by one. Pick your answer and hit Submit — the next question loads automatically!",
+      "page": "startQuizPage"
     },
     {
-      "title": "Create Your Own",
-      "content": "Create new quizzes and add your own questions with four multiple-choice options. Great for studying!",
-      "page": "createQuizPage"
+      "title": "Quiz Complete",
+      "content": "After the last question you see your score. Navigate to detailed results or progress charts.",
+      "page": "quizCompletePage"
     },
     {
-      "title": "Track Your Progress",
-      "content": "The Progress page shows charts of your performance by quiz and over time. Retake quizzes regularly to see yourself improve!",
+      "title": "Watch Yourself Improve",
+      "content": "The Progress page charts your scores by quiz and over time. Retake quizzes regularly to see the trend!",
       "page": "progressPage"
+    },
+    {
+      "title": "Create Your Own Quizzes",
+      "content": "Add new quizzes and questions from the Manage pages. Great for studying — create quizzes for any topic!",
+      "page": "createQuizPage"
     }
   ]
 }
