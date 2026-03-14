@@ -68,7 +68,7 @@
         },
         {
           "component": "text",
-          "content": "Press Start to step through all questions in this quiz. Your answers are scored automatically.",
+          "content": "Press Start to step through all questions. Your answers are scored automatically.",
           "styleHint": { "variant": "body" }
         },
         {
@@ -76,16 +76,12 @@
           "label": "Start Quiz",
           "onClick": [
             {
-              "action": "navigateToRow",
-              "dataSource": "questionReader",
+              "action": "firstRecord",
+              "target": "answerForm",
               "filter": { "quizName": "{quizName}" },
-              "sort": "_id",
-              "sortOrder": "asc",
-              "offset": "0",
-              "target": "answerPage",
-              "populateForm": "answerForm",
-              "fallback": { "action": "navigate", "target": "noQuestionsPage" }
-            }
+              "onEnd": { "action": "navigate", "target": "noQuestionsPage" }
+            },
+            { "action": "navigate", "target": "answerPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         },
@@ -129,6 +125,7 @@
         {
           "component": "form",
           "id": "answerForm",
+          "recordSource": "questionReader",
           "fields": [
             { "name": "quizName", "type": "hidden" },
             { "name": "questionText", "label": "Question", "type": "multiline" },
@@ -154,15 +151,9 @@
               ]
             },
             {
-              "action": "navigateToRow",
-              "dataSource": "questionReader",
-              "filter": { "quizName": "{quizName}" },
-              "sort": "_id",
-              "sortOrder": "asc",
-              "offset": "{_rowIndex} + 1",
-              "target": "answerPage",
-              "populateForm": "answerForm",
-              "fallback": { "action": "navigate", "target": "quizCompletePage" }
+              "action": "nextRecord",
+              "target": "answerForm",
+              "onEnd": { "action": "navigate", "target": "quizCompletePage" }
             }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -301,7 +292,7 @@
         },
         {
           "component": "text",
-          "content": "Retake quizzes on different days to see your improvement trend in the line chart. Filter results by quiz and date to compare sessions.",
+          "content": "Retake quizzes on different days to see your improvement trend in the line chart.",
           "styleHint": { "variant": "caption" },
           "visibleWhen": { "source": "answerReader", "countMin": 1 }
         },
@@ -660,8 +651,8 @@
     "overview": "Quiz Master lets you take multiple-choice quizzes, create your own, and track improvement over time. Tap a quiz to start — questions step through automatically one at a time. Each answer is scored instantly. When you finish all questions, see your results and track progress over time.",
     "pages": {
       "browsePage": "All available quizzes listed by name and category. Tap a quiz to start a session.",
-      "startQuizPage": "See the quiz details and press Start to begin. Questions will step through one at a time automatically.",
-      "answerPage": "The question and all four options are shown. Pick A, B, C, or D and press Submit. You auto-advance to the next question.",
+      "startQuizPage": "See the quiz details and press Start to begin. Questions step through one at a time.",
+      "answerPage": "The question and all four options are shown. Pick A, B, C, or D and press Submit. You auto-advance to the next question. The counter shows your position (e.g., 'Question 3 of 5').",
       "quizCompletePage": "You finished all questions! See your score and navigate to detailed results or progress charts.",
       "noQuestionsPage": "The selected quiz has no questions yet. Add some from Manage Questions.",
       "resultsPage": "All answers with color-coded results: green = correct, red = wrong. Filter by quiz or date.",
@@ -687,7 +678,7 @@
     },
     {
       "title": "Auto-Stepping Questions",
-      "content": "Press Start and questions step through one by one. Pick your answer and hit Submit — the next question loads automatically!",
+      "content": "Press Start and questions step through one by one. A counter shows your position. Pick your answer and hit Submit — the next question loads automatically!",
       "page": "startQuizPage"
     },
     {

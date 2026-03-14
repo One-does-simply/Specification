@@ -43,10 +43,10 @@
       "file": "recipe-book-app.json"
     },
     {
-      "id": "science-quiz",
+      "id": "quiz",
       "name": "Quiz Master",
       "description": "Take multiple-choice quizzes, create your own, and track improvement over time.",
-      "file": "science-quiz-app.json"
+      "file": "quiz-app.json"
     },
     {
       "id": "team-survey",
