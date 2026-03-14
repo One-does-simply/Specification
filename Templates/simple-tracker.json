@@ -37,6 +37,20 @@
       "label": "Include a summary chart?",
       "type": "checkbox",
       "default": false
+    },
+    {
+      "id": "chartLabelField",
+      "label": "Chart: group by which field?",
+      "type": "field-ref",
+      "ref": "fields",
+      "placeholder": "e.g., Category, Status"
+    },
+    {
+      "id": "chartValueField",
+      "label": "Chart: count or sum which field?",
+      "type": "field-ref",
+      "ref": "fields",
+      "placeholder": "e.g., Amount, Rating"
     }
   ],
   "template": {
@@ -136,8 +150,8 @@
                   "component": "chart",
                   "dataSource": "itemsReader",
                   "chartType": "bar",
-                  "labelField": "${fields[0].name}",
-                  "valueField": "${fields[0].name}",
+                  "labelField": "${chartLabelField}",
+                  "valueField": "${chartValueField}",
                   "title": "${itemName} Overview"
                 }
               ],

@@ -44,9 +44,9 @@
           "type": "string"
         },
         "type": {
-          "description": "The input type for the question. 'text' = free text, 'select' = dropdown, 'checkbox' = boolean toggle, 'field-list' = a mini builder for defining fields (name + type).",
+          "description": "The input type for the question. 'text' = free text, 'select' = dropdown, 'checkbox' = boolean toggle, 'field-list' = a mini builder for defining fields (name + type), 'field-ref' = dropdown populated from a field-list answer (use 'ref' to specify which).",
           "type": "string",
-          "enum": ["text", "select", "checkbox", "field-list"]
+          "enum": ["text", "select", "checkbox", "field-list", "field-ref"]
         },
         "required": {
           "description": "When true, the user must answer before proceeding. Defaults to false.",
@@ -65,6 +65,10 @@
         "default": {
           "description": "Optional default value. For checkbox, use true/false.",
           "type": ["string", "boolean"]
+        },
+        "ref": {
+          "description": "For 'field-ref' type only. The 'id' of a 'field-list' question whose fields become the dropdown options. The answer is stored as the selected field's programmatic name.",
+          "type": "string"
         },
         "presets": {
           "description": "Optional. For 'field-list' type only. Pre-defined field templates the user can add with one tap instead of typing. Each preset expands to a field with a sensible name, label, and type.",
