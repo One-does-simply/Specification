@@ -209,14 +209,57 @@
   },
   "dataSources": {
     "choreStore": { "url": "local://chores", "method": "POST" },
-    "choreReader": { "url": "local://chores", "method": "GET" },
+    "choreReader": {
+      "url": "local://chores",
+      "method": "GET",
+      "fields": [
+        { "name": "choreName", "type": "text" },
+        { "name": "room", "type": "select" },
+        { "name": "assignedTo", "type": "select" },
+        { "name": "frequency", "type": "select" },
+        { "name": "dueDate", "type": "date" },
+        { "name": "status", "type": "select" },
+        { "name": "notes", "type": "multiline" }
+      ],
+      "seedData": [
+        { "choreName": "Wash dishes", "room": "Kitchen", "assignedTo": "Alex", "frequency": "Daily", "dueDate": "2026-03-13", "status": "To Do" },
+        { "choreName": "Vacuum floors", "room": "Living Room", "assignedTo": "Sam", "frequency": "Weekly", "dueDate": "2026-03-15", "status": "To Do" },
+        { "choreName": "Clean toilet", "room": "Bathroom", "assignedTo": "Dad", "frequency": "Weekly", "dueDate": "2026-03-14", "status": "To Do" },
+        { "choreName": "Take out trash", "room": "Kitchen", "assignedTo": "Mom", "frequency": "Daily", "dueDate": "2026-03-13", "status": "Done" }
+      ]
+    },
     "choreUpdater": { "url": "local://chores", "method": "PUT" },
     "choreDeleter": { "url": "local://chores", "method": "DELETE" },
     "roomStore": { "url": "local://rooms", "method": "POST" },
-    "roomReader": { "url": "local://rooms", "method": "GET" },
+    "roomReader": {
+      "url": "local://rooms",
+      "method": "GET",
+      "fields": [
+        { "name": "roomName", "type": "text" }
+      ],
+      "seedData": [
+        { "roomName": "Kitchen" },
+        { "roomName": "Living Room" },
+        { "roomName": "Bathroom" },
+        { "roomName": "Bedroom" },
+        { "roomName": "Garage" }
+      ]
+    },
     "roomDeleter": { "url": "local://rooms", "method": "DELETE" },
     "familyStore": { "url": "local://familyMembers", "method": "POST" },
-    "familyReader": { "url": "local://familyMembers", "method": "GET" },
+    "familyReader": {
+      "url": "local://familyMembers",
+      "method": "GET",
+      "fields": [
+        { "name": "memberName", "type": "text" }
+      ],
+      "seedData": [
+        { "memberName": "Mom" },
+        { "memberName": "Dad" },
+        { "memberName": "Alex" },
+        { "memberName": "Sam" }
+      ]
+    },
     "familyDeleter": { "url": "local://familyMembers", "method": "DELETE" }
   },
   "help": {

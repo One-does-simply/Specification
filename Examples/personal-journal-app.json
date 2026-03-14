@@ -20,7 +20,7 @@
           "id": "journalEntryForm",
           "fields": [
             { "name": "title", "label": "Title", "type": "text", "required": true, "placeholder": "e.g., Monday Reflections" },
-            { "name": "date", "label": "Date", "type": "date", "required": true, "default": "NOW" },
+            { "name": "date", "label": "Date & Time", "type": "datetime", "required": true, "default": "NOW" },
             { "name": "mood", "label": "Mood", "type": "select", "options": ["Happy", "Calm", "Grateful", "Anxious", "Sad", "Neutral", "Excited", "Focused", "Stressed"] },
             { "name": "entry", "label": "Journal Entry", "type": "multiline", "required": true, "placeholder": "What's on your mind today?" }
           ]
@@ -75,9 +75,13 @@
           "columns": [
             { "header": "Date", "field": "date", "sortable": true },
             { "header": "Title", "field": "title" },
-            { "header": "Mood", "field": "mood", "sortable": true },
-            { "header": "Entry", "field": "entry" }
-          ]
+            { "header": "Mood", "field": "mood", "sortable": true, "filterable": true }
+          ],
+          "onRowTap": {
+            "action": "navigate",
+            "target": "editEntryPage",
+            "populateForm": "editEntryForm"
+          }
         },
         {
           "component": "button",
@@ -91,6 +95,50 @@
           "styleHint": { "emphasis": "primary" }
         }
       ]
+    },
+    "editEntryPage": {
+      "component": "page",
+      "title": "View / Edit Entry",
+      "content": [
+        {
+          "component": "form",
+          "id": "editEntryForm",
+          "fields": [
+            { "name": "title", "label": "Title", "type": "text", "required": true },
+            { "name": "date", "label": "Date & Time", "type": "datetime", "required": true },
+            { "name": "mood", "label": "Mood", "type": "select", "options": ["Happy", "Calm", "Grateful", "Anxious", "Sad", "Neutral", "Excited", "Focused", "Stressed"] },
+            { "name": "entry", "label": "Journal Entry", "type": "multiline", "required": true }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Save Changes",
+          "onClick": [
+            {
+              "action": "update",
+              "dataSource": "journalUpdater",
+              "target": "editEntryForm",
+              "matchField": "_id"
+            },
+            {
+              "action": "navigate",
+              "target": "viewEntriesPage"
+            }
+          ],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back to Entries",
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "viewEntriesPage"
+            }
+          ],
+          "styleHint": { "emphasis": "secondary" }
+        }
+      ]
     }
   },
   "dataSources": {
@@ -98,25 +146,29 @@
       "url": "local://journal_entries",
       "method": "POST"
     },
+    "journalUpdater": {
+      "url": "local://journal_entries",
+      "method": "PUT"
+    },
     "journalReader": {
       "url": "local://journal_entries",
       "method": "GET",
       "fields": [
         { "name": "title", "type": "text" },
-        { "name": "date", "type": "date" },
+        { "name": "date", "type": "datetime" },
         { "name": "mood", "type": "select" },
         { "name": "entry", "type": "multiline" }
       ],
       "seedData": [
         {
           "title": "A Fresh Start",
-          "date": "2025-03-01",
-          "mood": "Optimistic",
+          "date": "2025-03-01 08:30",
+          "mood": "Excited",
           "entry": "Today I decided to start journaling regularly. I feel hopeful about building this new habit and reflecting on my days more intentionally."
         },
         {
           "title": "Rainy Afternoon Thoughts",
-          "date": "2025-03-02",
+          "date": "2025-03-02 14:15",
           "mood": "Calm",
           "entry": "Spent the afternoon reading while it rained outside. There is something peaceful about the sound of rain against the window. Finished two chapters of my book."
         }
@@ -124,10 +176,11 @@
     }
   },
   "help": {
-    "overview": "Personal Journal is your private space to write daily reflections. Capture your thoughts, track your mood, and look back on past entries anytime.",
+    "overview": "Personal Journal is your private space to write daily reflections. Capture your thoughts, track your mood, and look back on past entries anytime. Tap any entry in the list to view or edit it.",
     "pages": {
-      "writeEntryPage": "Give your entry a title, pick the date, select your current mood from the dropdown, and write your journal text. Press Save Entry when finished, or Discard to go back without saving.",
-      "viewEntriesPage": "This page lists all your saved journal entries with their dates, titles, moods, and content."
+      "writeEntryPage": "Give your entry a title, pick the date and time, select your current mood from the dropdown, and write your journal text. Press Save Entry when finished, or Discard to go back without saving.",
+      "viewEntriesPage": "This page lists all your saved journal entries. Tap any row to open it for viewing or editing. Filter by mood using the dropdown above the table.",
+      "editEntryPage": "View and edit a journal entry. Make your changes and press Save Changes, or tap Back to return without saving."
     }
   },
   "tour": [
@@ -137,12 +190,12 @@
     },
     {
       "title": "Write an Entry",
-      "content": "Give each entry a title, pick the date, choose your mood from the dropdown, and write whatever is on your mind. Fields marked with * are required.",
+      "content": "Give each entry a title, pick the date and time, choose your mood from the dropdown, and write whatever is on your mind. Fields marked with * are required.",
       "page": "writeEntryPage"
     },
     {
-      "title": "Review Past Entries",
-      "content": "Browse your previous entries to notice patterns in your mood and reflect on how you have grown over time.",
+      "title": "Review & Edit Entries",
+      "content": "Browse your previous entries and tap any row to open it for viewing or editing. Filter by mood to notice patterns over time.",
       "page": "viewEntriesPage"
     }
   ]
