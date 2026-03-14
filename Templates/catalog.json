@@ -23,6 +23,12 @@
       "name": "Scoreboard",
       "description": "Track scores and rankings for people or teams with charts and summary stats.",
       "file": "scoreboard.json"
+    },
+    {
+      "id": "quiz",
+      "name": "Quiz",
+      "description": "Multiple-choice quiz with auto-stepping questions, scoring, and optional progress tracking.",
+      "file": "quiz.json"
     }
   ]
 }
