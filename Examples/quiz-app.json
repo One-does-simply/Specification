@@ -128,11 +128,11 @@
           "recordSource": "questionReader",
           "fields": [
             { "name": "quizName", "type": "hidden" },
-            { "name": "questionText", "label": "Question", "type": "multiline" },
-            { "name": "optionA", "label": "A", "type": "text" },
-            { "name": "optionB", "label": "B", "type": "text" },
-            { "name": "optionC", "label": "C", "type": "text" },
-            { "name": "optionD", "label": "D", "type": "text" },
+            { "name": "questionText", "label": "Question", "type": "multiline", "readOnly": true },
+            { "name": "optionA", "label": "A", "type": "text", "readOnly": true },
+            { "name": "optionB", "label": "B", "type": "text", "readOnly": true },
+            { "name": "optionC", "label": "C", "type": "text", "readOnly": true },
+            { "name": "optionD", "label": "D", "type": "text", "readOnly": true },
             { "name": "correctOption", "type": "hidden" },
             { "name": "userAnswer", "label": "Your Answer", "type": "select", "required": true, "options": ["A", "B", "C", "D"] },
             { "name": "attemptDate", "type": "hidden", "default": "NOW" }
