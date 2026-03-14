@@ -128,13 +128,13 @@
           "recordSource": "questionReader",
           "fields": [
             { "name": "quizName", "type": "hidden" },
-            { "name": "questionText", "label": "Question", "type": "multiline", "readOnly": true },
-            { "name": "optionA", "label": "A", "type": "text", "readOnly": true },
-            { "name": "optionB", "label": "B", "type": "text", "readOnly": true },
-            { "name": "optionC", "label": "C", "type": "text", "readOnly": true },
-            { "name": "optionD", "label": "D", "type": "text", "readOnly": true },
+            { "name": "questionText", "label": "Question", "type": "multiline", "readOnly": true, "displayVariant": "heading" },
+            { "name": "optionA", "label": "A", "type": "text", "readOnly": true, "displayVariant": "plain" },
+            { "name": "optionB", "label": "B", "type": "text", "readOnly": true, "displayVariant": "plain" },
+            { "name": "optionC", "label": "C", "type": "text", "readOnly": true, "displayVariant": "plain" },
+            { "name": "optionD", "label": "D", "type": "text", "readOnly": true, "displayVariant": "plain" },
             { "name": "correctOption", "type": "hidden" },
-            { "name": "userAnswer", "label": "Your Answer", "type": "select", "required": true, "options": ["A", "B", "C", "D"] },
+            { "name": "userAnswer", "label": "Your Answer", "type": "select", "required": true, "options": ["A", "B", "C", "D"], "optionLabels": ["A: {optionA}", "B: {optionB}", "C: {optionC}", "D: {optionD}"] },
             { "name": "attemptDate", "type": "hidden", "default": "NOW" }
           ]
         },
