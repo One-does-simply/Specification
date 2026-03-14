@@ -21,8 +21,8 @@
           "fields": [
             { "name": "description", "label": "Description", "type": "text", "required": true, "placeholder": "e.g., Weekly groceries", "validation": { "minLength": 3, "message": "Description must be at least 3 characters" } },
             { "name": "quantity", "label": "Quantity", "type": "number", "required": true, "default": "1", "validation": { "min": 1, "max": 999 } },
-            { "name": "unitPrice", "label": "Unit Price", "type": "number", "required": true, "validation": { "min": 0.01, "max": 99999 } },
-            { "name": "total", "label": "Total", "type": "number", "formula": "{quantity} * {unitPrice}" },
+            { "name": "unitPrice", "label": "Unit Price", "type": "number", "required": true, "currency": true, "validation": { "min": 0.01, "max": 99999 } },
+            { "name": "total", "label": "Total", "type": "number", "currency": true, "formula": "{quantity} * {unitPrice}" },
             { "name": "category", "label": "Category", "type": "select", "options": ["Food", "Transport", "Bills", "Entertainment", "Medical", "Shopping", "Other"] },
             { "name": "otherCategory", "label": "Specify category", "type": "text", "placeholder": "What kind of expense?", "visibleWhen": { "field": "category", "equals": "Other" } },
             { "name": "date", "label": "Date", "type": "date", "required": true, "default": "NOW" }
@@ -89,8 +89,8 @@
             { "header": "Date", "field": "date", "sortable": true, "filterable": true },
             { "header": "Description", "field": "description" },
             { "header": "Qty", "field": "quantity" },
-            { "header": "Unit Price", "field": "unitPrice", "sortable": true },
-            { "header": "Total", "field": "total", "sortable": true },
+            { "header": "Unit Price", "field": "unitPrice", "sortable": true, "currency": true },
+            { "header": "Total", "field": "total", "sortable": true, "currency": true },
             { "header": "Category", "field": "category", "sortable": true, "filterable": true }
           ],
           "summary": [
