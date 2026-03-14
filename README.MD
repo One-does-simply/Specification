@@ -31,15 +31,23 @@ Simply put, vibe coding lacks guardrails.
 
 The ODS Solution
 
-ODS solves these problems by separating concerns into a clear, three-part ecosystem:
+ODS solves these problems by separating concerns into a clear, four-part ecosystem:
  * The Specification: A simple, open-source JSON schema that defines the structure and logic of an application. It's the universal blueprint. The spec stays deliberately simple — it describes *what* the app does, not *how* to render it. This is what keeps building accessible.
  * Frameworks: Real-time renderers for the ODS specification. A framework handles the complex parts — UI/UX, security, data management, accessibility, and platform adaptation — so the citizen developer never has to. The framework is where sophistication lives: smart defaults, polished interactions, and professional-quality output, all driven by a spec the builder can read in five minutes. Frameworks also provide an "off-ramp" code-generation feature that generates professional source code, ensuring you are never locked in.
+ * Templates: Pre-built app patterns that turn building into a quick Q&A. A template combines a short wizard (3-5 questions) with a JSON-e template body that renders into a complete ODS spec. Pick a template, answer a few questions — like "What are you tracking?" and "What fields do you need?" — and your app is ready in seconds. No AI required, no JSON editing. Templates use the JSON-e templating language for portability across frameworks.
  * The Build Helper: A conversational AI tool that guides users through the process of creating an ODS JSON file, turning their ideas into a well-structured application definition. It's like vibe coding but with guardrails — the AI can only produce valid ODS specs, so the result is always safe, understandable, and portable.
+
+Three Ways to Build
+
+ODS offers three paths to creating an app, from fastest to most flexible:
+
+ 1. **Quick Build (Templates):** Pick a template, answer a few questions, done. The fastest path — no coding, no AI, just a short wizard. Available templates include Simple Tracker, Survey, Daily Log, Scoreboard, and Quiz. Templates live in the `Templates/` directory.
+ 2. **Build Helper (AI):** Describe what you want in plain language and the AI generates a valid ODS spec. More flexible than templates — you can build anything the spec supports. Best for custom apps that don't fit a template pattern.
+ 3. **Write JSON directly:** For power users or anyone who wants full control. The spec is small enough to read in five minutes. See `ods-schema.json` for the full schema and `Examples/` for working apps.
 
 Getting Started
 
-(This section will be updated once the first reference framework is complete.)
-To get a feel for the ODS specification, check out the example specs in this directory — from a simple customer feedback app to a to-do list with data updates.
+To explore ODS, check out the example specs in the `Examples/` directory — from a simple to-do list to a full quiz app with auto-stepping questions and score tracking. The `Templates/` directory contains Quick Build templates you can use to generate new apps from a short Q&A.
 
 Contributing
 
