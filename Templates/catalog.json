@@ -5,6 +5,24 @@
       "name": "Simple Tracker",
       "description": "Track anything with a form, list, and optional charts. Add, edit, and delete items.",
       "file": "simple-tracker.json"
+    },
+    {
+      "id": "survey",
+      "name": "Survey / Feedback",
+      "description": "Collect responses with a form and view aggregate results with charts.",
+      "file": "survey.json"
+    },
+    {
+      "id": "daily-log",
+      "name": "Daily Log",
+      "description": "A journal for date-based entries — write, browse, and edit. Great for diaries, standups, or gratitude logs.",
+      "file": "daily-log.json"
+    },
+    {
+      "id": "scoreboard",
+      "name": "Scoreboard",
+      "description": "Track scores and rankings for people or teams with charts and summary stats.",
+      "file": "scoreboard.json"
     }
   ]
 }

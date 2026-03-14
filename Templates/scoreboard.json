@@ -1,0 +1,178 @@
+{
+  "templateName": "Scoreboard",
+  "description": "Track scores, points, or rankings for people, teams, or anything competitive. Add scores over time and see who's on top.",
+  "icon": "leaderboard",
+  "questions": [
+    {
+      "id": "appName",
+      "label": "What do you want to call your app?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Game Night Scores, Sales Leaderboard"
+    },
+    {
+      "id": "playerName",
+      "label": "What do you call the participants?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Players, Teams, Reps"
+    },
+    {
+      "id": "scoreName",
+      "label": "What are you scoring?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Points, Wins, Sales"
+    },
+    {
+      "id": "wantCategories",
+      "label": "Track categories or rounds?",
+      "type": "checkbox",
+      "default": false
+    }
+  ],
+  "template": {
+    "appName": "${appName}",
+    "startPage": "leaderboardPage",
+    "menu": [
+      { "label": "Leaderboard", "mapsTo": "leaderboardPage" },
+      { "label": "Add Score", "mapsTo": "addScorePage" }
+    ],
+    "pages": {
+      "addScorePage": {
+        "component": "page",
+        "title": "Add Score",
+        "content": {
+          "$flatten": [
+            [
+              {
+                "component": "form",
+                "id": "scoreForm",
+                "fields": {
+                  "$flatten": [
+                    [
+                      { "name": "playerName", "label": "${playerName}", "type": "text", "required": true },
+                      { "name": "score", "label": "${scoreName}", "type": "number", "required": true },
+                      { "name": "date", "label": "Date", "type": "date", "default": "NOW" }
+                    ],
+                    {
+                      "$if": "wantCategories",
+                      "then": [
+                        { "name": "category", "label": "Category / Round", "type": "text" }
+                      ],
+                      "else": []
+                    }
+                  ]
+                }
+              },
+              {
+                "component": "button",
+                "label": "Record Score",
+                "onClick": [
+                  { "action": "submit", "dataSource": "scoresStore", "target": "scoreForm" },
+                  { "action": "navigate", "target": "leaderboardPage" }
+                ],
+                "styleHint": { "emphasis": "primary" }
+              }
+            ]
+          ]
+        }
+      },
+      "leaderboardPage": {
+        "component": "page",
+        "title": "${appName}",
+        "content": {
+          "$flatten": [
+            [
+              {
+                "component": "text",
+                "content": "{COUNT(scoresReader)} scores recorded",
+                "styleHint": { "variant": "subheading" }
+              },
+              {
+                "component": "list",
+                "dataSource": "scoresReader",
+                "columns": {
+                  "$flatten": [
+                    [
+                      { "header": "${playerName}", "field": "playerName", "sortable": true },
+                      { "header": "${scoreName}", "field": "score", "sortable": true },
+                      { "header": "Date", "field": "date", "sortable": true }
+                    ],
+                    {
+                      "$if": "wantCategories",
+                      "then": [
+                        { "header": "Category", "field": "category", "sortable": true, "filterable": true }
+                      ],
+                      "else": []
+                    }
+                  ]
+                },
+                "summary": [
+                  { "column": "score", "function": "sum", "label": "Total ${scoreName}" },
+                  { "column": "score", "function": "avg", "label": "Average" },
+                  { "column": "score", "function": "max", "label": "Best" }
+                ],
+                "rowActions": [
+                  {
+                    "label": "Delete",
+                    "action": "delete",
+                    "dataSource": "scoresDeleter",
+                    "matchField": "_id"
+                  }
+                ]
+              },
+              {
+                "component": "chart",
+                "dataSource": "scoresReader",
+                "chartType": "bar",
+                "labelField": "playerName",
+                "valueField": "score",
+                "title": "${scoreName} by ${playerName}"
+              },
+              {
+                "component": "button",
+                "label": "Add Score",
+                "onClick": [{ "action": "navigate", "target": "addScorePage" }],
+                "styleHint": { "emphasis": "primary" }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "dataSources": {
+      "scoresStore": {
+        "url": "local://scores",
+        "method": "POST"
+      },
+      "scoresReader": {
+        "url": "local://scores",
+        "method": "GET",
+        "fields": {
+          "$flatten": [
+            [
+              { "name": "playerName", "type": "text" },
+              { "name": "score", "type": "number" },
+              { "name": "date", "type": "date" }
+            ],
+            {
+              "$if": "wantCategories",
+              "then": [
+                { "name": "category", "type": "text" }
+              ],
+              "else": []
+            }
+          ]
+        }
+      },
+      "scoresDeleter": {
+        "url": "local://scores",
+        "method": "DELETE"
+      }
+    },
+    "help": {
+      "overview": "${appName} tracks ${scoreName} for ${playerName}. Record scores, view the leaderboard, and see who's on top. All data stays on your device."
+    }
+  }
+}

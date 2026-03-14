@@ -1,0 +1,202 @@
+{
+  "templateName": "Daily Log",
+  "description": "A simple journal for daily entries — write, browse, and edit. Perfect for diaries, standups, gratitude logs, or any date-based notes.",
+  "icon": "edit_calendar",
+  "questions": [
+    {
+      "id": "appName",
+      "label": "What do you want to call your app?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., My Journal, Daily Standup, Gratitude Log"
+    },
+    {
+      "id": "entryName",
+      "label": "What do you call each entry?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Entry, Note, Update"
+    },
+    {
+      "id": "fields",
+      "label": "What do you want to capture?",
+      "type": "field-list",
+      "required": true,
+      "presets": [
+        { "label": "Title",    "name": "title",    "type": "text" },
+        { "label": "Date",     "name": "date",     "type": "date" },
+        { "label": "Mood",     "name": "mood",     "type": "select", "options": ["Great", "Good", "OK", "Rough", "Bad"] },
+        { "label": "Category", "name": "category", "type": "select", "options": ["General", "Work", "Personal", "Health"] },
+        { "label": "Content",  "name": "content",  "type": "multiline" },
+        { "label": "Tags",     "name": "tags",     "type": "text" }
+      ]
+    }
+  ],
+  "template": {
+    "appName": "${appName}",
+    "startPage": "writePage",
+    "menu": [
+      { "label": "New ${entryName}", "mapsTo": "writePage" },
+      { "label": "Browse", "mapsTo": "browsePage" }
+    ],
+    "pages": {
+      "writePage": {
+        "component": "page",
+        "title": "New ${entryName}",
+        "content": [
+          {
+            "component": "form",
+            "id": "entryForm",
+            "fields": {
+              "$map": "fields",
+              "each(field)": {
+                "$if": "field.type == 'select'",
+                "then": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "select",
+                  "options": { "$eval": "field.options" }
+                },
+                "else": {
+                  "$if": "field.type == 'date'",
+                  "then": {
+                    "name": "${field.name}",
+                    "label": "${field.label}",
+                    "type": "date",
+                    "default": "NOW"
+                  },
+                  "else": {
+                    "name": "${field.name}",
+                    "label": "${field.label}",
+                    "type": "${field.type}"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "component": "button",
+            "label": "Save ${entryName}",
+            "onClick": [
+              { "action": "submit", "dataSource": "entriesStore", "target": "entryForm" },
+              { "action": "navigate", "target": "browsePage" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          }
+        ]
+      },
+      "browsePage": {
+        "component": "page",
+        "title": "${appName}",
+        "content": [
+          {
+            "component": "text",
+            "content": "{COUNT(entriesReader)} entries",
+            "styleHint": { "variant": "subheading" }
+          },
+          {
+            "component": "list",
+            "dataSource": "entriesReader",
+            "columns": {
+              "$map": "fields",
+              "each(field)": {
+                "header": "${field.label}",
+                "field": "${field.name}",
+                "sortable": true
+              }
+            },
+            "rowActions": [
+              {
+                "label": "Delete",
+                "action": "delete",
+                "dataSource": "entriesDeleter",
+                "matchField": "_id"
+              }
+            ],
+            "onRowTap": {
+              "action": "navigate",
+              "target": "editPage",
+              "populateForm": "editForm"
+            }
+          },
+          {
+            "component": "button",
+            "label": "New ${entryName}",
+            "onClick": [{ "action": "navigate", "target": "writePage" }],
+            "styleHint": { "emphasis": "primary" }
+          }
+        ]
+      },
+      "editPage": {
+        "component": "page",
+        "title": "Edit ${entryName}",
+        "content": [
+          {
+            "component": "form",
+            "id": "editForm",
+            "fields": {
+              "$map": "fields",
+              "each(field)": {
+                "$if": "field.type == 'select'",
+                "then": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "select",
+                  "options": { "$eval": "field.options" }
+                },
+                "else": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "${field.type}"
+                }
+              }
+            }
+          },
+          {
+            "component": "button",
+            "label": "Save Changes",
+            "onClick": [
+              { "action": "update", "dataSource": "entriesUpdater", "target": "editForm", "matchField": "_id" },
+              { "action": "navigate", "target": "browsePage" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          },
+          {
+            "component": "button",
+            "label": "Back",
+            "onClick": [{ "action": "navigate", "target": "browsePage" }],
+            "styleHint": { "emphasis": "secondary" }
+          }
+        ]
+      }
+    },
+    "dataSources": {
+      "entriesStore": {
+        "url": "local://entries",
+        "method": "POST"
+      },
+      "entriesReader": {
+        "url": "local://entries",
+        "method": "GET",
+        "fields": {
+          "$map": "fields",
+          "each(field)": {
+            "name": "${field.name}",
+            "type": "${field.type}"
+          }
+        }
+      },
+      "entriesUpdater": {
+        "url": "local://entries",
+        "method": "PUT"
+      },
+      "entriesDeleter": {
+        "url": "local://entries",
+        "method": "DELETE"
+      }
+    },
+    "help": {
+      "overview": "${appName} is your personal log. Write new entries, browse past ones, and edit or delete as needed. All data stays on your device."
+    }
+  }
+}
