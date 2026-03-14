@@ -1,0 +1,10 @@
+{
+  "templates": [
+    {
+      "id": "simple-tracker",
+      "name": "Simple Tracker",
+      "description": "Track anything with a form, list, and optional charts. Add, edit, and delete items.",
+      "file": "simple-tracker.json"
+    }
+  ]
+}

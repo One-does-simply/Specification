@@ -1,0 +1,221 @@
+{
+  "templateName": "Simple Tracker",
+  "description": "Track anything with a form, list, and optional charts. Add, edit, and delete items.",
+  "icon": "checklist",
+  "questions": [
+    {
+      "id": "appName",
+      "label": "What do you want to call your app?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., My Reading List, Expense Log"
+    },
+    {
+      "id": "itemName",
+      "label": "What are you tracking?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Books, Expenses, Workouts"
+    },
+    {
+      "id": "fields",
+      "label": "What info do you want to track?",
+      "type": "field-list",
+      "required": true,
+      "presets": [
+        { "label": "Name",     "name": "name",     "type": "text" },
+        { "label": "Date",     "name": "date",     "type": "date" },
+        { "label": "Category", "name": "category", "type": "select", "options": ["General"] },
+        { "label": "Status",   "name": "status",   "type": "select", "options": ["To Do", "In Progress", "Done"] },
+        { "label": "Rating",   "name": "rating",   "type": "select", "options": ["1", "2", "3", "4", "5"] },
+        { "label": "Amount",   "name": "amount",   "type": "number" },
+        { "label": "Notes",    "name": "notes",    "type": "multiline" }
+      ]
+    },
+    {
+      "id": "wantChart",
+      "label": "Include a summary chart?",
+      "type": "checkbox",
+      "default": false
+    }
+  ],
+  "template": {
+    "appName": "${appName}",
+    "startPage": "listPage",
+    "menu": [
+      { "label": "${itemName}", "mapsTo": "listPage" },
+      { "label": "Add ${itemName}", "mapsTo": "addPage" }
+    ],
+    "pages": {
+      "addPage": {
+        "component": "page",
+        "title": "Add ${itemName}",
+        "content": [
+          {
+            "component": "text",
+            "content": "Add a new entry to your ${itemName} list.",
+            "styleHint": { "variant": "body" }
+          },
+          {
+            "component": "form",
+            "id": "addForm",
+            "fields": {
+              "$map": "fields",
+              "each(field)": {
+                "name": "${field.name}",
+                "label": "${field.label}",
+                "type": "${field.type}",
+                "$if": "field.type == 'select'",
+                "then": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "select",
+                  "options": { "$eval": "field.options" }
+                },
+                "else": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "${field.type}"
+                }
+              }
+            }
+          },
+          {
+            "component": "button",
+            "label": "Save",
+            "onClick": [
+              { "action": "submit", "dataSource": "itemsStore", "target": "addForm" },
+              { "action": "navigate", "target": "listPage" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          }
+        ]
+      },
+      "listPage": {
+        "component": "page",
+        "title": "${appName}",
+        "content": {
+          "$flatten": [
+            [
+              {
+                "component": "list",
+                "dataSource": "itemsReader",
+                "columns": {
+                  "$map": "fields",
+                  "each(field)": {
+                    "header": "${field.label}",
+                    "field": "${field.name}",
+                    "sortable": true
+                  }
+                },
+                "rowActions": [
+                  {
+                    "label": "Delete",
+                    "action": "delete",
+                    "dataSource": "itemsDeleter",
+                    "matchField": "_id"
+                  }
+                ],
+                "onRowTap": {
+                  "action": "navigate",
+                  "target": "editPage",
+                  "populateForm": "editForm"
+                }
+              },
+              {
+                "component": "button",
+                "label": "Add ${itemName}",
+                "onClick": [{ "action": "navigate", "target": "addPage" }],
+                "styleHint": { "emphasis": "primary" }
+              }
+            ],
+            {
+              "$if": "wantChart",
+              "then": [
+                {
+                  "component": "chart",
+                  "dataSource": "itemsReader",
+                  "chartType": "bar",
+                  "labelField": "${fields[0].name}",
+                  "valueField": "${fields[0].name}",
+                  "title": "${itemName} Overview"
+                }
+              ],
+              "else": []
+            }
+          ]
+        }
+      },
+      "editPage": {
+        "component": "page",
+        "title": "Edit ${itemName}",
+        "content": [
+          {
+            "component": "form",
+            "id": "editForm",
+            "fields": {
+              "$map": "fields",
+              "each(field)": {
+                "$if": "field.type == 'select'",
+                "then": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "select",
+                  "options": { "$eval": "field.options" }
+                },
+                "else": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "${field.type}"
+                }
+              }
+            }
+          },
+          {
+            "component": "button",
+            "label": "Save Changes",
+            "onClick": [
+              { "action": "update", "dataSource": "itemsUpdater", "target": "editForm", "matchField": "_id" },
+              { "action": "navigate", "target": "listPage" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          },
+          {
+            "component": "button",
+            "label": "Back",
+            "onClick": [{ "action": "navigate", "target": "listPage" }],
+            "styleHint": { "emphasis": "secondary" }
+          }
+        ]
+      }
+    },
+    "dataSources": {
+      "itemsStore": {
+        "url": "local://items",
+        "method": "POST"
+      },
+      "itemsReader": {
+        "url": "local://items",
+        "method": "GET",
+        "fields": {
+          "$map": "fields",
+          "each(field)": {
+            "name": "${field.name}",
+            "type": "${field.type}"
+          }
+        }
+      },
+      "itemsUpdater": {
+        "url": "local://items",
+        "method": "PUT"
+      },
+      "itemsDeleter": {
+        "url": "local://items",
+        "method": "DELETE"
+      }
+    },
+    "help": {
+      "overview": "${appName} helps you track your ${itemName}. Add new entries, edit existing ones, and delete what you no longer need. All data stays on your device."
+    }
+  }
+}
