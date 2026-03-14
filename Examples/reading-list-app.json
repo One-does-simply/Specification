@@ -30,15 +30,8 @@
           "component": "button",
           "label": "Save Book",
           "onClick": [
-            {
-              "action": "submit",
-              "dataSource": "booksStore",
-              "target": "addBookForm"
-            },
-            {
-              "action": "navigate",
-              "target": "myReadingListPage"
-            }
+            { "action": "submit", "dataSource": "booksStore", "target": "addBookForm" },
+            { "action": "navigate", "target": "myReadingListPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         }
@@ -63,39 +56,78 @@
           "component": "list",
           "dataSource": "booksReader",
           "columns": [
-            { "header": "Title", "field": "bookTitle" },
-            { "header": "Author", "field": "author" },
-            { "header": "Status", "field": "status", "sortable": true },
-            { "header": "Rating", "field": "rating", "sortable": true },
-            { "header": "Notes", "field": "notes" }
+            { "header": "Title", "field": "bookTitle", "sortable": true },
+            { "header": "Author", "field": "author", "sortable": true },
+            { "header": "Status", "field": "status", "sortable": true, "filterable": true, "colorMap": { "Finished": "green", "Reading": "blue", "To Read": "orange", "Abandoned": "red" } },
+            { "header": "Rating", "field": "rating", "sortable": true, "filterable": true }
           ],
           "rowActions": [
             {
               "label": "Start Reading",
               "action": "update",
               "dataSource": "booksUpdater",
-              "matchField": "bookTitle",
-              "values": { "status": "Reading" }
+              "matchField": "_id",
+              "values": { "status": "Reading" },
+              "hideWhen": { "field": "status", "equals": "Reading" }
             },
             {
               "label": "Finished",
               "action": "update",
               "dataSource": "booksUpdater",
-              "matchField": "bookTitle",
-              "values": { "status": "Finished" }
+              "matchField": "_id",
+              "values": { "status": "Finished" },
+              "hideWhen": { "field": "status", "equals": "Finished" }
+            },
+            {
+              "label": "Delete",
+              "action": "delete",
+              "dataSource": "booksDeleter",
+              "matchField": "_id"
             }
-          ]
+          ],
+          "onRowTap": {
+            "action": "navigate",
+            "target": "editBookPage",
+            "populateForm": "editBookForm"
+          }
         },
         {
           "component": "button",
           "label": "Add a Book",
+          "onClick": [{ "action": "navigate", "target": "addBookPage" }],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+    "editBookPage": {
+      "component": "page",
+      "title": "Edit Book",
+      "content": [
+        {
+          "component": "form",
+          "id": "editBookForm",
+          "fields": [
+            { "name": "bookTitle", "label": "Book Title", "type": "text", "required": true },
+            { "name": "author", "label": "Author", "type": "text", "required": true },
+            { "name": "status", "label": "Status", "type": "select", "options": ["To Read", "Reading", "Finished", "Abandoned"] },
+            { "name": "rating", "label": "Rating", "type": "select", "options": ["1", "2", "3", "4", "5"] },
+            { "name": "notes", "label": "Notes", "type": "multiline" }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Save Changes",
           "onClick": [
-            {
-              "action": "navigate",
-              "target": "addBookPage"
-            }
+            { "action": "update", "dataSource": "booksUpdater", "target": "editBookForm", "matchField": "_id" },
+            { "action": "navigate", "target": "myReadingListPage" }
           ],
           "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back",
+          "onClick": [{ "action": "navigate", "target": "myReadingListPage" }],
+          "styleHint": { "emphasis": "secondary" }
         }
       ]
     }
@@ -121,27 +153,39 @@
           "author": "James Clear",
           "status": "Finished",
           "rating": "5",
-          "notes": "Excellent practical guide to building good habits and breaking bad ones. Highly recommended."
+          "notes": "Excellent practical guide to building good habits and breaking bad ones."
         },
         {
           "bookTitle": "Dune",
           "author": "Frank Herbert",
           "status": "Reading",
           "rating": "4",
-          "notes": "Epic science fiction. Currently on chapter 12. The world-building is incredible."
+          "notes": "Epic science fiction. The world-building is incredible."
+        },
+        {
+          "bookTitle": "Project Hail Mary",
+          "author": "Andy Weir",
+          "status": "To Read",
+          "rating": "",
+          "notes": "Recommended by a friend. Same author as The Martian."
         }
       ]
     },
     "booksUpdater": {
       "url": "local://books",
       "method": "PUT"
+    },
+    "booksDeleter": {
+      "url": "local://books",
+      "method": "DELETE"
     }
   },
   "help": {
-    "overview": "Reading List helps you track books you want to read, are currently reading, or have finished. Rate and annotate each book, and update their status right from the list.",
+    "overview": "Reading List helps you track books you want to read, are currently reading, or have finished. Rate and annotate each book. Tap any row to view or edit its full details including notes.",
     "pages": {
-      "addBookPage": "Enter the book title (required) and author (required). Select your reading status from the dropdown (To Read, Reading, Finished, or Abandoned). Pick a rating from the dropdown (1 to 5), and add any notes. Press Save Book to add it to your list.",
-      "myReadingListPage": "View all your tracked books with their status, rating, and notes. Use 'Start Reading' or 'Finished' on any row to update its status instantly."
+      "addBookPage": "Enter the book title and author (both required). Select a status and rating from dropdowns, and add notes. Press Save Book to add it.",
+      "myReadingListPage": "View all your books with color-coded status. Tap any row to edit. Use Start Reading or Finished for quick status changes. Filter by status or rating.",
+      "editBookPage": "View and edit all book details including notes. Press Save Changes when done."
     }
   },
   "tour": [
@@ -151,12 +195,12 @@
     },
     {
       "title": "Track Your Books",
-      "content": "Add a book with its title and author. Select a status from the dropdown and pick a rating. Use the notes field to jot down your thoughts as you read.",
+      "content": "Add a book with its title and author. Status is color-coded: green for Finished, blue for Reading, orange for To Read.",
       "page": "addBookPage"
     },
     {
       "title": "Browse Your List",
-      "content": "Your full reading list appears here. Use 'Start Reading' or 'Finished' on any row to update a book's status with one tap.",
+      "content": "Tap any row to see full details and edit. Use the quick-action buttons to change status, or filter by status and rating.",
       "page": "myReadingListPage"
     }
   ]

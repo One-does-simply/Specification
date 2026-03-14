@@ -32,28 +32,15 @@
           "component": "button",
           "label": "Save Expense",
           "onClick": [
-            {
-              "action": "submit",
-              "dataSource": "expensesStore",
-              "target": "expenseForm",
-              "confirm": "Save this expense?"
-            },
-            {
-              "action": "navigate",
-              "target": "viewExpensesPage"
-            }
+            { "action": "submit", "dataSource": "expensesStore", "target": "expenseForm", "confirm": "Save this expense?" },
+            { "action": "navigate", "target": "viewExpensesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         },
         {
           "component": "button",
           "label": "View All Expenses",
-          "onClick": [
-            {
-              "action": "navigate",
-              "target": "viewExpensesPage"
-            }
-          ],
+          "onClick": [{ "action": "navigate", "target": "viewExpensesPage" }],
           "styleHint": { "emphasis": "secondary" }
         }
       ]
@@ -65,7 +52,8 @@
         {
           "component": "text",
           "content": "Total: ${SUM(expensesReader, total)} across {COUNT(expensesReader)} expenses (avg ${AVG(expensesReader, total)})",
-          "styleHint": { "variant": "subheading" }
+          "styleHint": { "variant": "subheading" },
+          "visibleWhen": { "source": "expensesReader", "countMin": 1 }
         },
         {
           "component": "text",
@@ -93,6 +81,19 @@
             { "header": "Total", "field": "total", "sortable": true, "currency": true },
             { "header": "Category", "field": "category", "sortable": true, "filterable": true }
           ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "action": "delete",
+              "dataSource": "expensesDeleter",
+              "matchField": "_id"
+            }
+          ],
+          "onRowTap": {
+            "action": "navigate",
+            "target": "editExpensePage",
+            "populateForm": "editExpenseForm"
+          },
           "summary": [
             { "column": "total", "function": "sum", "label": "Total Spent" },
             { "column": "total", "function": "avg", "label": "Average" },
@@ -102,13 +103,42 @@
         {
           "component": "button",
           "label": "Log Another Expense",
+          "onClick": [{ "action": "navigate", "target": "logExpensePage" }],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+    "editExpensePage": {
+      "component": "page",
+      "title": "Edit Expense",
+      "content": [
+        {
+          "component": "form",
+          "id": "editExpenseForm",
+          "fields": [
+            { "name": "description", "label": "Description", "type": "text", "required": true, "validation": { "minLength": 3, "message": "Description must be at least 3 characters" } },
+            { "name": "quantity", "label": "Quantity", "type": "number", "required": true, "validation": { "min": 1, "max": 999 } },
+            { "name": "unitPrice", "label": "Unit Price", "type": "number", "required": true, "currency": true, "validation": { "min": 0.01, "max": 99999 } },
+            { "name": "total", "label": "Total", "type": "number", "currency": true, "formula": "{quantity} * {unitPrice}" },
+            { "name": "category", "label": "Category", "type": "select", "options": ["Food", "Transport", "Bills", "Entertainment", "Medical", "Shopping", "Other"] },
+            { "name": "otherCategory", "label": "Specify category", "type": "text", "placeholder": "What kind of expense?", "visibleWhen": { "field": "category", "equals": "Other" } },
+            { "name": "date", "label": "Date", "type": "date", "required": true }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Save Changes",
           "onClick": [
-            {
-              "action": "navigate",
-              "target": "logExpensePage"
-            }
+            { "action": "update", "dataSource": "expensesUpdater", "target": "editExpenseForm", "matchField": "_id" },
+            { "action": "navigate", "target": "viewExpensesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back",
+          "onClick": [{ "action": "navigate", "target": "viewExpensesPage" }],
+          "styleHint": { "emphasis": "secondary" }
         }
       ]
     }
@@ -136,37 +166,46 @@
           "quantity": "1",
           "unitPrice": "62",
           "category": "Food",
-          "date": "2025-03-01"
+          "date": "2026-03-01"
         },
         {
           "description": "Monthly bus pass",
           "quantity": "1",
           "unitPrice": "45",
           "category": "Transport",
-          "date": "2025-03-01"
+          "date": "2026-03-01"
         },
         {
           "description": "Coffee with a friend",
           "quantity": "2",
           "unitPrice": "4",
           "category": "Food",
-          "date": "2025-03-02"
+          "date": "2026-03-02"
         },
         {
           "description": "Movie tickets",
           "quantity": "2",
           "unitPrice": "12",
           "category": "Entertainment",
-          "date": "2025-03-03"
+          "date": "2026-03-03"
         }
       ]
+    },
+    "expensesUpdater": {
+      "url": "local://expenses",
+      "method": "PUT"
+    },
+    "expensesDeleter": {
+      "url": "local://expenses",
+      "method": "DELETE"
     }
   },
   "help": {
-    "overview": "Expense Tracker helps you monitor your personal spending. Log each expense with a description, quantity, unit price, category, and date. The total is calculated automatically. A pie chart on the View Expenses page shows spending by category.",
+    "overview": "Expense Tracker helps you monitor personal spending. Log each expense with description, quantity, unit price, category, and date. The total is calculated automatically. A pie chart shows spending by category. Tap any expense to edit it.",
     "pages": {
-      "logExpensePage": "Enter a description (at least 3 characters), quantity, and unit price — the total is computed for you. Pick a category; if you choose 'Other', a text field appears to specify. Validation ensures amounts are in range.",
-      "viewExpensesPage": "This page shows a pie chart of spending by category and a table of all expenses. The Total column is computed from Quantity x Unit Price for each row. Use the Category and Date dropdowns to filter. Summary totals appear below the table."
+      "logExpensePage": "Enter description (3+ chars), quantity, and unit price. Total computes automatically. Pick 'Other' for category and a text field appears. Validation ensures amounts are in range.",
+      "viewExpensesPage": "Pie chart of spending by category and a full data table. Filter by Category and Date. Summary totals below the table. Tap any row to edit. Delete expenses you want to remove.",
+      "editExpensePage": "Edit any field on the expense. Total recalculates automatically. Press Save Changes when done."
     }
   },
   "settings": {
@@ -185,16 +224,16 @@
   "tour": [
     {
       "title": "Welcome to Expense Tracker",
-      "content": "Take control of your finances by logging every expense. This app stores everything locally on your device for privacy."
+      "content": "Take control of your finances by logging every expense. Everything is stored locally on your device."
     },
     {
       "title": "Log Your Spending",
-      "content": "Enter a description, quantity, and unit price. The Total field computes automatically. Pick 'Other' for the category and a second field appears to specify. Validation catches out-of-range values before saving.",
+      "content": "Enter description, quantity, and unit price. The Total computes automatically. Pick 'Other' and a second field appears. Validation catches out-of-range values.",
       "page": "logExpensePage"
     },
     {
       "title": "Review Your Expenses",
-      "content": "See a pie chart breakdown by category and a full data table. Filter by Category or Date, and check the summary row for totals and averages.",
+      "content": "See a pie chart by category and a full data table. Filter by Category or Date. Tap any row to edit. Summary row shows totals and averages.",
       "page": "viewExpensesPage"
     }
   ]

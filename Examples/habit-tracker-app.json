@@ -29,15 +29,8 @@
           "component": "button",
           "label": "Save Habit",
           "onClick": [
-            {
-              "action": "submit",
-              "dataSource": "habitsStore",
-              "target": "addHabitForm"
-            },
-            {
-              "action": "navigate",
-              "target": "myHabitsPage"
-            }
+            { "action": "submit", "dataSource": "habitsStore", "target": "addHabitForm" },
+            { "action": "navigate", "target": "myHabitsPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         }
@@ -49,27 +42,70 @@
       "content": [
         {
           "component": "text",
-          "content": "You are tracking {COUNT(habitsReader)} habits. Use the Log page to record your daily progress.",
-          "styleHint": { "variant": "body" }
+          "content": "You are tracking {COUNT(habitsReader)} habits.",
+          "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No habits defined yet. Add your first habit to start tracking!",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "habitsReader", "countEquals": 0 }
         },
         {
           "component": "list",
           "dataSource": "habitsReader",
           "columns": [
             { "header": "Habit", "field": "habitName" },
-            { "header": "Category", "field": "category", "sortable": true }
-          ]
+            { "header": "Category", "field": "category", "sortable": true, "filterable": true }
+          ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "action": "delete",
+              "dataSource": "habitsDeleter",
+              "matchField": "_id"
+            }
+          ],
+          "onRowTap": {
+            "action": "navigate",
+            "target": "editHabitPage",
+            "populateForm": "editHabitForm"
+          }
         },
         {
           "component": "button",
           "label": "Add a Habit",
+          "onClick": [{ "action": "navigate", "target": "addHabitPage" }],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+    "editHabitPage": {
+      "component": "page",
+      "title": "Edit Habit",
+      "content": [
+        {
+          "component": "form",
+          "id": "editHabitForm",
+          "fields": [
+            { "name": "habitName", "label": "Habit Name", "type": "text", "required": true },
+            { "name": "category", "label": "Category", "type": "select", "options": ["Health", "Learning", "Fitness", "Mindfulness", "Productivity", "Social", "Other"] }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Save Changes",
           "onClick": [
-            {
-              "action": "navigate",
-              "target": "addHabitPage"
-            }
+            { "action": "update", "dataSource": "habitsUpdater", "target": "editHabitForm", "matchField": "_id" },
+            { "action": "navigate", "target": "myHabitsPage" }
           ],
           "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back",
+          "onClick": [{ "action": "navigate", "target": "myHabitsPage" }],
+          "styleHint": { "emphasis": "secondary" }
         }
       ]
     },
@@ -96,23 +132,14 @@
           "component": "button",
           "label": "Save Log Entry",
           "onClick": [
-            {
-              "action": "submit",
-              "dataSource": "habitLogStore",
-              "target": "logHabitForm"
-            }
+            { "action": "submit", "dataSource": "habitLogStore", "target": "logHabitForm" }
           ],
           "styleHint": { "emphasis": "primary" }
         },
         {
           "component": "button",
           "label": "View History",
-          "onClick": [
-            {
-              "action": "navigate",
-              "target": "habitHistoryPage"
-            }
-          ],
+          "onClick": [{ "action": "navigate", "target": "habitHistoryPage" }],
           "styleHint": { "emphasis": "secondary" }
         }
       ]
@@ -123,8 +150,9 @@
       "content": [
         {
           "component": "text",
-          "content": "{COUNT(habitLogReader, completed=true)} completed out of {COUNT(habitLogReader)} total entries",
-          "styleHint": { "variant": "subheading" }
+          "content": "{COUNT(habitLogReader, completed=true)} completed out of {COUNT(habitLogReader)} total entries ({PCT(habitLogReader, completed=true)}%)",
+          "styleHint": { "variant": "subheading" },
+          "visibleWhen": { "source": "habitLogReader", "countMin": 1 }
         },
         {
           "component": "text",
@@ -137,20 +165,58 @@
           "dataSource": "habitLogReader",
           "columns": [
             { "header": "Date", "field": "date", "sortable": true },
-            { "header": "Habit", "field": "habitName", "sortable": true },
-            { "header": "Completed", "field": "completed" },
-            { "header": "Notes", "field": "notes" }
-          ]
+            { "header": "Habit", "field": "habitName", "sortable": true, "filterable": true },
+            { "header": "Completed", "field": "completed", "sortable": true, "filterable": true, "displayMap": { "true": "Done", "false": "Missed" }, "colorMap": { "true": "green", "false": "red" } }
+          ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "action": "delete",
+              "dataSource": "habitLogDeleter",
+              "matchField": "_id"
+            }
+          ],
+          "onRowTap": {
+            "action": "navigate",
+            "target": "editLogPage",
+            "populateForm": "editLogForm"
+          }
         },
         {
           "component": "button",
           "label": "Log More Habits",
+          "onClick": [{ "action": "navigate", "target": "logHabitsPage" }],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+    "editLogPage": {
+      "component": "page",
+      "title": "Edit Log Entry",
+      "content": [
+        {
+          "component": "form",
+          "id": "editLogForm",
+          "fields": [
+            { "name": "date", "label": "Date", "type": "date", "required": true },
+            { "name": "habitName", "label": "Habit Name", "type": "select", "required": true, "optionsFrom": { "dataSource": "habitsReader", "valueField": "habitName" } },
+            { "name": "completed", "label": "Completed", "type": "checkbox" },
+            { "name": "notes", "label": "Notes", "type": "multiline" }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Save Changes",
           "onClick": [
-            {
-              "action": "navigate",
-              "target": "logHabitsPage"
-            }
+            { "action": "update", "dataSource": "habitLogUpdater", "target": "editLogForm", "matchField": "_id" },
+            { "action": "navigate", "target": "habitHistoryPage" }
           ],
+          "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back",
+          "onClick": [{ "action": "navigate", "target": "habitHistoryPage" }],
           "styleHint": { "emphasis": "secondary" }
         }
       ]
@@ -171,8 +237,16 @@
       "seedData": [
         { "habitName": "Drink 8 glasses of water", "category": "Health" },
         { "habitName": "Read for 20 minutes", "category": "Learning" },
-        { "habitName": "Take a 15-minute walk", "category": "Health" }
+        { "habitName": "Take a 15-minute walk", "category": "Fitness" }
       ]
+    },
+    "habitsUpdater": {
+      "url": "local://habits",
+      "method": "PUT"
+    },
+    "habitsDeleter": {
+      "url": "local://habits",
+      "method": "DELETE"
     },
     "habitLogStore": {
       "url": "local://habit_log",
@@ -188,39 +262,49 @@
         { "name": "notes", "type": "multiline" }
       ],
       "seedData": [
-        { "date": "2025-03-01", "habitName": "Drink 8 glasses of water", "completed": "true", "notes": "Felt more energetic today." },
-        { "date": "2025-03-01", "habitName": "Read for 20 minutes", "completed": "true", "notes": "Finished a chapter of Atomic Habits." },
-        { "date": "2025-03-01", "habitName": "Take a 15-minute walk", "completed": "false", "notes": "Rained all day, will try tomorrow." }
+        { "date": "2026-03-12", "habitName": "Drink 8 glasses of water", "completed": "true", "notes": "Felt more energetic today." },
+        { "date": "2026-03-12", "habitName": "Read for 20 minutes", "completed": "true", "notes": "Finished a chapter of Atomic Habits." },
+        { "date": "2026-03-12", "habitName": "Take a 15-minute walk", "completed": "false", "notes": "Rained all day, will try tomorrow." }
       ]
+    },
+    "habitLogUpdater": {
+      "url": "local://habit_log",
+      "method": "PUT"
+    },
+    "habitLogDeleter": {
+      "url": "local://habit_log",
+      "method": "DELETE"
     }
   },
   "help": {
-    "overview": "Habit Tracker helps you build positive daily routines. Define the habits you want to cultivate, log your progress each day, and review your history to stay motivated.",
+    "overview": "Habit Tracker helps you build positive daily routines. Define the habits you want to cultivate, log your progress each day, and review your history with color-coded results to stay motivated.",
     "pages": {
-      "addHabitPage": "Enter a habit name (required) and pick a category from the dropdown, then press Save Habit to add it to your tracking list.",
-      "myHabitsPage": "View all the habits you have defined. Use this as a reference when logging your daily progress.",
-      "logHabitsPage": "Pick the date, select a habit from the dropdown, toggle the Completed switch, and optionally add notes.",
-      "habitHistoryPage": "Browse all your logged habit entries to see your consistency over time."
+      "addHabitPage": "Enter a habit name and pick a category, then press Save Habit.",
+      "myHabitsPage": "View all your habits. Tap any row to edit or delete it.",
+      "editHabitPage": "Edit the habit name or category and press Save Changes.",
+      "logHabitsPage": "Pick the date, select a habit from the dropdown, toggle Completed, and add notes.",
+      "habitHistoryPage": "Browse all logged entries with color-coded results: green for Done, red for Missed. Filter by habit name. Tap any row to edit.",
+      "editLogPage": "Edit a log entry's date, completion status, or notes."
     }
   },
   "tour": [
     {
       "title": "Welcome to Habit Tracker",
-      "content": "This app helps you build and maintain daily habits. It comes with three starter habits to get you going."
+      "content": "Build and maintain daily habits. It comes with three starter habits to get you going."
     },
     {
       "title": "Your Habits",
-      "content": "This page shows all the habits you are tracking. You can add new ones anytime from the Add Habit page.",
+      "content": "All your tracked habits appear here. Tap any row to edit. Add new ones from the Add Habit page.",
       "page": "myHabitsPage"
     },
     {
       "title": "Log Your Day",
-      "content": "Each day, come here to record which habits you completed. Pick the date, choose a habit from the dropdown, and toggle the switch.",
+      "content": "Record which habits you completed. Pick the date, choose a habit, and toggle the switch.",
       "page": "logHabitsPage"
     },
     {
       "title": "Review Your Progress",
-      "content": "Check the Habit History page to see all your logged entries and track your consistency over time.",
+      "content": "History shows color-coded results: green for Done, red for Missed. Filter by habit to track specific streaks.",
       "page": "habitHistoryPage"
     }
   ]

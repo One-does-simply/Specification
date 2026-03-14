@@ -44,8 +44,8 @@
     },
     {
       "id": "science-quiz",
-      "name": "Science Quiz",
-      "description": "Test your science knowledge with auto-scored multiple-choice questions.",
+      "name": "Quiz Master",
+      "description": "Take multiple-choice quizzes, create your own, and track improvement over time.",
       "file": "science-quiz-app.json"
     },
     {

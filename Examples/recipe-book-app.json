@@ -21,24 +21,17 @@
           "fields": [
             { "name": "recipeName", "label": "Recipe Name", "type": "text", "required": true, "placeholder": "e.g., Classic Tomato Pasta" },
             { "name": "cuisine", "label": "Cuisine", "type": "select", "options": ["Italian", "Asian", "Mexican", "Indian", "Mediterranean", "American", "French", "Japanese", "Other"] },
+            { "name": "servings", "label": "Servings", "type": "number" },
             { "name": "ingredients", "label": "Ingredients", "type": "multiline", "required": true, "placeholder": "List each ingredient separated by commas" },
-            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true, "placeholder": "Step-by-step cooking instructions" },
-            { "name": "servings", "label": "Servings", "type": "number" }
+            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true, "placeholder": "Step-by-step cooking instructions" }
           ]
         },
         {
           "component": "button",
           "label": "Save Recipe",
           "onClick": [
-            {
-              "action": "submit",
-              "dataSource": "recipesStore",
-              "target": "addRecipeForm"
-            },
-            {
-              "action": "navigate",
-              "target": "browseRecipesPage"
-            }
+            { "action": "submit", "dataSource": "recipesStore", "target": "addRecipeForm" },
+            { "action": "navigate", "target": "browseRecipesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         }
@@ -60,36 +53,64 @@
           "visibleWhen": { "source": "recipesReader", "countEquals": 0 }
         },
         {
-          "component": "text",
-          "content": "Browse your saved recipes below.",
-          "styleHint": { "variant": "body" }
-        },
-        {
           "component": "list",
           "dataSource": "recipesReader",
           "columns": [
-            { "header": "Recipe", "field": "recipeName" },
-            { "header": "Cuisine", "field": "cuisine", "sortable": true },
-            { "header": "Ingredients", "field": "ingredients" },
-            { "header": "Instructions", "field": "instructions" },
+            { "header": "Recipe", "field": "recipeName", "sortable": true },
+            { "header": "Cuisine", "field": "cuisine", "sortable": true, "filterable": true },
             { "header": "Servings", "field": "servings", "sortable": true }
-          ]
-        },
-        {
-          "component": "text",
-          "content": "The app comes pre-loaded with a couple of sample recipes. Add your own to build your collection.",
-          "styleHint": { "variant": "caption" }
+          ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "action": "delete",
+              "dataSource": "recipesDeleter",
+              "matchField": "_id"
+            }
+          ],
+          "onRowTap": {
+            "action": "navigate",
+            "target": "editRecipePage",
+            "populateForm": "editRecipeForm"
+          }
         },
         {
           "component": "button",
           "label": "Add New Recipe",
+          "onClick": [{ "action": "navigate", "target": "addRecipePage" }],
+          "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+    "editRecipePage": {
+      "component": "page",
+      "title": "View / Edit Recipe",
+      "content": [
+        {
+          "component": "form",
+          "id": "editRecipeForm",
+          "fields": [
+            { "name": "recipeName", "label": "Recipe Name", "type": "text", "required": true },
+            { "name": "cuisine", "label": "Cuisine", "type": "select", "options": ["Italian", "Asian", "Mexican", "Indian", "Mediterranean", "American", "French", "Japanese", "Other"] },
+            { "name": "servings", "label": "Servings", "type": "number" },
+            { "name": "ingredients", "label": "Ingredients", "type": "multiline", "required": true },
+            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Save Changes",
           "onClick": [
-            {
-              "action": "navigate",
-              "target": "addRecipePage"
-            }
+            { "action": "update", "dataSource": "recipesUpdater", "target": "editRecipeForm", "matchField": "_id" },
+            { "action": "navigate", "target": "browseRecipesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
+        },
+        {
+          "component": "button",
+          "label": "Back",
+          "onClick": [{ "action": "navigate", "target": "browseRecipesPage" }],
+          "styleHint": { "emphasis": "secondary" }
         }
       ]
     }
@@ -115,23 +136,32 @@
           "cuisine": "Italian",
           "ingredients": "Spaghetti, canned tomatoes, garlic, olive oil, basil, salt, pepper",
           "instructions": "Cook pasta according to package directions. Saute garlic in olive oil, add tomatoes, simmer 15 minutes. Season with salt, pepper, and basil. Toss with drained pasta.",
-          "servings": 4
+          "servings": "4"
         },
         {
           "recipeName": "Simple Chicken Stir Fry",
           "cuisine": "Asian",
           "ingredients": "Chicken breast, soy sauce, bell peppers, broccoli, garlic, ginger, rice",
           "instructions": "Slice chicken and vegetables. Stir fry chicken in hot oil until cooked through. Add vegetables and cook 3 minutes. Add soy sauce, garlic, and ginger. Serve over steamed rice.",
-          "servings": 2
+          "servings": "2"
         }
       ]
+    },
+    "recipesUpdater": {
+      "url": "local://recipes",
+      "method": "PUT"
+    },
+    "recipesDeleter": {
+      "url": "local://recipes",
+      "method": "DELETE"
     }
   },
   "help": {
-    "overview": "Recipe Book is your personal digital cookbook. Save your favorite recipes with ingredients, instructions, and serving sizes, then browse them anytime you need inspiration.",
+    "overview": "Recipe Book is your personal digital cookbook. Save recipes with ingredients, instructions, and serving sizes. Tap any recipe in the list to view the full details or edit it.",
     "pages": {
-      "addRecipePage": "Enter the recipe name (required), pick a cuisine from the dropdown, add your ingredients list, step-by-step instructions, and number of servings. Press Save Recipe to add it to your collection.",
-      "browseRecipesPage": "View all your saved recipes in a table. Click Add New Recipe to expand your collection."
+      "addRecipePage": "Enter recipe name, pick a cuisine, add ingredients and instructions. Press Save Recipe to add it.",
+      "browseRecipesPage": "View all recipes. Tap any row to see full details and edit. Filter by cuisine. Delete recipes you no longer need.",
+      "editRecipePage": "View and edit the full recipe including ingredients and instructions. Press Save Changes when done."
     }
   },
   "settings": {
@@ -150,16 +180,16 @@
   "tour": [
     {
       "title": "Welcome to Recipe Book",
-      "content": "Build your personal recipe collection right on your device. Save recipes you love and find them whenever you need them."
+      "content": "Build your personal recipe collection right on your device."
     },
     {
       "title": "Add Your Recipes",
-      "content": "Enter a recipe name, pick a cuisine from the dropdown, then add ingredients and instructions. The ingredients and instructions fields expand for longer text. Fields marked with * are required.",
+      "content": "Enter a recipe name, pick a cuisine, then add ingredients and instructions. Fields marked with * are required.",
       "page": "addRecipePage"
     },
     {
       "title": "Browse Your Collection",
-      "content": "All your saved recipes appear here in one list. The app comes with two sample recipes to get you started.",
+      "content": "All recipes appear here. Tap any row to see the full recipe with ingredients and instructions. Filter by cuisine.",
       "page": "browseRecipesPage"
     }
   ]

@@ -28,11 +28,11 @@
           "dataSource": "choreReader",
           "columns": [
             { "header": "Chore", "field": "choreName", "sortable": true },
-            { "header": "Room", "field": "room", "sortable": true },
-            { "header": "Assigned To", "field": "assignedTo", "sortable": true },
-            { "header": "Frequency", "field": "frequency", "sortable": true },
+            { "header": "Room", "field": "room", "sortable": true, "filterable": true },
+            { "header": "Assigned To", "field": "assignedTo", "sortable": true, "filterable": true },
+            { "header": "Frequency", "field": "frequency", "sortable": true, "filterable": true },
             { "header": "Due Date", "field": "dueDate", "sortable": true },
-            { "header": "Status", "field": "status", "sortable": true }
+            { "header": "Status", "field": "status", "sortable": true, "filterable": true, "colorMap": { "Done": "green", "In Progress": "blue", "To Do": "orange" } }
           ],
           "rowActions": [
             {
@@ -40,7 +40,8 @@
               "action": "update",
               "dataSource": "choreUpdater",
               "matchField": "_id",
-              "values": { "status": "Done" }
+              "values": { "status": "Done" },
+              "hideWhen": { "field": "status", "equals": "Done" }
             },
             {
               "label": "Delete",
@@ -48,7 +49,12 @@
               "dataSource": "choreDeleter",
               "matchField": "_id"
             }
-          ]
+          ],
+          "onRowTap": {
+            "action": "navigate",
+            "target": "editChorePage",
+            "populateForm": "editChoreForm"
+          }
         },
         {
           "component": "button",
@@ -75,7 +81,7 @@
             { "name": "room", "label": "Room", "type": "select", "required": true, "optionsFrom": { "dataSource": "roomReader", "valueField": "roomName" } },
             { "name": "assignedTo", "label": "Assigned To", "type": "select", "required": true, "optionsFrom": { "dataSource": "familyReader", "valueField": "memberName" } },
             { "name": "frequency", "label": "Frequency", "type": "select", "required": true, "options": ["Daily", "Weekly", "Bi-Weekly", "Monthly", "As Needed"] },
-            { "name": "dueDate", "label": "Due Date", "type": "date", "required": true, "default": "CURRENTDATE" },
+            { "name": "dueDate", "label": "Due Date", "type": "date", "required": true, "default": "+7d" },
             { "name": "status", "label": "Status", "type": "select", "default": "To Do", "options": ["To Do", "In Progress", "Done"] },
             { "name": "notes", "label": "Notes", "type": "multiline", "placeholder": "Any extra details..." }
           ]
@@ -85,30 +91,41 @@
           "label": "Add Chore",
           "onClick": [
             { "action": "submit", "dataSource": "choreStore", "target": "choreForm" },
-            { "action": "navigate", "target": "choreAddedPage" }
+            { "action": "navigate", "target": "myChoresPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         }
       ]
     },
-    "choreAddedPage": {
+    "editChorePage": {
       "component": "page",
-      "title": "Chore Added!",
+      "title": "Edit Chore",
       "content": [
         {
-          "component": "text",
-          "content": "Your chore has been added to the list.",
-          "styleHint": { "variant": "heading" }
+          "component": "form",
+          "id": "editChoreForm",
+          "fields": [
+            { "name": "choreName", "label": "Chore Name", "type": "text", "required": true },
+            { "name": "room", "label": "Room", "type": "select", "required": true, "optionsFrom": { "dataSource": "roomReader", "valueField": "roomName" } },
+            { "name": "assignedTo", "label": "Assigned To", "type": "select", "required": true, "optionsFrom": { "dataSource": "familyReader", "valueField": "memberName" } },
+            { "name": "frequency", "label": "Frequency", "type": "select", "required": true, "options": ["Daily", "Weekly", "Bi-Weekly", "Monthly", "As Needed"] },
+            { "name": "dueDate", "label": "Due Date", "type": "date" },
+            { "name": "status", "label": "Status", "type": "select", "options": ["To Do", "In Progress", "Done"] },
+            { "name": "notes", "label": "Notes", "type": "multiline" }
+          ]
         },
         {
           "component": "button",
-          "label": "Add Another Chore",
-          "onClick": [{ "action": "navigate", "target": "addChorePage" }],
+          "label": "Save Changes",
+          "onClick": [
+            { "action": "update", "dataSource": "choreUpdater", "target": "editChoreForm", "matchField": "_id" },
+            { "action": "navigate", "target": "myChoresPage" }
+          ],
           "styleHint": { "emphasis": "primary" }
         },
         {
           "component": "button",
-          "label": "View My Chores",
+          "label": "Back",
           "onClick": [{ "action": "navigate", "target": "myChoresPage" }],
           "styleHint": { "emphasis": "secondary" }
         }
@@ -140,8 +157,14 @@
         },
         {
           "component": "text",
-          "content": "Your Rooms",
+          "content": "{COUNT(roomReader)} rooms",
           "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No rooms added yet. Add your first room above.",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "roomReader", "countEquals": 0 }
         },
         {
           "component": "list",
@@ -186,8 +209,14 @@
         },
         {
           "component": "text",
-          "content": "Your Family",
+          "content": "{COUNT(familyReader)} family members",
           "styleHint": { "variant": "subheading" }
+        },
+        {
+          "component": "text",
+          "content": "No family members yet. Add someone above.",
+          "styleHint": { "variant": "body" },
+          "visibleWhen": { "source": "familyReader", "countEquals": 0 }
         },
         {
           "component": "list",
@@ -263,19 +292,27 @@
     "familyDeleter": { "url": "local://familyMembers", "method": "DELETE" }
   },
   "help": {
-    "overview": "Track household chores, assign them to family members, and mark them done. Manage your rooms and family members to keep everything organized.",
+    "overview": "Track household chores, assign them to family members, and mark them done. Manage your rooms and family members to keep everything organized. Tap any chore to edit its details.",
     "pages": {
-      "myChoresPage": "View all your chores here. Tap 'Mark Done' to complete a chore or 'Delete' to remove it.",
-      "addChorePage": "Fill in the chore details and tap 'Add Chore' to save it. Room and Assigned To are populated from your Manage pages.",
-      "choreAddedPage": "Your chore was saved! Add another or go back to the list.",
+      "myChoresPage": "View all your chores here. Tap Mark Done to complete a chore, or tap any row to edit it. Filter by room, person, or status. Color-coded: green = Done, blue = In Progress, orange = To Do.",
+      "addChorePage": "Fill in the chore details and tap Add Chore to save it. Due date defaults to 7 days from now. Room and Assigned To are populated from your Manage pages.",
+      "editChorePage": "Edit any field on the chore and press Save Changes.",
       "manageRoomsPage": "Add and manage the rooms in your home. Use these names when adding chores.",
       "manageFamilyPage": "Add and manage family members. Use these names when assigning chores."
     }
   },
+  "settings": {
+    "defaultFrequency": {
+      "label": "Default frequency for new chores",
+      "type": "select",
+      "options": ["Daily", "Weekly", "Bi-Weekly", "Monthly", "As Needed"],
+      "default": "Weekly"
+    }
+  },
   "tour": [
-    { "title": "Welcome to My Chores!", "content": "This app helps you track household chores and assign them to family members.", "page": "myChoresPage" },
-    { "title": "Add Chores", "content": "Use this page to add new chores with a room, person, frequency, and due date.", "page": "addChorePage" },
-    { "title": "Manage Rooms & Family", "content": "Set up your rooms and family members so you can reference them when creating chores.", "page": "manageRoomsPage" },
-    { "title": "You're All Set!", "content": "Start by adding your rooms and family members, then create your first chore!" }
+    { "title": "Welcome to My Chores!", "content": "This app helps you track household chores and assign them to family members." },
+    { "title": "Your Chore List", "content": "All chores show here with color-coded status. Tap any row to edit it. Mark Done hides once the chore is complete. Filter by room, person, or status.", "page": "myChoresPage" },
+    { "title": "Add Chores", "content": "Create new chores with a room, person, frequency, and due date. The due date defaults to 7 days from now.", "page": "addChorePage" },
+    { "title": "Manage Rooms & Family", "content": "Set up your rooms and family members so you can reference them when creating chores.", "page": "manageRoomsPage" }
   ]
 }

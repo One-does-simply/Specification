@@ -86,15 +86,8 @@
           "component": "button",
           "label": "Submit Survey",
           "onClick": [
-            {
-              "action": "submit",
-              "dataSource": "surveyStore",
-              "target": "surveyForm"
-            },
-            {
-              "action": "navigate",
-              "target": "thankYouPage"
-            }
+            { "action": "submit", "dataSource": "surveyStore", "target": "surveyForm" },
+            { "action": "navigate", "target": "thankYouPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         }
@@ -169,8 +162,21 @@
             { "header": "Communication", "field": "communication", "sortable": true },
             { "header": "Workload", "field": "workload", "sortable": true },
             { "header": "Growth", "field": "growth", "sortable": true },
-            { "header": "Recommend", "field": "recommend", "sortable": true, "filterable": true }
+            { "header": "Recommend", "field": "recommend", "sortable": true, "filterable": true, "colorMap": { "Yes": "green", "Maybe": "orange", "No": "red" } }
           ],
+          "rowActions": [
+            {
+              "label": "Delete",
+              "action": "delete",
+              "dataSource": "surveyDeleter",
+              "matchField": "_id"
+            }
+          ],
+          "onRowTap": {
+            "action": "navigate",
+            "target": "responseDetailPage",
+            "populateForm": "responseDetailForm"
+          },
           "summary": [
             { "column": "satisfaction", "function": "avg", "label": "Average" },
             { "column": "communication", "function": "avg", "label": "Average" },
@@ -184,6 +190,32 @@
           "label": "Take the Survey",
           "onClick": [{ "action": "navigate", "target": "takeSurveyPage" }],
           "styleHint": { "emphasis": "primary" }
+        }
+      ]
+    },
+    "responseDetailPage": {
+      "component": "page",
+      "title": "Response Detail",
+      "content": [
+        {
+          "component": "form",
+          "id": "responseDetailForm",
+          "fields": [
+            { "name": "role", "label": "Role", "type": "text" },
+            { "name": "satisfaction", "label": "Satisfaction", "type": "number" },
+            { "name": "communication", "label": "Communication", "type": "number" },
+            { "name": "workload", "label": "Workload", "type": "number" },
+            { "name": "growth", "label": "Growth", "type": "number" },
+            { "name": "recommend", "label": "Recommend", "type": "text" },
+            { "name": "bestThing", "label": "Best Thing", "type": "multiline" },
+            { "name": "improvement", "label": "What Could Improve", "type": "multiline" }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Back to Results",
+          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
+          "styleHint": { "emphasis": "secondary" }
         }
       ]
     }
@@ -239,29 +271,34 @@
           "recommend": "Maybe"
         }
       ]
+    },
+    "surveyDeleter": {
+      "url": "local://survey_responses",
+      "method": "DELETE"
     }
   },
   "help": {
-    "overview": "Team Survey collects anonymous feedback about team satisfaction, communication, workload, and growth. The results page shows averages, breakdowns, and charts to help identify areas for improvement.",
+    "overview": "Team Survey collects anonymous feedback about satisfaction, communication, workload, and growth. The results page shows averages, breakdowns, and charts. Tap any response row to see the full open-ended comments.",
     "pages": {
       "takeSurveyPage": "Select your role, rate four dimensions on a 1-5 scale, share what you love and what could improve, and indicate whether you'd recommend the team.",
-      "thankYouPage": "Your response is saved. You can submit another or view the collected results.",
-      "resultsPage": "See aggregate scores, recommendation breakdown, a chart of satisfaction by role, and the full response table with averages."
+      "thankYouPage": "Your response is saved. Submit another or view the collected results.",
+      "resultsPage": "Aggregate scores, recommendation breakdown, satisfaction chart by role, and full response table. Tap any row to see comments. Color-coded recommendations: green=Yes, orange=Maybe, red=No.",
+      "responseDetailPage": "View the full response including open-ended comments about what's best and what could improve."
     }
   },
   "tour": [
     {
       "title": "Welcome to Team Survey",
-      "content": "This app collects anonymous team feedback and shows aggregate results. All data stays on your device."
+      "content": "Collect anonymous team feedback and see aggregate results. All data stays on your device."
     },
     {
       "title": "Take the Survey",
-      "content": "Rate four areas on a 1-5 scale, share your thoughts in the open-ended fields, and indicate whether you'd recommend the team.",
+      "content": "Rate four areas on a 1-5 scale, share your thoughts, and indicate if you'd recommend the team. Select 'Other' for role to specify a custom role.",
       "page": "takeSurveyPage"
     },
     {
       "title": "View Results",
-      "content": "The results page shows average scores, recommendation breakdowns, a chart, and the full response table. Sections appear automatically once responses are collected.",
+      "content": "Average scores, recommendation breakdown, a chart, and the full response table. Tap any row to see the open-ended comments.",
       "page": "resultsPage"
     }
   ]
