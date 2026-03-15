@@ -54,18 +54,56 @@
             "id": "checkForm",
             "fields": {
               "$map": "fields",
-              "each(field)": {
+              "each(field, index)": {
                 "$if": "field.type == 'select'",
                 "then": {
-                  "name": "${field.name}",
-                  "label": "${field.label}",
-                  "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "$if": "index == 0 || field.name == 'result'",
+                  "then": {
+                    "name": "${field.name}",
+                    "label": "${field.label}",
+                    "type": "select",
+                    "options": { "$eval": "field.options" },
+                    "required": true
+                  },
+                  "else": {
+                    "name": "${field.name}",
+                    "label": "${field.label}",
+                    "type": "select",
+                    "options": { "$eval": "field.options" }
+                  }
                 },
                 "else": {
-                  "name": "${field.name}",
-                  "label": "${field.label}",
-                  "type": "${field.type}"
+                  "$if": "index == 0 || field.name == 'itemName'",
+                  "then": {
+                    "$if": "field.type == 'date'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "date",
+                      "default": "CURRENTDATE",
+                      "required": true
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}",
+                      "required": true
+                    }
+                  },
+                  "else": {
+                    "$if": "field.type == 'date'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "date",
+                      "default": "CURRENTDATE"
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}"
+                    }
+                  }
                 }
               }
             }
@@ -93,6 +131,33 @@
             "icon": "check_circle"
           },
           {
+            "component": "summary",
+            "label": "Pass",
+            "value": "{COUNT(checksReader, result=Pass)}",
+            "icon": "check_circle"
+          },
+          {
+            "component": "summary",
+            "label": "Fail",
+            "value": "{COUNT(checksReader, result=Fail)}",
+            "icon": "cancel"
+          },
+          {
+            "component": "text",
+            "content": "No checks yet. Tap the button below to record your first!",
+            "styleHint": { "variant": "body" },
+            "visibleWhen": { "source": "checksReader", "countEquals": 0 }
+          },
+          {
+            "component": "chart",
+            "dataSource": "checksReader",
+            "chartType": "pie",
+            "labelField": "result",
+            "valueField": "result",
+            "title": "Results Breakdown",
+            "visibleWhen": { "source": "checksReader", "countMin": 1 }
+          },
+          {
             "component": "list",
             "dataSource": "checksReader",
             "searchable": true,
@@ -105,10 +170,7 @@
             "columns": {
               "$map": "fields",
               "each(field, index)": {
-                "header": "${field.label}",
-                "field": "${field.name}",
-                "sortable": true,
-                "$if": "index == 0",
+                "$if": "field.type == 'select' && index == 0",
                 "then": {
                   "header": "${field.label}",
                   "field": "${field.name}",
@@ -174,7 +236,8 @@
             "label": "Save Changes",
             "onClick": [
               { "action": "update", "dataSource": "checksUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "listPage" }
+              { "action": "navigate", "target": "listPage" },
+              { "action": "showMessage", "message": "Check updated!" }
             ],
             "styleHint": { "emphasis": "primary" }
           },

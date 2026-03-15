@@ -23,7 +23,10 @@
             { "name": "cuisine", "label": "Cuisine", "type": "select", "options": ["Italian", "Asian", "Mexican", "Indian", "Mediterranean", "American", "French", "Japanese", "Other"] },
             { "name": "servings", "label": "Servings", "type": "number" },
             { "name": "ingredients", "label": "Ingredients", "type": "multiline", "required": true, "placeholder": "List each ingredient separated by commas" },
-            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true, "placeholder": "Step-by-step cooking instructions" }
+            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true, "placeholder": "Step-by-step cooking instructions" },
+            { "name": "prepTime", "label": "Prep Time (mins)", "type": "number", "placeholder": "e.g., 15" },
+            { "name": "cookTime", "label": "Cook Time (mins)", "type": "number", "placeholder": "e.g., 30" },
+            { "name": "dateAdded", "label": "Date Added", "type": "date", "default": "CURRENTDATE" }
           ]
         },
         {
@@ -31,6 +34,7 @@
           "label": "Save Recipe",
           "onClick": [
             { "action": "submit", "dataSource": "recipesStore", "target": "addRecipeForm" },
+            { "action": "showMessage", "message": "Recipe saved!" },
             { "action": "navigate", "target": "browseRecipesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -41,11 +45,6 @@
       "component": "page",
       "title": "My Recipes",
       "content": [
-        {
-          "component": "text",
-          "content": "Your Collection — {COUNT(recipesReader)} recipes",
-          "styleHint": { "variant": "subheading" }
-        },
         {
           "component": "text",
           "content": "No recipes yet. Add your first recipe to start building your cookbook!",
@@ -66,8 +65,10 @@
           "columns": [
             { "header": "Recipe", "field": "recipeName", "sortable": true },
             { "header": "Cuisine", "field": "cuisine", "sortable": true, "filterable": true },
-            { "header": "Servings", "field": "servings", "sortable": true }
+            { "header": "Servings", "field": "servings", "sortable": true },
+            { "header": "Added", "field": "dateAdded", "sortable": true }
           ],
+          "defaultSort": { "field": "dateAdded", "direction": "desc" },
           "rowActions": [
             {
               "label": "Delete",
@@ -102,7 +103,10 @@
             { "name": "cuisine", "label": "Cuisine", "type": "select", "options": ["Italian", "Asian", "Mexican", "Indian", "Mediterranean", "American", "French", "Japanese", "Other"] },
             { "name": "servings", "label": "Servings", "type": "number" },
             { "name": "ingredients", "label": "Ingredients", "type": "multiline", "required": true },
-            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true }
+            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true },
+            { "name": "prepTime", "label": "Prep Time (mins)", "type": "number", "placeholder": "e.g., 15" },
+            { "name": "cookTime", "label": "Cook Time (mins)", "type": "number", "placeholder": "e.g., 30" },
+            { "name": "dateAdded", "label": "Date Added", "type": "date", "default": "CURRENTDATE" }
           ]
         },
         {
@@ -110,6 +114,7 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "recipesUpdater", "target": "editRecipeForm", "matchField": "_id" },
+            { "action": "showMessage", "message": "Recipe updated!" },
             { "action": "navigate", "target": "browseRecipesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -136,7 +141,10 @@
         { "name": "cuisine", "type": "select" },
         { "name": "ingredients", "type": "multiline" },
         { "name": "instructions", "type": "multiline" },
-        { "name": "servings", "type": "number" }
+        { "name": "servings", "type": "number" },
+        { "name": "prepTime", "type": "number" },
+        { "name": "cookTime", "type": "number" },
+        { "name": "dateAdded", "type": "date" }
       ],
       "seedData": [
         {

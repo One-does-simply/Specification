@@ -20,11 +20,6 @@
         },
         {
           "component": "text",
-          "content": "{COUNT(choreReader)} chores — {COUNT(choreReader, status=Done)} done, {COUNT(choreReader, status=To Do)} to do",
-          "styleHint": { "variant": "subheading" }
-        },
-        {
-          "component": "text",
           "content": "No chores yet! Set up your rooms and family members, then add your first chore.",
           "styleHint": { "variant": "body" },
           "visibleWhen": { "source": "choreReader", "countEquals": 0 }
@@ -43,20 +38,32 @@
             { "header": "Due Date", "field": "dueDate", "sortable": true },
             { "header": "Status", "field": "status", "sortable": true, "filterable": true, "colorMap": { "Done": "green", "In Progress": "blue", "To Do": "orange" } }
           ],
+          "defaultSort": { "field": "dueDate", "direction": "desc" },
           "rowActions": [
+            {
+              "label": "Start",
+              "action": "update",
+              "dataSource": "choreUpdater",
+              "matchField": "_id",
+              "values": { "status": "In Progress" },
+              "hideWhen": { "field": "status", "notEquals": "To Do" },
+              "showMessage": "Chore started!"
+            },
             {
               "label": "Mark Done",
               "action": "update",
               "dataSource": "choreUpdater",
               "matchField": "_id",
               "values": { "status": "Done" },
-              "hideWhen": { "field": "status", "equals": "Done" }
+              "hideWhen": { "field": "status", "notEquals": "In Progress" },
+              "showMessage": "Chore completed!"
             },
             {
               "label": "Delete",
               "action": "delete",
               "dataSource": "choreDeleter",
-              "matchField": "_id"
+              "matchField": "_id",
+              "showMessage": "Chore deleted!"
             }
           ],
           "onRowTap": {
@@ -100,6 +107,7 @@
           "label": "Add Chore",
           "onClick": [
             { "action": "submit", "dataSource": "choreStore", "target": "choreForm" },
+            { "action": "showMessage", "message": "Chore added!" },
             { "action": "navigate", "target": "myChoresPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -128,6 +136,7 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "choreUpdater", "target": "editChoreForm", "matchField": "_id" },
+            { "action": "showMessage", "message": "Chore updated!" },
             { "action": "navigate", "target": "myChoresPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -160,7 +169,8 @@
           "component": "button",
           "label": "Add Room",
           "onClick": [
-            { "action": "submit", "dataSource": "roomStore", "target": "roomForm" }
+            { "action": "submit", "dataSource": "roomStore", "target": "roomForm" },
+            { "action": "showMessage", "message": "Room added!" }
           ],
           "styleHint": { "emphasis": "primary" }
         },
@@ -178,6 +188,7 @@
         {
           "component": "list",
           "dataSource": "roomReader",
+          "searchable": true,
           "columns": [
             { "header": "Room", "field": "roomName" }
           ],
@@ -186,7 +197,8 @@
               "label": "Delete",
               "action": "delete",
               "dataSource": "roomDeleter",
-              "matchField": "_id"
+              "matchField": "_id",
+              "showMessage": "Room deleted!"
             }
           ]
         }
@@ -212,7 +224,8 @@
           "component": "button",
           "label": "Add Family Member",
           "onClick": [
-            { "action": "submit", "dataSource": "familyStore", "target": "familyForm" }
+            { "action": "submit", "dataSource": "familyStore", "target": "familyForm" },
+            { "action": "showMessage", "message": "Family member added!" }
           ],
           "styleHint": { "emphasis": "primary" }
         },
@@ -230,6 +243,7 @@
         {
           "component": "list",
           "dataSource": "familyReader",
+          "searchable": true,
           "columns": [
             { "header": "Name", "field": "memberName" }
           ],
@@ -238,7 +252,8 @@
               "label": "Delete",
               "action": "delete",
               "dataSource": "familyDeleter",
-              "matchField": "_id"
+              "matchField": "_id",
+              "showMessage": "Family member deleted!"
             }
           ]
         }

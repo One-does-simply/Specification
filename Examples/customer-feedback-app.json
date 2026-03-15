@@ -72,9 +72,10 @@
           "icon": "people"
         },
         {
-          "component": "text",
-          "content": "{COUNT(feedbackReader)} responses received",
-          "styleHint": { "variant": "subheading" }
+          "component": "summary",
+          "label": "Average Rating",
+          "value": "{AVG(feedbackReader, rating)}",
+          "icon": "star"
         },
         {
           "component": "text",
@@ -91,6 +92,7 @@
             { "header": "Name", "field": "customerName", "sortable": true },
             { "header": "Rating", "field": "rating", "sortable": true, "filterable": true, "colorMap": { "5 - Excellent": "green", "4 - Very Good": "green", "3 - Good": "blue", "2 - Fair": "orange", "1 - Poor": "red" } }
           ],
+          "defaultSort": { "field": "date", "direction": "desc" },
           "rowActions": [
             {
               "label": "Delete",
@@ -127,11 +129,11 @@
           "component": "form",
           "id": "detailForm",
           "fields": [
-            { "name": "customerName", "label": "Name", "type": "text" },
-            { "name": "customerEmail", "label": "Email", "type": "email" },
-            { "name": "date", "label": "Date", "type": "date" },
-            { "name": "rating", "label": "Rating", "type": "select", "options": ["1 - Poor", "2 - Fair", "3 - Good", "4 - Very Good", "5 - Excellent"] },
-            { "name": "comments", "label": "Comments", "type": "multiline" }
+            { "name": "customerName", "label": "Name", "type": "text", "readOnly": true },
+            { "name": "customerEmail", "label": "Email", "type": "email", "readOnly": true },
+            { "name": "date", "label": "Date", "type": "date", "readOnly": true },
+            { "name": "rating", "label": "Rating", "type": "select", "options": ["1 - Poor", "2 - Fair", "3 - Good", "4 - Very Good", "5 - Excellent"], "readOnly": true },
+            { "name": "comments", "label": "Comments", "type": "multiline", "readOnly": true }
           ]
         },
         {

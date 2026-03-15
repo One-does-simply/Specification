@@ -53,7 +53,7 @@
                     [
                       { "name": "playerName", "label": "${playerName}", "type": "text", "required": true },
                       { "name": "score", "label": "${scoreName}", "type": "number", "required": true },
-                      { "name": "date", "label": "Date", "type": "date", "default": "NOW" }
+                      { "name": "date", "label": "Date", "type": "date", "default": "CURRENTDATE" }
                     ],
                     {
                       "$if": "wantCategories",
@@ -93,13 +93,15 @@
               },
               {
                 "component": "text",
-                "content": "{COUNT(scoresReader)} scores recorded",
-                "styleHint": { "variant": "subheading" }
+                "content": "No scores yet. Tap the button below to record your first!",
+                "styleHint": { "variant": "body" },
+                "visibleWhen": { "source": "scoresReader", "countEquals": 0 }
               },
               {
                 "component": "list",
                 "searchable": true,
                 "dataSource": "scoresReader",
+                "defaultSort": { "field": "date", "direction": "desc" },
                 "columns": {
                   "$flatten": [
                     [

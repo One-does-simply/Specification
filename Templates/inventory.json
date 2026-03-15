@@ -1,6 +1,6 @@
 {
   "templateName": "Inventory",
-  "description": "Track items, quantities, and locations. See stock levels at a glance with searchable lists, card layout, and low-stock alerts.",
+  "description": "Track items, quantities, and locations. See stock levels at a glance with searchable lists and card layout.",
   "icon": "inventory",
   "questions": [
     {
@@ -67,21 +67,56 @@
             "id": "addForm",
             "fields": {
               "$map": "fields",
-              "each(field)": {
-                "name": "${field.name}",
-                "label": "${field.label}",
-                "type": "${field.type}",
+              "each(field, index)": {
                 "$if": "field.type == 'select'",
                 "then": {
-                  "name": "${field.name}",
-                  "label": "${field.label}",
-                  "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "$if": "index == 0",
+                  "then": {
+                    "name": "${field.name}",
+                    "label": "${field.label}",
+                    "type": "select",
+                    "options": { "$eval": "field.options" },
+                    "required": true
+                  },
+                  "else": {
+                    "name": "${field.name}",
+                    "label": "${field.label}",
+                    "type": "select",
+                    "options": { "$eval": "field.options" }
+                  }
                 },
                 "else": {
-                  "name": "${field.name}",
-                  "label": "${field.label}",
-                  "type": "${field.type}"
+                  "$if": "index == 0",
+                  "then": {
+                    "$if": "field.type == 'date'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "date",
+                      "default": "CURRENTDATE",
+                      "required": true
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}",
+                      "required": true
+                    }
+                  },
+                  "else": {
+                    "$if": "field.type == 'date'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "date",
+                      "default": "CURRENTDATE"
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}"
+                    }
+                  }
                 }
               }
             }
@@ -111,16 +146,31 @@
                 "icon": "inventory"
               },
               {
+                "component": "text",
+                "content": "No items yet. Tap the button below to add your first!",
+                "styleHint": { "variant": "body" },
+                "visibleWhen": { "source": "itemsReader", "countEquals": 0 }
+              },
+              {
                 "component": "list",
                 "dataSource": "itemsReader",
                 "searchable": true,
                 "displayAs": "cards",
                 "columns": {
                   "$map": "fields",
-                  "each(field)": {
-                    "header": "${field.label}",
-                    "field": "${field.name}",
-                    "sortable": true
+                  "each(field, index)": {
+                    "$if": "field.type == 'select' && index == 0",
+                    "then": {
+                      "header": "${field.label}",
+                      "field": "${field.name}",
+                      "sortable": true,
+                      "filterable": true
+                    },
+                    "else": {
+                      "header": "${field.label}",
+                      "field": "${field.name}",
+                      "sortable": true
+                    }
                   }
                 },
                 "rowActions": [
@@ -191,7 +241,8 @@
             "label": "Save Changes",
             "onClick": [
               { "action": "update", "dataSource": "itemsUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "listPage" }
+              { "action": "navigate", "target": "listPage" },
+              { "action": "showMessage", "message": "${itemName} updated!" }
             ],
             "styleHint": { "emphasis": "primary" }
           },

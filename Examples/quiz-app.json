@@ -33,6 +33,7 @@
         {
           "component": "list",
           "dataSource": "quizReader",
+          "searchable": true,
           "columns": [
             { "header": "Quiz", "field": "quizName", "sortable": true },
             { "header": "Category", "field": "category", "sortable": true, "filterable": true },
@@ -61,9 +62,9 @@
           "component": "form",
           "id": "startQuizForm",
           "fields": [
-            { "name": "quizName", "label": "Quiz", "type": "text" },
-            { "name": "category", "label": "Category", "type": "text" },
-            { "name": "description", "label": "Description", "type": "multiline" }
+            { "name": "quizName", "label": "Quiz", "type": "text", "readOnly": true },
+            { "name": "category", "label": "Category", "type": "text", "readOnly": true },
+            { "name": "description", "label": "Description", "type": "multiline", "readOnly": true }
           ]
         },
         {

@@ -52,6 +52,12 @@
             "icon": "people"
           },
           {
+            "component": "text",
+            "content": "No entries yet. Add your first ${entryName} to get started!",
+            "styleHint": { "variant": "body" },
+            "visibleWhen": { "source": "entriesReader", "countEquals": 0 }
+          },
+          {
             "component": "list",
             "dataSource": "entriesReader",
             "searchable": true,
@@ -59,9 +65,18 @@
             "columns": {
               "$map": "fields",
               "each(field)": {
-                "header": "${field.label}",
-                "field": "${field.name}",
-                "sortable": true
+                "$if": "field.type == 'select'",
+                "then": {
+                  "header": "${field.label}",
+                  "field": "${field.name}",
+                  "sortable": true,
+                  "filterable": true
+                },
+                "else": {
+                  "header": "${field.label}",
+                  "field": "${field.name}",
+                  "sortable": true
+                }
               }
             },
             "rowActions": [
@@ -158,7 +173,8 @@
             "label": "Save Changes",
             "onClick": [
               { "action": "update", "dataSource": "entriesUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "directoryPage" }
+              { "action": "navigate", "target": "directoryPage" },
+              { "action": "showMessage", "message": "${entryName} updated!" }
             ],
             "styleHint": { "emphasis": "primary" }
           },

@@ -86,7 +86,7 @@ The `Examples/` directory contains 12 working example specs that demonstrate the
 ODS specs support the following capabilities:
 
 ### Field Types
-`text`, `email`, `number`, `date`, `datetime`, `multiline`, `select` (with options), `checkbox`
+`text`, `email`, `number`, `date`, `datetime`, `multiline`, `select` (with options), `checkbox`, `hidden` (carries data without rendering)
 
 ### Components
  * **text** — Static or data-aware text; supports `"format": "markdown"` for rich rendering
@@ -117,11 +117,13 @@ ODS specs support the following capabilities:
  * `searchable` lists with full-text search across columns
  * `sortable` columns with tap-to-sort headers
  * `filterable` columns with dropdown filters
+ * `defaultSort` — Initial sort order on lists (`{ "field": "date", "direction": "desc" }`)
  * `displayAs: "cards"` for card-based list layout
  * `rowColorField` / `rowColorMap` for color-coded rows
  * `displayMap` / `colorMap` on individual list columns
  * `visibleWhen` — Show/hide components based on form state or data source count
  * `visible` — Expression-based visibility (`{field} == 'value'`)
+ * `hideWhen` on row actions — Supports `equals` and `notEquals` for conditional action buttons
 
 ### UX
  * `help` — Overview text and per-page help tips

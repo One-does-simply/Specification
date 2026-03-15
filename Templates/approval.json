@@ -137,8 +137,14 @@
               {
                 "component": "summary",
                 "label": "Pending Review",
-                "value": "{COUNT(requestsReader)}",
-                "icon": "schedule"
+                "value": "{COUNT(requestsReader, status=Pending)}",
+                "icon": "pending"
+              },
+              {
+                "component": "text",
+                "content": "No requests yet. Submit your first ${requestName} request to get started!",
+                "styleHint": { "variant": "body" },
+                "visibleWhen": { "source": "requestsReader", "countEquals": 0 }
               },
               {
                 "component": "list",
@@ -177,7 +183,9 @@
                     "dataSource": "requestsUpdater",
                     "matchField": "_id",
                     "values": { "status": "Approved" },
-                    "confirm": "Approve this request?"
+                    "confirm": "Approve this request?",
+                    "showMessage": "Request approved!",
+                    "hideWhen": { "field": "status", "notEquals": "Pending" }
                   },
                   {
                     "label": "Reject",
@@ -185,7 +193,9 @@
                     "dataSource": "requestsUpdater",
                     "matchField": "_id",
                     "values": { "status": "Rejected" },
-                    "confirm": "Reject this request?"
+                    "confirm": "Reject this request?",
+                    "showMessage": "Request rejected!",
+                    "hideWhen": { "field": "status", "notEquals": "Pending" }
                   }
                 ],
                 "onRowTap": {

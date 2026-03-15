@@ -57,9 +57,7 @@
     "startPage": "parentListPage",
     "menu": [
       { "label": "${parentName}s", "mapsTo": "parentListPage" },
-      { "label": "Add ${parentName}", "mapsTo": "addParentPage" },
-      { "label": "${childName}s", "mapsTo": "childListPage" },
-      { "label": "Add ${childName}", "mapsTo": "addChildPage" }
+      { "label": "${childName}s", "mapsTo": "childListPage" }
     ],
     "pages": {
       "parentListPage": {
@@ -71,6 +69,12 @@
             "label": "Total ${parentName}s",
             "value": "{COUNT(parentsReader)}",
             "icon": "list"
+          },
+          {
+            "component": "text",
+            "content": "No ${parentName}s yet. Add your first one to get started!",
+            "styleHint": { "variant": "body" },
+            "visibleWhen": { "source": "parentsReader", "countEquals": 0 }
           },
           {
             "component": "list",
@@ -173,7 +177,8 @@
             "label": "Save Changes",
             "onClick": [
               { "action": "update", "dataSource": "parentsUpdater", "target": "editParentForm", "matchField": "_id" },
-              { "action": "navigate", "target": "parentListPage" }
+              { "action": "navigate", "target": "parentListPage" },
+              { "action": "showMessage", "message": "${parentName} updated!" }
             ],
             "styleHint": { "emphasis": "primary" }
           },
@@ -194,6 +199,12 @@
             "label": "Total ${childName}s",
             "value": "{COUNT(childrenReader)}",
             "icon": "task"
+          },
+          {
+            "component": "text",
+            "content": "No ${childName}s yet. Add your first one to get started!",
+            "styleHint": { "variant": "body" },
+            "visibleWhen": { "source": "childrenReader", "countEquals": 0 }
           },
           {
             "component": "list",
@@ -338,7 +349,8 @@
             "label": "Save Changes",
             "onClick": [
               { "action": "update", "dataSource": "childrenUpdater", "target": "editChildForm", "matchField": "_id" },
-              { "action": "navigate", "target": "childListPage" }
+              { "action": "navigate", "target": "childListPage" },
+              { "action": "showMessage", "message": "${childName} updated!" }
             ],
             "styleHint": { "emphasis": "primary" }
           },

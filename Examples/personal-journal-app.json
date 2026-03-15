@@ -1,6 +1,6 @@
 {
   "appName": "Personal Journal",
-  "startPage": "writeEntryPage",
+  "startPage": "viewEntriesPage",
   "menu": [
     { "label": "Write Entry", "mapsTo": "writeEntryPage" },
     { "label": "View Entries", "mapsTo": "viewEntriesPage" }
@@ -59,22 +59,27 @@
           "visibleWhen": { "source": "journalReader", "countEquals": 0 }
         },
         {
-          "component": "summary",
-          "label": "Journal Entries",
-          "value": "{COUNT(journalReader)}",
-          "icon": "book"
+          "component": "chart",
+          "dataSource": "journalReader",
+          "chartType": "bar",
+          "labelField": "mood",
+          "valueField": "title",
+          "title": "Mood Distribution",
+          "visibleWhen": { "source": "journalReader", "countMin": 1 }
         },
         {
           "component": "list",
           "dataSource": "journalReader",
           "searchable": true,
           "displayAs": "cards",
+          "defaultSort": { "field": "date", "direction": "desc" },
           "rowColorField": "mood",
           "rowColorMap": {"Happy": "green", "Calm": "blue", "Grateful": "green", "Anxious": "orange", "Sad": "red", "Neutral": "grey", "Excited": "green", "Focused": "blue", "Stressed": "red"},
           "columns": [
             { "header": "Date", "field": "date", "sortable": true },
             { "header": "Title", "field": "title", "sortable": true },
-            { "header": "Mood", "field": "mood", "sortable": true, "filterable": true, "colorMap": { "Happy": "green", "Excited": "green", "Grateful": "green", "Calm": "blue", "Focused": "blue", "Neutral": "grey", "Anxious": "orange", "Stressed": "orange", "Sad": "red" } }
+            { "header": "Mood", "field": "mood", "sortable": true, "filterable": true, "colorMap": { "Happy": "green", "Excited": "green", "Grateful": "green", "Calm": "blue", "Focused": "blue", "Neutral": "grey", "Anxious": "orange", "Stressed": "orange", "Sad": "red" } },
+            { "header": "Preview", "field": "entry" }
           ],
           "rowActions": [
             {
@@ -117,6 +122,7 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "journalUpdater", "target": "editEntryForm", "matchField": "_id" },
+            { "action": "showMessage", "message": "Entry updated!" },
             { "action": "navigate", "target": "viewEntriesPage" }
           ],
           "styleHint": { "emphasis": "primary" }

@@ -122,10 +122,10 @@
             "recordSource": "questionReader",
             "fields": [
               { "name": "questionText", "label": "Question", "type": "multiline", "readOnly": true, "displayVariant": "heading" },
-              { "name": "optionA", "label": "A", "type": "text", "readOnly": true, "displayVariant": "plain" },
-              { "name": "optionB", "label": "B", "type": "text", "readOnly": true, "displayVariant": "plain" },
-              { "name": "optionC", "label": "C", "type": "text", "readOnly": true, "displayVariant": "plain" },
-              { "name": "optionD", "label": "D", "type": "text", "readOnly": true, "displayVariant": "plain" },
+              { "name": "optionA", "label": "A", "type": "text", "readOnly": true, "displayVariant": "body" },
+              { "name": "optionB", "label": "B", "type": "text", "readOnly": true, "displayVariant": "body" },
+              { "name": "optionC", "label": "C", "type": "text", "readOnly": true, "displayVariant": "body" },
+              { "name": "optionD", "label": "D", "type": "text", "readOnly": true, "displayVariant": "body" },
               { "name": "correctOption", "type": "hidden" },
               { "name": "userAnswer", "label": "Your Answer", "type": "select", "required": true, "options": ["A", "B", "C", "D"], "optionLabels": ["A: {optionA}", "B: {optionB}", "C: {optionC}", "D: {optionD}"] },
               { "name": "attemptDate", "type": "hidden", "default": "NOW" }
@@ -163,7 +163,7 @@
               {
                 "component": "summary",
                 "label": "Questions Answered",
-                "value": "{COUNT(answersReader)}",
+                "value": "{COUNT(answerReader)}",
                 "icon": "check_circle"
               },
               {
@@ -226,6 +226,7 @@
           {
             "component": "list",
             "dataSource": "answerReader",
+            "searchable": true,
             "columns": [
               { "header": "Date", "field": "attemptDate", "sortable": true },
               { "header": "Question", "field": "questionText" },
@@ -259,6 +260,12 @@
             "component": "text",
             "content": "{COUNT(questionReader)} questions",
             "styleHint": { "variant": "subheading" }
+          },
+          {
+            "component": "text",
+            "content": "No questions yet. Add your first question to get started!",
+            "styleHint": { "variant": "body" },
+            "visibleWhen": { "source": "questionReader", "countEquals": 0 }
           },
           {
             "component": "list",
@@ -321,7 +328,8 @@
             "label": "Save Question",
             "onClick": [
               { "action": "submit", "dataSource": "questionStore", "target": "addQuestionForm" },
-              { "action": "navigate", "target": "manageQuestionsPage" }
+              { "action": "navigate", "target": "manageQuestionsPage" },
+              { "action": "showMessage", "message": "Question added!" }
             ],
             "styleHint": { "emphasis": "primary" }
           }
@@ -349,7 +357,8 @@
             "label": "Save Changes",
             "onClick": [
               { "action": "update", "dataSource": "questionUpdater", "target": "editQuestionForm", "matchField": "_id" },
-              { "action": "navigate", "target": "manageQuestionsPage" }
+              { "action": "navigate", "target": "manageQuestionsPage" },
+              { "action": "showMessage", "message": "Question updated!" }
             ],
             "styleHint": { "emphasis": "primary" }
           },

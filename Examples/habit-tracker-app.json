@@ -1,6 +1,6 @@
 {
   "appName": "Habit Tracker",
-  "startPage": "logHabitsPage",
+  "startPage": "habitHistoryPage",
   "menu": [
     { "label": "Log Today's Habits", "mapsTo": "logHabitsPage" },
     { "label": "My Habits", "mapsTo": "myHabitsPage" },
@@ -30,6 +30,7 @@
           "label": "Save Habit",
           "onClick": [
             { "action": "submit", "dataSource": "habitsStore", "target": "addHabitForm" },
+            { "action": "showMessage", "message": "Habit added!" },
             { "action": "navigate", "target": "myHabitsPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -98,6 +99,7 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "habitsUpdater", "target": "editHabitForm", "matchField": "_id" },
+            { "action": "showMessage", "message": "Habit updated!" },
             { "action": "navigate", "target": "myHabitsPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -169,9 +171,25 @@
           "icon": "check_circle"
         },
         {
+          "component": "summary",
+          "label": "Completion Rate",
+          "value": "{PCT(habitLogReader, completed=true)}%",
+          "icon": "trending_up"
+        },
+        {
+          "component": "chart",
+          "dataSource": "habitLogReader",
+          "chartType": "bar",
+          "labelField": "habitName",
+          "valueField": "completed",
+          "title": "Completions by Habit",
+          "visibleWhen": { "source": "habitLogReader", "countMin": 1 }
+        },
+        {
           "component": "list",
           "dataSource": "habitLogReader",
           "searchable": true,
+          "defaultSort": { "field": "date", "direction": "desc" },
           "columns": [
             { "header": "Date", "field": "date", "sortable": true },
             { "header": "Habit", "field": "habitName", "sortable": true, "filterable": true },
@@ -218,6 +236,7 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "habitLogUpdater", "target": "editLogForm", "matchField": "_id" },
+            { "action": "showMessage", "message": "Log entry updated!" },
             { "action": "navigate", "target": "habitHistoryPage" }
           ],
           "styleHint": { "emphasis": "primary" }

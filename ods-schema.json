@@ -135,7 +135,7 @@
         "type": {
           "description": "The data type of the field. Used for input widget selection and display formatting.",
           "type": "string",
-          "enum": ["text", "email", "number", "date", "datetime", "multiline", "select", "checkbox"]
+          "enum": ["text", "email", "number", "date", "datetime", "multiline", "select", "checkbox", "hidden"]
         },
         "options": {
           "description": "An array of string values the user can choose from, rendered as a dropdown. Required when type is 'select' unless optionsFrom is provided.",
@@ -352,6 +352,23 @@
           "description": "Optional. When true, a search bar appears above the list. Filters rows where any displayed column contains the search text (case-insensitive). Defaults to false.",
           "type": "boolean",
           "default": false
+        },
+        "defaultSort": {
+          "description": "Optional. Sets the initial sort order when the list first renders. Users can still change the sort by tapping sortable column headers.",
+          "type": "object",
+          "properties": {
+            "field": {
+              "description": "The field name to sort by.",
+              "type": "string"
+            },
+            "direction": {
+              "description": "The sort direction. 'asc' for ascending (A-Z, oldest first), 'desc' for descending (Z-A, newest first).",
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "default": "asc"
+            }
+          },
+          "required": ["field"]
         },
         "displayAs": {
           "description": "Optional. How to render the list data. 'table' (default) renders a DataTable, 'cards' renders a scrollable grid of cards showing each row's column values.",
@@ -828,9 +845,13 @@
             "equals": {
               "description": "The value that, when matched, causes the button to be hidden.",
               "type": "string"
+            },
+            "notEquals": {
+              "description": "The value that, when NOT matched, causes the button to be hidden. Use when a button should only appear for one specific state (e.g., show 'Start' only when status is 'To Do').",
+              "type": "string"
             }
           },
-          "required": ["field", "equals"]
+          "required": ["field"]
         }
       },
       "required": ["label", "action", "dataSource", "matchField"]

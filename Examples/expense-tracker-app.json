@@ -1,6 +1,6 @@
 {
   "appName": "Expense Tracker",
-  "startPage": "logExpensePage",
+  "startPage": "viewExpensesPage",
   "menu": [
     { "label": "Log Expense", "mapsTo": "logExpensePage" },
     { "label": "View Expenses", "mapsTo": "viewExpensesPage" }
@@ -79,7 +79,7 @@
           "dataSource": "expensesReader",
           "chartType": "pie",
           "labelField": "category",
-          "valueField": "unitPrice",
+          "valueField": "total",
           "title": "Spending by Category",
           "visibleWhen": { "source": "expensesReader", "countMin": 1 }
         },
@@ -87,6 +87,7 @@
           "component": "list",
           "dataSource": "expensesReader",
           "searchable": true,
+          "defaultSort": { "field": "date", "direction": "desc" },
           "columns": [
             { "header": "Date", "field": "date", "sortable": true, "filterable": true },
             { "header": "Description", "field": "description" },
@@ -144,6 +145,7 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "expensesUpdater", "target": "editExpenseForm", "matchField": "_id" },
+            { "action": "showMessage", "message": "Expense updated!" },
             { "action": "navigate", "target": "viewExpensesPage" }
           ],
           "styleHint": { "emphasis": "primary" }

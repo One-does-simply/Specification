@@ -22,7 +22,6 @@
             { "name": "taskName", "label": "Task", "type": "text", "required": true, "placeholder": "e.g., Buy groceries" },
             { "name": "dueDate", "label": "Due Date", "type": "date", "default": "+7d" },
             { "name": "priority", "label": "Priority", "type": "select", "options": ["High", "Medium", "Low"], "default": "Medium" },
-            { "name": "done", "label": "Done", "type": "checkbox" },
             { "name": "notes", "label": "Notes", "type": "multiline", "placeholder": "Any extra details..." }
           ]
         },
@@ -31,8 +30,8 @@
           "label": "Add Task",
           "onClick": [
             { "action": "submit", "dataSource": "tasksStore", "target": "addTaskForm" },
-            { "action": "navigate", "target": "viewTasksPage" },
-            { "action": "showMessage", "message": "Task added successfully!" }
+            { "action": "showMessage", "message": "Task added successfully!" },
+            { "action": "navigate", "target": "viewTasksPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         }
@@ -42,11 +41,6 @@
       "component": "page",
       "title": "My Tasks",
       "content": [
-        {
-          "component": "text",
-          "content": "{COUNT(tasksReader)} tasks — {COUNT(tasksReader, done=true)} done, {COUNT(tasksReader, done=false)} remaining",
-          "styleHint": { "variant": "subheading" }
-        },
         {
           "component": "text",
           "content": "No tasks yet! Add your first task to get started.",
@@ -63,6 +57,7 @@
           "component": "list",
           "dataSource": "tasksReader",
           "searchable": true,
+          "defaultSort": { "field": "dueDate", "direction": "desc" },
           "rowColorField": "priority",
           "rowColorMap": {"High": "red", "Medium": "orange", "Low": "blue"},
           "columns": [
@@ -121,6 +116,7 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "tasksUpdater", "target": "editTaskForm", "matchField": "_id" },
+            { "action": "showMessage", "message": "Task updated!" },
             { "action": "navigate", "target": "viewTasksPage" }
           ],
           "styleHint": { "emphasis": "primary" }

@@ -79,7 +79,8 @@
               "type": "select",
               "required": true,
               "options": ["Yes", "Maybe", "No"]
-            }
+            },
+            { "name": "submittedDate", "label": "Submitted", "type": "date", "default": "CURRENTDATE" }
           ]
         },
         {
@@ -141,12 +142,6 @@
         },
         {
           "component": "text",
-          "content": "{COUNT(surveyReader)} responses collected",
-          "styleHint": { "variant": "subheading" },
-          "visibleWhen": { "source": "surveyReader", "countMin": 1 }
-        },
-        {
-          "component": "text",
           "content": "Average Scores — Satisfaction: {AVG(surveyReader, satisfaction)} | Communication: {AVG(surveyReader, communication)} | Workload: {AVG(surveyReader, workload)} | Growth: {AVG(surveyReader, growth)}",
           "styleHint": { "variant": "body" },
           "visibleWhen": { "source": "surveyReader", "countMin": 1 }
@@ -176,8 +171,10 @@
             { "header": "Communication", "field": "communication", "sortable": true },
             { "header": "Workload", "field": "workload", "sortable": true },
             { "header": "Growth", "field": "growth", "sortable": true },
-            { "header": "Recommend", "field": "recommend", "sortable": true, "filterable": true, "colorMap": { "Yes": "green", "Maybe": "orange", "No": "red" } }
+            { "header": "Recommend", "field": "recommend", "sortable": true, "filterable": true, "colorMap": { "Yes": "green", "Maybe": "orange", "No": "red" } },
+            { "header": "Submitted", "field": "submittedDate", "sortable": true }
           ],
+          "defaultSort": { "field": "submittedDate", "direction": "desc" },
           "rowActions": [
             {
               "label": "Delete",
@@ -215,14 +212,15 @@
           "component": "form",
           "id": "responseDetailForm",
           "fields": [
-            { "name": "role", "label": "Role", "type": "text" },
-            { "name": "satisfaction", "label": "Satisfaction", "type": "number" },
-            { "name": "communication", "label": "Communication", "type": "number" },
-            { "name": "workload", "label": "Workload", "type": "number" },
-            { "name": "growth", "label": "Growth", "type": "number" },
-            { "name": "recommend", "label": "Recommend", "type": "text" },
-            { "name": "bestThing", "label": "Best Thing", "type": "multiline" },
-            { "name": "improvement", "label": "What Could Improve", "type": "multiline" }
+            { "name": "role", "label": "Role", "type": "text", "readOnly": true },
+            { "name": "satisfaction", "label": "Satisfaction", "type": "number", "readOnly": true },
+            { "name": "communication", "label": "Communication", "type": "number", "readOnly": true },
+            { "name": "workload", "label": "Workload", "type": "number", "readOnly": true },
+            { "name": "growth", "label": "Growth", "type": "number", "readOnly": true },
+            { "name": "recommend", "label": "Recommend", "type": "text", "readOnly": true },
+            { "name": "bestThing", "label": "Best Thing", "type": "multiline", "readOnly": true },
+            { "name": "improvement", "label": "What Could Improve", "type": "multiline", "readOnly": true },
+            { "name": "submittedDate", "label": "Submitted", "type": "date", "readOnly": true }
           ]
         },
         {
@@ -251,7 +249,8 @@
         { "name": "growth", "type": "number" },
         { "name": "bestThing", "type": "multiline" },
         { "name": "improvement", "type": "multiline" },
-        { "name": "recommend", "type": "select" }
+        { "name": "recommend", "type": "select" },
+        { "name": "submittedDate", "type": "date" }
       ],
       "seedData": [
         {

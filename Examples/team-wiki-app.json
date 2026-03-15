@@ -20,8 +20,10 @@
           "id": "addArticleForm",
           "fields": [
             { "name": "title", "label": "Title", "type": "text", "required": true, "placeholder": "e.g., How to Set Up Your Dev Environment" },
-            { "name": "category", "label": "Category", "type": "select", "options": ["Getting Started", "How To", "FAQ", "Reference"] },
-            { "name": "content", "label": "Content", "type": "multiline", "required": true, "placeholder": "Write your article using Markdown syntax..." }
+            { "name": "category", "label": "Category", "type": "select", "options": ["Getting Started", "How To", "FAQ", "Reference", "Architecture", "Troubleshooting", "Onboarding"] },
+            { "name": "content", "label": "Content", "type": "multiline", "required": true, "placeholder": "Write your article using Markdown syntax..." },
+            { "name": "author", "label": "Author", "type": "text", "placeholder": "Your name" },
+            { "name": "lastUpdated", "label": "Last Updated", "type": "date", "default": "CURRENTDATE" }
           ]
         },
         {
@@ -29,8 +31,8 @@
           "label": "Publish Article",
           "onClick": [
             { "action": "submit", "dataSource": "articlesStore", "target": "addArticleForm" },
-            { "action": "navigate", "target": "browseArticlesPage" },
-            { "action": "showMessage", "message": "Article published!" }
+            { "action": "showMessage", "message": "Article saved!" },
+            { "action": "navigate", "target": "browseArticlesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
         }
@@ -64,8 +66,10 @@
           "displayAs": "cards",
           "columns": [
             { "header": "Title", "field": "title", "sortable": true },
-            { "header": "Category", "field": "category", "sortable": true, "filterable": true }
+            { "header": "Category", "field": "category", "sortable": true, "filterable": true },
+            { "header": "Updated", "field": "lastUpdated", "sortable": true }
           ],
+          "defaultSort": { "field": "lastUpdated", "direction": "desc" },
           "rowActions": [
             {
               "label": "Delete",
@@ -97,8 +101,10 @@
           "id": "editArticleForm",
           "fields": [
             { "name": "title", "label": "Title", "type": "text", "required": true },
-            { "name": "category", "label": "Category", "type": "select", "options": ["Getting Started", "How To", "FAQ", "Reference"] },
-            { "name": "content", "label": "Content", "type": "multiline", "required": true }
+            { "name": "category", "label": "Category", "type": "select", "options": ["Getting Started", "How To", "FAQ", "Reference", "Architecture", "Troubleshooting", "Onboarding"] },
+            { "name": "content", "label": "Content", "type": "multiline", "required": true },
+            { "name": "author", "label": "Author", "type": "text", "placeholder": "Your name" },
+            { "name": "lastUpdated", "label": "Last Updated", "type": "date", "default": "CURRENTDATE" }
           ]
         },
         {
@@ -142,7 +148,9 @@
       "fields": [
         { "name": "title", "type": "text" },
         { "name": "category", "type": "select" },
-        { "name": "content", "type": "multiline" }
+        { "name": "content", "type": "multiline" },
+        { "name": "author", "type": "text" },
+        { "name": "lastUpdated", "type": "date" }
       ],
       "seedData": [
         {
@@ -188,7 +196,7 @@
     "defaultCategory": {
       "label": "Default category for new articles",
       "type": "select",
-      "options": ["Getting Started", "How To", "FAQ", "Reference"],
+      "options": ["Getting Started", "How To", "FAQ", "Reference", "Architecture", "Troubleshooting", "Onboarding"],
       "default": "How To"
     }
   },

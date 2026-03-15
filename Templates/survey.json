@@ -59,21 +59,30 @@
             "component": "form",
             "id": "surveyForm",
             "fields": {
-              "$map": "fields",
-              "each(field)": {
-                "$if": "field.type == 'select'",
-                "then": {
-                  "name": "${field.name}",
-                  "label": "${field.label}",
-                  "type": "select",
-                  "options": { "$eval": "field.options" }
+              "$flatten": [
+                {
+                  "$map": "fields",
+                  "each(field)": {
+                    "$if": "field.type == 'select'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "select",
+                      "options": { "$eval": "field.options" },
+                      "required": true
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}",
+                      "required": true
+                    }
+                  }
                 },
-                "else": {
-                  "name": "${field.name}",
-                  "label": "${field.label}",
-                  "type": "${field.type}"
-                }
-              }
+                [
+                  { "name": "submittedAt", "type": "hidden", "default": "CURRENTDATE" }
+                ]
+              ]
             }
           },
           {
@@ -118,15 +127,16 @@
           "$flatten": [
             [
               {
-                "component": "text",
-                "content": "{COUNT(responsesReader)} responses collected",
-                "styleHint": { "variant": "subheading" }
-              },
-              {
                 "component": "summary",
                 "label": "Total Responses",
                 "value": "{COUNT(responsesReader)}",
                 "icon": "people"
+              },
+              {
+                "component": "text",
+                "content": "No responses yet. Share this survey and collect your first!",
+                "styleHint": { "variant": "body" },
+                "visibleWhen": { "source": "responsesReader", "countEquals": 0 }
               },
               {
                 "component": "list",
@@ -134,10 +144,19 @@
                 "searchable": true,
                 "columns": {
                   "$map": "fields",
-                  "each(field)": {
-                    "header": "${field.label}",
-                    "field": "${field.name}",
-                    "sortable": true
+                  "each(field, index)": {
+                    "$if": "field.type == 'select' && index == 0",
+                    "then": {
+                      "header": "${field.label}",
+                      "field": "${field.name}",
+                      "sortable": true,
+                      "filterable": true
+                    },
+                    "else": {
+                      "header": "${field.label}",
+                      "field": "${field.name}",
+                      "sortable": true
+                    }
                   }
                 }
               }
@@ -169,11 +188,18 @@
         "url": "local://responses",
         "method": "GET",
         "fields": {
-          "$map": "fields",
-          "each(field)": {
-            "name": "${field.name}",
-            "type": "${field.type}"
-          }
+          "$flatten": [
+            {
+              "$map": "fields",
+              "each(field)": {
+                "name": "${field.name}",
+                "type": "${field.type}"
+              }
+            },
+            [
+              { "name": "submittedAt", "type": "date" }
+            ]
+          ]
         }
       }
     },

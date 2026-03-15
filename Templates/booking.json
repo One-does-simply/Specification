@@ -68,7 +68,7 @@
             "id": "bookForm",
             "fields": {
               "$flatten": [
-                [{ "name": "status", "type": "hidden", "default": "Confirmed" }],
+                [{ "name": "status", "type": "hidden", "default": "Pending" }],
                 {
                   "$map": "fields",
                   "each(field)": {
@@ -114,9 +114,16 @@
                 "icon": "event"
               },
               {
+                "component": "text",
+                "content": "No bookings yet. Create your first ${bookingName} booking!",
+                "styleHint": { "variant": "body" },
+                "visibleWhen": { "source": "bookingsReader", "countEquals": 0 }
+              },
+              {
                 "component": "list",
                 "dataSource": "bookingsReader",
                 "searchable": true,
+                "defaultSort": { "field": "date", "direction": "desc" },
                 "rowColorField": "status",
                 "rowColorMap": {
                   "Confirmed": "green",
@@ -138,12 +145,21 @@
                 },
                 "rowActions": [
                   {
+                    "label": "Confirm",
+                    "action": "update",
+                    "dataSource": "bookingsUpdater",
+                    "matchField": "_id",
+                    "values": { "status": "Confirmed" },
+                    "hideWhen": { "field": "status", "notEquals": "Pending" }
+                  },
+                  {
                     "label": "Cancel",
                     "action": "update",
                     "dataSource": "bookingsUpdater",
                     "matchField": "_id",
                     "values": { "status": "Cancelled" },
-                    "confirm": "Cancel this booking?"
+                    "confirm": "Cancel this booking?",
+                    "hideWhen": { "field": "status", "equals": "Cancelled" }
                   },
                   {
                     "label": "Delete",
@@ -190,26 +206,21 @@
             "component": "form",
             "id": "editForm",
             "fields": {
-              "$flatten": [
-                [{ "name": "status", "type": "hidden", "default": "Confirmed" }],
-                {
-                  "$map": "fields",
-                  "each(field)": {
-                    "$if": "field.type == 'select'",
-                    "then": {
-                      "name": "${field.name}",
-                      "label": "${field.label}",
-                      "type": "select",
-                      "options": { "$eval": "field.options" }
-                    },
-                    "else": {
-                      "name": "${field.name}",
-                      "label": "${field.label}",
-                      "type": "${field.type}"
-                    }
-                  }
+              "$map": "fields",
+              "each(field)": {
+                "$if": "field.type == 'select'",
+                "then": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "select",
+                  "options": { "$eval": "field.options" }
+                },
+                "else": {
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "${field.type}"
                 }
-              ]
+              }
             }
           },
           {
@@ -217,7 +228,8 @@
             "label": "Save Changes",
             "onClick": [
               { "action": "update", "dataSource": "bookingsUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "listPage" }
+              { "action": "navigate", "target": "listPage" },
+              { "action": "showMessage", "message": "Booking updated!" }
             ],
             "styleHint": { "emphasis": "primary" }
           },

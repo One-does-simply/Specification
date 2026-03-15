@@ -31,6 +31,7 @@
           "label": "Save Book",
           "onClick": [
             { "action": "submit", "dataSource": "booksStore", "target": "addBookForm" },
+            { "action": "showMessage", "message": "Book added!" },
             { "action": "navigate", "target": "myReadingListPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -54,9 +55,24 @@
         },
         {
           "component": "summary",
-          "label": "Books Read",
+          "label": "Total Books",
           "value": "{COUNT(booksReader)}",
           "icon": "book"
+        },
+        {
+          "component": "summary",
+          "label": "Books Finished",
+          "value": "{COUNT(booksReader, status=Finished)}",
+          "icon": "check_circle"
+        },
+        {
+          "component": "chart",
+          "dataSource": "booksReader",
+          "chartType": "pie",
+          "labelField": "status",
+          "valueField": "bookTitle",
+          "title": "Reading Pipeline",
+          "visibleWhen": { "source": "booksReader", "countMin": 1 }
         },
         {
           "component": "list",
@@ -76,7 +92,8 @@
               "dataSource": "booksUpdater",
               "matchField": "_id",
               "values": { "status": "Reading" },
-              "hideWhen": { "field": "status", "equals": "Reading" }
+              "hideWhen": { "field": "status", "notEquals": "To Read" },
+              "showMessage": "Status updated!"
             },
             {
               "label": "Finished",
@@ -84,13 +101,15 @@
               "dataSource": "booksUpdater",
               "matchField": "_id",
               "values": { "status": "Finished" },
-              "hideWhen": { "field": "status", "equals": "Finished" }
+              "hideWhen": { "field": "status", "notEquals": "Reading" },
+              "showMessage": "Status updated!"
             },
             {
               "label": "Delete",
               "action": "delete",
               "dataSource": "booksDeleter",
-              "matchField": "_id"
+              "matchField": "_id",
+              "showMessage": "Book deleted!"
             }
           ],
           "onRowTap": {
@@ -127,6 +146,7 @@
           "label": "Save Changes",
           "onClick": [
             { "action": "update", "dataSource": "booksUpdater", "target": "editBookForm", "matchField": "_id" },
+            { "action": "showMessage", "message": "Book updated!" },
             { "action": "navigate", "target": "myReadingListPage" }
           ],
           "styleHint": { "emphasis": "primary" }

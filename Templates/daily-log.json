@@ -34,7 +34,7 @@
   ],
   "template": {
     "appName": "${appName}",
-    "startPage": "writePage",
+    "startPage": "browsePage",
     "menu": [
       { "label": "New ${entryName}", "mapsTo": "writePage" },
       { "label": "Browse", "mapsTo": "browsePage" }
@@ -49,26 +49,55 @@
             "id": "entryForm",
             "fields": {
               "$map": "fields",
-              "each(field)": {
+              "each(field, index)": {
                 "$if": "field.type == 'select'",
                 "then": {
-                  "name": "${field.name}",
-                  "label": "${field.label}",
-                  "type": "select",
-                  "options": { "$eval": "field.options" }
-                },
-                "else": {
-                  "$if": "field.type == 'date'",
+                  "$if": "index == 0",
                   "then": {
                     "name": "${field.name}",
                     "label": "${field.label}",
-                    "type": "date",
-                    "default": "NOW"
+                    "type": "select",
+                    "options": { "$eval": "field.options" },
+                    "required": true
                   },
                   "else": {
                     "name": "${field.name}",
                     "label": "${field.label}",
-                    "type": "${field.type}"
+                    "type": "select",
+                    "options": { "$eval": "field.options" }
+                  }
+                },
+                "else": {
+                  "$if": "index == 0",
+                  "then": {
+                    "$if": "field.type == 'date'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "date",
+                      "default": "CURRENTDATE",
+                      "required": true
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}",
+                      "required": true
+                    }
+                  },
+                  "else": {
+                    "$if": "field.type == 'date'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "date",
+                      "default": "CURRENTDATE"
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}"
+                    }
                   }
                 }
               }
@@ -91,15 +120,16 @@
         "title": "${appName}",
         "content": [
           {
-            "component": "text",
-            "content": "{COUNT(entriesReader)} entries",
-            "styleHint": { "variant": "subheading" }
-          },
-          {
             "component": "summary",
             "label": "Total Entries",
             "value": "{COUNT(entriesReader)}",
             "icon": "book"
+          },
+          {
+            "component": "text",
+            "content": "No entries yet. Tap the button below to add your first!",
+            "styleHint": { "variant": "body" },
+            "visibleWhen": { "source": "entriesReader", "countEquals": 0 }
           },
           {
             "component": "list",
@@ -107,10 +137,19 @@
             "searchable": true,
             "columns": {
               "$map": "fields",
-              "each(field)": {
-                "header": "${field.label}",
-                "field": "${field.name}",
-                "sortable": true
+              "each(field, index)": {
+                "$if": "field.type == 'select' && index == 0",
+                "then": {
+                  "header": "${field.label}",
+                  "field": "${field.name}",
+                  "sortable": true,
+                  "filterable": true
+                },
+                "else": {
+                  "header": "${field.label}",
+                  "field": "${field.name}",
+                  "sortable": true
+                }
               }
             },
             "rowActions": [
@@ -165,7 +204,8 @@
             "label": "Save Changes",
             "onClick": [
               { "action": "update", "dataSource": "entriesUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "browsePage" }
+              { "action": "navigate", "target": "browsePage" },
+              { "action": "showMessage", "message": "Entry updated!" }
             ],
             "styleHint": { "emphasis": "primary" }
           },

@@ -23,7 +23,8 @@
             { "name": "project", "label": "Project", "type": "select", "options": ["Alpha", "Beta", "Gamma"], "required": true },
             { "name": "status", "label": "Status", "type": "select", "options": ["To Do", "In Progress", "Done"], "default": "To Do" },
             { "name": "priority", "label": "Priority", "type": "select", "options": ["Low", "Medium", "High"], "default": "Medium" },
-            { "name": "dueDate", "label": "Due Date", "type": "date", "default": "+7d" }
+            { "name": "dueDate", "label": "Due Date", "type": "date", "default": "+7d" },
+            { "name": "description", "label": "Notes", "type": "multiline", "placeholder": "Additional details..." }
           ]
         },
         {
@@ -67,6 +68,12 @@
           "icon": "check_circle"
         },
         {
+          "component": "summary",
+          "label": "In Progress",
+          "value": "{COUNT(tasksReader, status=In Progress)}",
+          "icon": "pending"
+        },
+        {
           "component": "tabs",
           "tabs": [
             {
@@ -79,20 +86,29 @@
                   "rowColorField": "status",
                   "rowColorMap": { "To Do": "blue", "In Progress": "orange", "Done": "green" },
                   "columns": [
-                    { "header": "Task", "field": "name" },
+                    { "header": "Task", "field": "name", "sortable": true },
                     { "header": "Project", "field": "project", "sortable": true, "filterable": true },
                     { "header": "Status", "field": "status", "sortable": true, "filterable": true },
                     { "header": "Priority", "field": "priority", "sortable": true, "filterable": true },
                     { "header": "Due Date", "field": "dueDate", "sortable": true }
                   ],
+                  "defaultSort": { "field": "dueDate", "direction": "desc" },
                   "rowActions": [
+                    {
+                      "label": "Start",
+                      "action": "update",
+                      "dataSource": "tasksUpdater",
+                      "matchField": "_id",
+                      "values": { "status": "In Progress" },
+                      "hideWhen": { "field": "status", "notEquals": "To Do" }
+                    },
                     {
                       "label": "Mark Done",
                       "action": "update",
                       "dataSource": "tasksUpdater",
                       "matchField": "_id",
                       "values": { "status": "Done" },
-                      "hideWhen": { "field": "status", "equals": "Done" }
+                      "hideWhen": { "field": "status", "notEquals": "In Progress" }
                     },
                     {
                       "label": "Delete",
@@ -159,7 +175,8 @@
             { "name": "project", "label": "Project", "type": "select", "options": ["Alpha", "Beta", "Gamma"] },
             { "name": "status", "label": "Status", "type": "select", "options": ["To Do", "In Progress", "Done"] },
             { "name": "priority", "label": "Priority", "type": "select", "options": ["Low", "Medium", "High"] },
-            { "name": "dueDate", "label": "Due Date", "type": "date" }
+            { "name": "dueDate", "label": "Due Date", "type": "date" },
+            { "name": "description", "label": "Notes", "type": "multiline", "placeholder": "Additional details..." }
           ]
         },
         {
@@ -194,7 +211,8 @@
         { "name": "project", "type": "select" },
         { "name": "status", "type": "select" },
         { "name": "priority", "type": "select" },
-        { "name": "dueDate", "type": "date" }
+        { "name": "dueDate", "type": "date" },
+        { "name": "description", "type": "multiline" }
       ],
       "seedData": [
         { "name": "Design login screen", "project": "Alpha", "status": "Done", "priority": "High", "dueDate": "2026-03-10" },
