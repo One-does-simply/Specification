@@ -220,6 +220,7 @@
                   "chartType": "bar",
                   "labelField": "status",
                   "valueField": "status",
+                  "aggregate": "count",
                   "title": "Requests by Status"
                 }
               ],

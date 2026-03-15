@@ -170,6 +170,7 @@
                   "chartType": "bar",
                   "labelField": "${chartField}",
                   "valueField": "${chartField}",
+                  "aggregate": "count",
                   "title": "Responses by ${chartField}"
                 }
               ],

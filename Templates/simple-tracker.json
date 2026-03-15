@@ -47,10 +47,17 @@
     },
     {
       "id": "chartValueField",
-      "label": "Chart: count or sum which field?",
+      "label": "Chart: which field to measure?",
       "type": "field-ref",
       "ref": "fields",
       "placeholder": "e.g., Amount, Rating"
+    },
+    {
+      "id": "chartAggregate",
+      "label": "Chart: how to aggregate?",
+      "type": "select",
+      "options": ["Count", "Sum", "Average"],
+      "default": "Count"
     }
   ],
   "template": {
@@ -205,6 +212,7 @@
                   "chartType": "bar",
                   "labelField": "${chartLabelField}",
                   "valueField": "${chartValueField}",
+                  "aggregate": "${chartAggregate}",
                   "title": "${itemName} Overview"
                 }
               ],

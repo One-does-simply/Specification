@@ -43,6 +43,19 @@
       "label": "Chart: group by which field?",
       "type": "field-ref",
       "ref": "fields"
+    },
+    {
+      "id": "chartValueField",
+      "label": "Chart: which field to measure?",
+      "type": "field-ref",
+      "ref": "fields"
+    },
+    {
+      "id": "chartAggregate",
+      "label": "Chart: how to aggregate?",
+      "type": "select",
+      "options": ["Count", "Sum", "Average"],
+      "default": "Sum"
     }
   ],
   "template": {
@@ -202,7 +215,8 @@
                   "dataSource": "itemsReader",
                   "chartType": "bar",
                   "labelField": "${chartField}",
-                  "valueField": "quantity",
+                  "valueField": "${chartValueField}",
+                  "aggregate": "${chartAggregate}",
                   "title": "${itemName} by ${chartField}"
                 }
               ],

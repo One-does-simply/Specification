@@ -496,7 +496,13 @@
           "enum": ["bar", "line", "pie"]
         },
         "labelField": { "description": "The field to use for category labels (X axis or pie slice names).", "type": "string" },
-        "valueField": { "description": "The field to use for numeric values (Y axis height or pie slice size).", "type": "string" },
+        "valueField": { "description": "The field to use for numeric values (Y axis height or pie slice size). For 'count' aggregate, can be the same as labelField.", "type": "string" },
+        "aggregate": {
+          "description": "Optional. How to aggregate values per label group. 'count' counts rows, 'sum' totals the valueField (default), 'avg' averages the valueField. When labelField equals valueField, defaults to 'count'.",
+          "type": "string",
+          "enum": ["count", "sum", "avg"],
+          "default": "sum"
+        },
         "title": { "description": "Optional. A title displayed above the chart.", "type": "string" },
         "visible": {
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
