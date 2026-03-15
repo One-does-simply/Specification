@@ -31,6 +31,7 @@
           "label": "Submit Feedback",
           "onClick": [
             { "action": "submit", "dataSource": "feedbackStore", "target": "feedbackForm" },
+            { "action": "showMessage", "message": "Thank you for your feedback!" },
             { "action": "navigate", "target": "thankYouPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -65,6 +66,12 @@
       "title": "All Feedback",
       "content": [
         {
+          "component": "summary",
+          "label": "Total Responses",
+          "value": "{COUNT(feedbackReader)}",
+          "icon": "people"
+        },
+        {
           "component": "text",
           "content": "{COUNT(feedbackReader)} responses received",
           "styleHint": { "variant": "subheading" }
@@ -78,6 +85,7 @@
         {
           "component": "list",
           "dataSource": "feedbackReader",
+          "searchable": true,
           "columns": [
             { "header": "Date", "field": "date", "sortable": true },
             { "header": "Name", "field": "customerName", "sortable": true },
@@ -109,6 +117,12 @@
       "component": "page",
       "title": "Feedback Detail",
       "content": [
+        {
+          "component": "detail",
+          "fromForm": "detailForm",
+          "fields": ["customerName", "customerEmail", "date", "rating", "comments"],
+          "labels": { "customerName": "Name", "customerEmail": "Email", "rating": "Rating", "comments": "Comments" }
+        },
         {
           "component": "form",
           "id": "detailForm",

@@ -31,7 +31,8 @@
           "label": "Add Task",
           "onClick": [
             { "action": "submit", "dataSource": "tasksStore", "target": "addTaskForm" },
-            { "action": "navigate", "target": "viewTasksPage" }
+            { "action": "navigate", "target": "viewTasksPage" },
+            { "action": "showMessage", "message": "Task added successfully!" }
           ],
           "styleHint": { "emphasis": "primary" }
         }
@@ -53,8 +54,17 @@
           "visibleWhen": { "source": "tasksReader", "countEquals": 0 }
         },
         {
+          "component": "summary",
+          "label": "Total Tasks",
+          "value": "{COUNT(tasksReader)}",
+          "icon": "task"
+        },
+        {
           "component": "list",
           "dataSource": "tasksReader",
+          "searchable": true,
+          "rowColorField": "priority",
+          "rowColorMap": {"High": "red", "Medium": "orange", "Low": "blue"},
           "columns": [
             { "header": "Task", "field": "taskName" },
             { "header": "Due Date", "field": "dueDate", "sortable": true },

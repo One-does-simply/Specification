@@ -172,6 +172,12 @@
       "title": "Quiz Complete!",
       "content": [
         {
+          "component": "summary",
+          "label": "Questions Answered",
+          "value": "{COUNT(answerReader)}",
+          "icon": "check_circle"
+        },
+        {
           "component": "text",
           "content": "You finished all the questions!",
           "styleHint": { "variant": "heading" }
@@ -222,6 +228,7 @@
         {
           "component": "list",
           "dataSource": "answerReader",
+          "searchable": true,
           "columns": [
             { "header": "Date", "field": "attemptDate", "sortable": true, "filterable": true },
             { "header": "Quiz", "field": "quizName", "sortable": true, "filterable": true },
@@ -438,6 +445,7 @@
         {
           "component": "list",
           "dataSource": "questionReader",
+          "searchable": true,
           "columns": [
             { "header": "Quiz", "field": "quizName", "sortable": true, "filterable": true },
             { "header": "Question", "field": "questionText" },

@@ -161,6 +161,12 @@
           "$flatten": [
             [
               {
+                "component": "summary",
+                "label": "Questions Answered",
+                "value": "{COUNT(answersReader)}",
+                "icon": "check_circle"
+              },
+              {
                 "component": "text",
                 "content": "You finished all the questions!",
                 "styleHint": { "variant": "heading" }
@@ -257,6 +263,7 @@
           {
             "component": "list",
             "dataSource": "questionReader",
+            "searchable": true,
             "columns": [
               { "header": "Question", "field": "questionText" },
               { "header": "A", "field": "optionA" },

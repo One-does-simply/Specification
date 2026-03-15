@@ -53,8 +53,16 @@
           "visibleWhen": { "source": "recipesReader", "countEquals": 0 }
         },
         {
+          "component": "summary",
+          "label": "Total Recipes",
+          "value": "{COUNT(recipesReader)}",
+          "icon": "restaurant"
+        },
+        {
           "component": "list",
           "dataSource": "recipesReader",
+          "searchable": true,
+          "displayAs": "cards",
           "columns": [
             { "header": "Recipe", "field": "recipeName", "sortable": true },
             { "header": "Cuisine", "field": "cuisine", "sortable": true, "filterable": true },

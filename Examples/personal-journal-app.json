@@ -30,6 +30,7 @@
           "label": "Save Entry",
           "onClick": [
             { "action": "submit", "dataSource": "journalStore", "target": "journalEntryForm" },
+            { "action": "showMessage", "message": "Entry saved!" },
             { "action": "navigate", "target": "viewEntriesPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -58,8 +59,18 @@
           "visibleWhen": { "source": "journalReader", "countEquals": 0 }
         },
         {
+          "component": "summary",
+          "label": "Journal Entries",
+          "value": "{COUNT(journalReader)}",
+          "icon": "book"
+        },
+        {
           "component": "list",
           "dataSource": "journalReader",
+          "searchable": true,
+          "displayAs": "cards",
+          "rowColorField": "mood",
+          "rowColorMap": {"Happy": "green", "Calm": "blue", "Grateful": "green", "Anxious": "orange", "Sad": "red", "Neutral": "grey", "Excited": "green", "Focused": "blue", "Stressed": "red"},
           "columns": [
             { "header": "Date", "field": "date", "sortable": true },
             { "header": "Title", "field": "title", "sortable": true },

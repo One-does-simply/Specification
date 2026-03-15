@@ -13,6 +13,12 @@
       "title": "My Chores",
       "content": [
         {
+          "component": "summary",
+          "label": "Total Chores",
+          "value": "{COUNT(choreReader)}",
+          "icon": "home"
+        },
+        {
           "component": "text",
           "content": "{COUNT(choreReader)} chores — {COUNT(choreReader, status=Done)} done, {COUNT(choreReader, status=To Do)} to do",
           "styleHint": { "variant": "subheading" }
@@ -26,6 +32,9 @@
         {
           "component": "list",
           "dataSource": "choreReader",
+          "searchable": true,
+          "rowColorField": "status",
+          "rowColorMap": { "To Do": "orange", "In Progress": "blue", "Done": "green" },
           "columns": [
             { "header": "Chore", "field": "choreName", "sortable": true },
             { "header": "Room", "field": "room", "sortable": true, "filterable": true },

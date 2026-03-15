@@ -1,13 +1,13 @@
-One Does Simply (ODS) - Vibe coding with guardrails
+# One Does Simply (ODS) - Vibe coding with guardrails
 
-"One does not simply do complex things, but One Does Simply do simple things."
+> "One does not simply do complex things, but One Does Simply do simple things."
 
-What is ODS?
+## What is ODS?
 
 One Does Simply (ODS) is an open-source project dedicated to a simple truth: simple applications can and should be defined simply. ODS provides a clear, concise specification for defining simple, data-driven applications using a JSON file.
 This specification can then be rendered by any compatible Framework, giving citizen developers the power to create useful applications without getting bogged down by the complexities of UI/UX design, proprietary ecosystems, or vendor lock-in.
 
-The ODS Philosophy: Simple for the Builder
+## The ODS Philosophy: Simple for the Builder
 
 The word "simply" in ODS refers to the experience of the person building the app — the citizen developer. The spec should be easy to write, easy to understand, and easy to hand to someone else. That's the contract.
 
@@ -15,7 +15,7 @@ What happens behind the scenes is a different story. Frameworks are free — and
 
 This is the core design principle: **complexity is the framework's job, simplicity is the builder's experience.** The more the framework can do automatically, the simpler the spec stays — and the more capable citizen developers become without needing to learn more. A powerful framework paired with a simple spec is not a contradiction; it's the whole point.
 
-The Problem
+## The Problem
 
 Many low-code and no-code platforms fail for a few key reasons:
  * They try to do too much. They start simple but quickly add overwhelming complexity.
@@ -27,32 +27,232 @@ Recently, many citizen developers are trying to build apps by "vibe coding" with
  * AI agents build things the citizen developer may not understand
  * AI agents build things that may not be safe
  * AI agents build things using technologies that simply may not be conducive to citizen development
+
 Simply put, vibe coding lacks guardrails.
 
-The ODS Solution
+## The ODS Solution
 
 ODS solves these problems by separating concerns into a clear, four-part ecosystem:
- * The Specification: A simple, open-source JSON schema that defines the structure and logic of an application. It's the universal blueprint. The spec stays deliberately simple — it describes *what* the app does, not *how* to render it. This is what keeps building accessible.
- * Frameworks: Real-time renderers for the ODS specification. A framework handles the complex parts — UI/UX, security, data management, accessibility, and platform adaptation — so the citizen developer never has to. The framework is where sophistication lives: smart defaults, polished interactions, and professional-quality output, all driven by a spec the builder can read in five minutes. Frameworks also provide an "off-ramp" code-generation feature that generates professional source code, ensuring you are never locked in.
- * Templates: Pre-built app patterns that turn building into a quick Q&A. A template combines a short wizard (3-5 questions) with a JSON-e template body that renders into a complete ODS spec. Pick a template, answer a few questions — like "What are you tracking?" and "What fields do you need?" — and your app is ready in seconds. No AI required, no JSON editing. Templates use the JSON-e templating language for portability across frameworks.
- * The Build Helper: A conversational AI tool that guides users through the process of creating an ODS JSON file, turning their ideas into a well-structured application definition. It's like vibe coding but with guardrails — the AI can only produce valid ODS specs, so the result is always safe, understandable, and portable.
+ * **The Specification:** A simple, open-source JSON schema that defines the structure and logic of an application. It's the universal blueprint. The spec stays deliberately simple — it describes *what* the app does, not *how* to render it. This is what keeps building accessible.
+ * **Frameworks:** Real-time renderers for the ODS specification. A framework handles the complex parts — UI/UX, security, data management, accessibility, and platform adaptation — so the citizen developer never has to. The framework is where sophistication lives: smart defaults, polished interactions, and professional-quality output, all driven by a spec the builder can read in five minutes. Frameworks also provide an "off-ramp" code-generation feature that generates professional source code, ensuring you are never locked in.
+ * **Templates:** Pre-built app patterns that turn building into a quick Q&A. A template combines a short wizard (3-5 questions) with a JSON-e template body that renders into a complete ODS spec. Pick a template, answer a few questions — like "What are you tracking?" and "What fields do you need?" — and your app is ready in seconds. No AI required, no JSON editing. Templates use the JSON-e templating language for portability across frameworks.
+ * **The Build Helper:** A conversational AI tool that guides users through the process of creating an ODS JSON file, turning their ideas into a well-structured application definition. It's like vibe coding but with guardrails — the AI can only produce valid ODS specs, so the result is always safe, understandable, and portable.
 
-Three Ways to Build
+## Three Ways to Build
 
 ODS offers three paths to creating an app, from fastest to most flexible:
 
- 1. **Quick Build (Templates):** Pick a template, answer a few questions, done. The fastest path — no coding, no AI, just a short wizard. Available templates include Simple Tracker, Survey, Daily Log, Scoreboard, and Quiz. Templates live in the `Templates/` directory.
- 2. **Build Helper (AI):** Describe what you want in plain language and the AI generates a valid ODS spec. More flexible than templates — you can build anything the spec supports. Best for custom apps that don't fit a template pattern.
+ 1. **Quick Build (Templates):** Pick a template, answer a few questions, done. The fastest path — no coding, no AI, just a short wizard. Templates live in the `Templates/` directory. Available templates:
+
+    | Template | Description |
+    |----------|-------------|
+    | **Simple Tracker** | Track anything with a form, list, and optional charts |
+    | **Survey / Feedback** | Collect responses and view aggregate results with charts |
+    | **Daily Log** | Date-based journal for diaries, standups, or gratitude logs |
+    | **Scoreboard** | Track scores and rankings with charts and summary stats |
+    | **Quiz** | Multiple-choice quiz with auto-stepping and scoring |
+    | **Directory** | Searchable directory with card layout and detail view |
+    | **Approval / Request** | Submit requests and track approvals with color-coded status |
+    | **Inventory** | Track items, quantities, and locations with low-stock alerts |
+    | **Checklist** | Run inspections with pass/fail tracking and color-coded results |
+    | **Master-Detail** | Two related tables — projects & tasks, orders & line items, etc. |
+    | **Booking / Sign-up** | Manage reservations or sign-ups with date tracking and status |
+
+ 2. **Build Helper (AI):** Describe what you want in plain language and the AI generates a valid ODS spec. More flexible than templates — you can build anything the spec supports. Best for custom apps that don't fit a template pattern. Build Helper prompts are in the `../BuildHelpers/` directory.
+
  3. **Write JSON directly:** For power users or anyone who wants full control. The spec is small enough to read in five minutes. See `ods-schema.json` for the full schema and `Examples/` for working apps.
 
-Getting Started
+## Example Apps
 
-To explore ODS, check out the example specs in the `Examples/` directory — from a simple to-do list to a full quiz app with auto-stepping questions and score tracking. The `Templates/` directory contains Quick Build templates you can use to generate new apps from a short Q&A.
+The `Examples/` directory contains 12 working example specs that demonstrate the full range of ODS features:
 
-Contributing
+| Example | Key Features Showcased |
+|---------|----------------------|
+| **To-Do List** | Row coloring by priority, displayMap, colorMap on columns, row actions |
+| **Expense Tracker** | Formula fields (computed totals), currency formatting, aggregate text, validation |
+| **Habit Tracker** | Dependent dropdowns (optionsFrom with filter), multiple lists |
+| **My Chores** | Master-detail pattern with dependent dropdowns, status coloring |
+| **Personal Journal** | Card layout, datetime fields, mood-based row coloring (9 colors) |
+| **Reading List** | Row actions with hideWhen conditions, card layout |
+| **Recipe Book** | Card layout, searchable lists |
+| **Customer Feedback** | Detail component (fromForm), rating system |
+| **Team Survey** | Conditional visibility (visibleWhen), aggregate expressions in text |
+| **Quiz Master** | Record cursor (firstRecord/nextRecord), computedFields, readOnly fields |
+| **Team Wiki** | **Markdown text** rendering, seed data with rich formatted content |
+| **Project Dashboard** | **Tabs component**, multiple charts, row coloring by status |
+
+## Feature Overview
+
+ODS specs support the following capabilities:
+
+### Field Types
+`text`, `email`, `number`, `date`, `datetime`, `multiline`, `select` (with options), `checkbox`
+
+### Components
+ * **text** — Static or data-aware text; supports `"format": "markdown"` for rich rendering
+ * **form** — Data entry with fields, validation, defaults, formulas, and conditional visibility
+ * **list** — Table or card layout with search, sort, filter, row coloring, row actions, and onRowTap navigation
+ * **button** — Triggers action chains (navigate, submit, update, showMessage)
+ * **chart** — Bar, line, or pie charts from aggregated data
+ * **summary** — KPI card with label, aggregate value, and icon
+ * **tabs** — Tabbed layout grouping multiple component arrays
+ * **detail** — Read-only field/value card from a data source or form state
+
+### Actions
+ * `navigate` — Change page, optionally populating a form with row data (`populateForm`)
+ * `submit` — POST form data to a data source (creates a new record)
+ * `update` — PUT form data to a data source (updates an existing record by `matchField`)
+ * `showMessage` — Display a toast/snackbar notification
+ * `firstRecord` / `nextRecord` / `previousRecord` / `lastRecord` — Step through records in a form (with optional `filter` and `onEnd` action)
+
+### Data Features
+ * `local://` storage convention — all data stays on the user's device
+ * `seedData` — Pre-populated rows loaded on first app launch
+ * `fields` on dataSources — Explicit table schema (alternative to form-inferred schema)
+ * Formula fields — `"formula": "{qty} * {price}"` for computed values (number math or text interpolation)
+ * Aggregate expressions — `{SUM(ds, field)}`, `{COUNT(ds)}`, `{AVG(ds, field)}`, `{MIN}`, `{MAX}`, `{PCT}`
+ * Data export — Off-ramp: export all app data as JSON, CSV, or SQL
+
+### Layout & Visibility
+ * `searchable` lists with full-text search across columns
+ * `sortable` columns with tap-to-sort headers
+ * `filterable` columns with dropdown filters
+ * `displayAs: "cards"` for card-based list layout
+ * `rowColorField` / `rowColorMap` for color-coded rows
+ * `displayMap` / `colorMap` on individual list columns
+ * `visibleWhen` — Show/hide components based on form state or data source count
+ * `visible` — Expression-based visibility (`{field} == 'value'`)
+
+### UX
+ * `help` — Overview text and per-page help tips
+ * `tour` — Guided walkthrough steps for onboarding
+ * `settings` — User-configurable app settings with defaults (persisted locally)
+ * Toast notifications via `showMessage` action
+ * `default` on fields — Magic values: `"NOW"` (current datetime), `"CURRENTDATE"` (current date), `"+7d"` (relative offset)
+
+## Minimal Spec Example
+
+The simplest valid ODS spec — one page, one text component:
+
+```json
+{
+  "appName": "Hello ODS",
+  "startPage": "homePage",
+  "pages": {
+    "homePage": {
+      "component": "page",
+      "title": "Home",
+      "content": [
+        {
+          "component": "text",
+          "content": "Welcome to your first ODS app."
+        }
+      ]
+    }
+  }
+}
+```
+
+A more realistic example with a form, list, and data source:
+
+```json
+{
+  "appName": "My Notes",
+  "startPage": "listPage",
+  "pages": {
+    "listPage": {
+      "component": "page",
+      "title": "Notes",
+      "content": [
+        {
+          "component": "list",
+          "dataSource": "notesReader",
+          "searchable": true,
+          "columns": [
+            { "header": "Title", "field": "title", "sortable": true },
+            { "header": "Date", "field": "date", "sortable": true }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Add Note",
+          "onClick": [{ "action": "navigate", "target": "addPage" }]
+        }
+      ]
+    },
+    "addPage": {
+      "component": "page",
+      "title": "Add Note",
+      "content": [
+        {
+          "component": "form",
+          "id": "noteForm",
+          "fields": [
+            { "name": "title", "label": "Title", "type": "text", "required": true },
+            { "name": "date", "label": "Date", "type": "date", "default": "CURRENTDATE" },
+            { "name": "content", "label": "Content", "type": "multiline" }
+          ]
+        },
+        {
+          "component": "button",
+          "label": "Save",
+          "onClick": [
+            { "action": "submit", "dataSource": "notesStore", "target": "noteForm" },
+            { "action": "navigate", "target": "listPage" },
+            { "action": "showMessage", "message": "Note saved!" }
+          ]
+        }
+      ]
+    }
+  },
+  "dataSources": {
+    "notesStore": { "url": "local://notes", "method": "POST" },
+    "notesReader": { "url": "local://notes", "method": "GET" }
+  }
+}
+```
+
+## Schema Reference
+
+The authoritative schema is `ods-schema.json` in this directory. All valid ODS specs must conform to it. Framework authors should validate incoming specs against this schema (or its equivalent model layer) before rendering.
+
+For template authors, `ods-template-schema.json` defines the schema for Quick Build templates, including the wizard questions and JSON-e template body.
+
+## Aggregate Expression Syntax
+
+Aggregate expressions can be used in text components and summary card values to compute live totals from a data source:
+
+```
+{FUNC(dataSourceId, fieldName)}
+```
+
+Supported functions: `SUM`, `COUNT`, `AVG`, `MIN`, `MAX`, `PCT`.
+
+An optional filter narrows the rows before aggregation:
+
+```
+{COUNT(tasksReader)}              -- count all rows
+{COUNT(tasksReader, status=Done)} -- count rows where status is "Done"
+{SUM(expenses, amount)}           -- sum the amount field
+{PCT(tasksReader, status=Done)}   -- percentage of rows matching filter
+```
+
+`PCT` returns the percentage of matching rows out of total rows. All functions operate on the current local data at render time.
+
+## For Framework Builders
+
+If you are building a new ODS framework (a renderer for ODS specs), the recommended approach is:
+
+ 1. **Parse the spec JSON into a model layer.** Create typed classes or structs for each spec concept (app, page, component, field, action, dataSource). Validate early — reject malformed specs at parse time, not at render time.
+ 2. **Implement component renderers.** ODS has a closed set of component types: text, form, list, button, chart, summary, tabs, detail. A sealed or exhaustive pattern (sealed classes, tagged unions, or switch/match) ensures every type is handled and new types cause compile-time errors.
+ 3. **Implement the action handler.** Actions include: `navigate` (change page), `submit` (POST to dataSource), `update` (PUT with matchField), `showMessage` (toast notification), and record navigation (`firstRecord`, `nextRecord`, `previousRecord`, `lastRecord`). Actions are arrays — a single button click can trigger multiple actions in sequence.
+ 4. **Implement local data storage.** The `local://` URL convention means the framework manages storage locally (SQLite, IndexedDB, or equivalent). Tables are created on first write; the schema is inferred from form fields unless the dataSource specifies explicit `fields`. Support GET, POST, PUT, and DELETE methods.
+ 5. **Test against the example specs.** Every spec in the `Examples/` directory should parse and render without errors. This is the primary conformance test for a new framework.
+
+## Contributing
 
 We are excited to build a community around this project. Please read our CONTRIBUTING.md to learn how you can get involved.
 
-Code of Conduct
+## Code of Conduct
 
 This project and everyone participating in it is governed by the ODS CODE_OF_CONDUCT.md. By participating, you are expected to uphold this code.

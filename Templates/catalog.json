@@ -29,6 +29,42 @@
       "name": "Quiz",
       "description": "Multiple-choice quiz with auto-stepping questions, scoring, and optional progress tracking.",
       "file": "quiz.json"
+    },
+    {
+      "id": "directory",
+      "name": "Directory",
+      "description": "A searchable directory with card layout and detail view. Browse, search, and manage contacts or members.",
+      "file": "directory.json"
+    },
+    {
+      "id": "approval",
+      "name": "Approval / Request",
+      "description": "Submit requests and track approvals. Reviewers can approve or reject with color-coded status and toast notifications.",
+      "file": "approval.json"
+    },
+    {
+      "id": "inventory",
+      "name": "Inventory",
+      "description": "Track items, quantities, and locations. See stock levels at a glance with searchable lists, card layout, and low-stock alerts.",
+      "file": "inventory.json"
+    },
+    {
+      "id": "checklist",
+      "name": "Checklist",
+      "description": "Run checklists and inspections with pass/fail tracking, completion counts, and color-coded results.",
+      "file": "checklist.json"
+    },
+    {
+      "id": "master-detail",
+      "name": "Master-Detail",
+      "description": "Two related tables — manage parent records and their child items. Great for projects & tasks, orders & line items, or classes & students.",
+      "file": "master-detail.json"
+    },
+    {
+      "id": "booking",
+      "name": "Booking / Sign-up",
+      "description": "Manage bookings, reservations, or sign-ups with date tracking, status updates, and searchable lists.",
+      "file": "booking.json"
     }
   ]
 }

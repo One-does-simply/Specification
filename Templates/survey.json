@@ -81,7 +81,8 @@
             "label": "Submit",
             "onClick": [
               { "action": "submit", "dataSource": "responsesStore", "target": "surveyForm" },
-              { "action": "navigate", "target": "thankYouPage" }
+              { "action": "navigate", "target": "thankYouPage" },
+              { "action": "showMessage", "message": "Response submitted — thank you!" }
             ],
             "styleHint": { "emphasis": "primary" }
           }
@@ -122,8 +123,15 @@
                 "styleHint": { "variant": "subheading" }
               },
               {
+                "component": "summary",
+                "label": "Total Responses",
+                "value": "{COUNT(responsesReader)}",
+                "icon": "people"
+              },
+              {
                 "component": "list",
                 "dataSource": "responsesReader",
+                "searchable": true,
                 "columns": {
                   "$map": "fields",
                   "each(field)": {

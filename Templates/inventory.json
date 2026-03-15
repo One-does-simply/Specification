@@ -1,21 +1,21 @@
 {
-  "templateName": "Simple Tracker",
-  "description": "Track anything with a form, list, and optional charts. Add, edit, and delete items.",
-  "icon": "checklist",
+  "templateName": "Inventory",
+  "description": "Track items, quantities, and locations. See stock levels at a glance with searchable lists, card layout, and low-stock alerts.",
+  "icon": "inventory",
   "questions": [
     {
       "id": "appName",
       "label": "What do you want to call your app?",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., My Reading List, Expense Log"
+      "placeholder": "e.g., Equipment Tracker, Pantry List"
     },
     {
       "id": "itemName",
       "label": "What are you tracking?",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., Books, Expenses, Workouts"
+      "placeholder": "e.g., Tools, Products, Supplies"
     },
     {
       "id": "fields",
@@ -23,34 +23,26 @@
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Name",     "name": "name",     "type": "text" },
-        { "label": "Date",     "name": "date",     "type": "date" },
-        { "label": "Category", "name": "category", "type": "select", "options": ["General"] },
-        { "label": "Status",   "name": "status",   "type": "select", "options": ["To Do", "In Progress", "Done"] },
-        { "label": "Rating",   "name": "rating",   "type": "select", "options": ["1", "2", "3", "4", "5"] },
-        { "label": "Amount",   "name": "amount",   "type": "number" },
-        { "label": "Notes",    "name": "notes",    "type": "multiline" }
+        { "label": "Name",      "name": "name",      "type": "text" },
+        { "label": "Category",  "name": "category",  "type": "select", "options": ["General"] },
+        { "label": "Location",  "name": "location",  "type": "text" },
+        { "label": "Quantity",  "name": "quantity",   "type": "number" },
+        { "label": "Min Stock", "name": "minStock",   "type": "number" },
+        { "label": "Unit Cost", "name": "unitCost",   "type": "number" },
+        { "label": "Notes",     "name": "notes",      "type": "multiline" }
       ]
     },
     {
       "id": "wantChart",
-      "label": "Include a summary chart?",
+      "label": "Include a chart showing items by category?",
       "type": "checkbox",
       "default": false
     },
     {
-      "id": "chartLabelField",
+      "id": "chartField",
       "label": "Chart: group by which field?",
       "type": "field-ref",
-      "ref": "fields",
-      "placeholder": "e.g., Category, Status"
-    },
-    {
-      "id": "chartValueField",
-      "label": "Chart: count or sum which field?",
-      "type": "field-ref",
-      "ref": "fields",
-      "placeholder": "e.g., Amount, Rating"
+      "ref": "fields"
     }
   ],
   "template": {
@@ -67,7 +59,7 @@
         "content": [
           {
             "component": "text",
-            "content": "Add a new entry to your ${itemName} list.",
+            "content": "Add a new ${itemName} to your inventory.",
             "styleHint": { "variant": "body" }
           },
           {
@@ -116,12 +108,13 @@
                 "component": "summary",
                 "label": "Total ${itemName}s",
                 "value": "{COUNT(itemsReader)}",
-                "icon": "list"
+                "icon": "inventory"
               },
               {
                 "component": "list",
                 "dataSource": "itemsReader",
                 "searchable": true,
+                "displayAs": "cards",
                 "columns": {
                   "$map": "fields",
                   "each(field)": {
@@ -158,9 +151,9 @@
                   "component": "chart",
                   "dataSource": "itemsReader",
                   "chartType": "bar",
-                  "labelField": "${chartLabelField}",
-                  "valueField": "${chartValueField}",
-                  "title": "${itemName} Overview"
+                  "labelField": "${chartField}",
+                  "valueField": "quantity",
+                  "title": "${itemName} by ${chartField}"
                 }
               ],
               "else": []
@@ -213,11 +206,11 @@
     },
     "dataSources": {
       "itemsStore": {
-        "url": "local://items",
+        "url": "local://inventory",
         "method": "POST"
       },
       "itemsReader": {
-        "url": "local://items",
+        "url": "local://inventory",
         "method": "GET",
         "fields": {
           "$map": "fields",
@@ -228,16 +221,16 @@
         }
       },
       "itemsUpdater": {
-        "url": "local://items",
+        "url": "local://inventory",
         "method": "PUT"
       },
       "itemsDeleter": {
-        "url": "local://items",
+        "url": "local://inventory",
         "method": "DELETE"
       }
     },
     "help": {
-      "overview": "${appName} helps you track your ${itemName}. Add new entries, edit existing ones, and delete what you no longer need. All data stays on your device."
+      "overview": "${appName} helps you manage your ${itemName} inventory. Track quantities, locations, and costs. Add new items, edit existing ones, and delete what you no longer need. All data stays on your device."
     }
   }
 }

@@ -1,52 +1,57 @@
 {
-  "templateName": "Daily Log",
-  "description": "A simple journal for daily entries — write, browse, and edit. Perfect for diaries, standups, gratitude logs, or any date-based notes.",
-  "icon": "edit_calendar",
+  "templateName": "Checklist",
+  "description": "Run checklists and inspections with pass/fail tracking, completion counts, and color-coded results.",
+  "icon": "check_circle",
   "questions": [
     {
       "id": "appName",
       "label": "What do you want to call your app?",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., My Journal, Daily Standup, Gratitude Log"
+      "placeholder": "e.g., Safety Inspection, Onboarding Checklist"
     },
     {
-      "id": "entryName",
-      "label": "What do you call each entry?",
+      "id": "checklistName",
+      "label": "What's being checked?",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., Entry, Note, Update"
+      "placeholder": "e.g., Safety Items, Setup Steps, Audit Points"
     },
     {
       "id": "fields",
-      "label": "What do you want to capture?",
+      "label": "What info for each check item?",
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Title",    "name": "title",    "type": "text" },
-        { "label": "Date",     "name": "date",     "type": "date" },
-        { "label": "Mood",     "name": "mood",     "type": "select", "options": ["Great", "Good", "OK", "Rough", "Bad"] },
-        { "label": "Category", "name": "category", "type": "select", "options": ["General", "Work", "Personal", "Health"] },
-        { "label": "Content",  "name": "content",  "type": "multiline" },
-        { "label": "Tags",     "name": "tags",     "type": "text" }
+        { "label": "Item Name", "name": "itemName", "type": "text" },
+        { "label": "Category",  "name": "category", "type": "select", "options": ["General"] },
+        { "label": "Result",    "name": "result",   "type": "select", "options": ["Pass", "Fail", "N/A"] },
+        { "label": "Inspector", "name": "inspector", "type": "text" },
+        { "label": "Date",      "name": "date",     "type": "date" },
+        { "label": "Notes",     "name": "notes",    "type": "multiline" }
       ]
     }
   ],
   "template": {
     "appName": "${appName}",
-    "startPage": "writePage",
+    "startPage": "listPage",
     "menu": [
-      { "label": "New ${entryName}", "mapsTo": "writePage" },
-      { "label": "Browse", "mapsTo": "browsePage" }
+      { "label": "Results", "mapsTo": "listPage" },
+      { "label": "New Check", "mapsTo": "checkPage" }
     ],
     "pages": {
-      "writePage": {
+      "checkPage": {
         "component": "page",
-        "title": "New ${entryName}",
+        "title": "New Check",
         "content": [
           {
+            "component": "text",
+            "content": "Record a new ${checklistName} check.",
+            "styleHint": { "variant": "body" }
+          },
+          {
             "component": "form",
-            "id": "entryForm",
+            "id": "checkForm",
             "fields": {
               "$map": "fields",
               "each(field)": {
@@ -58,66 +63,70 @@
                   "options": { "$eval": "field.options" }
                 },
                 "else": {
-                  "$if": "field.type == 'date'",
-                  "then": {
-                    "name": "${field.name}",
-                    "label": "${field.label}",
-                    "type": "date",
-                    "default": "NOW"
-                  },
-                  "else": {
-                    "name": "${field.name}",
-                    "label": "${field.label}",
-                    "type": "${field.type}"
-                  }
+                  "name": "${field.name}",
+                  "label": "${field.label}",
+                  "type": "${field.type}"
                 }
               }
             }
           },
           {
             "component": "button",
-            "label": "Save ${entryName}",
+            "label": "Submit",
             "onClick": [
-              { "action": "submit", "dataSource": "entriesStore", "target": "entryForm" },
-              { "action": "navigate", "target": "browsePage" },
-              { "action": "showMessage", "message": "Entry saved!" }
+              { "action": "submit", "dataSource": "checksStore", "target": "checkForm" },
+              { "action": "navigate", "target": "listPage" },
+              { "action": "showMessage", "message": "Check recorded!" }
             ],
             "styleHint": { "emphasis": "primary" }
           }
         ]
       },
-      "browsePage": {
+      "listPage": {
         "component": "page",
         "title": "${appName}",
         "content": [
           {
-            "component": "text",
-            "content": "{COUNT(entriesReader)} entries",
-            "styleHint": { "variant": "subheading" }
-          },
-          {
             "component": "summary",
-            "label": "Total Entries",
-            "value": "{COUNT(entriesReader)}",
-            "icon": "book"
+            "label": "Total Checks",
+            "value": "{COUNT(checksReader)}",
+            "icon": "check_circle"
           },
           {
             "component": "list",
-            "dataSource": "entriesReader",
+            "dataSource": "checksReader",
             "searchable": true,
+            "rowColorField": "result",
+            "rowColorMap": {
+              "Pass": "green",
+              "Fail": "red",
+              "N/A": "grey"
+            },
             "columns": {
               "$map": "fields",
-              "each(field)": {
+              "each(field, index)": {
                 "header": "${field.label}",
                 "field": "${field.name}",
-                "sortable": true
+                "sortable": true,
+                "$if": "index == 0",
+                "then": {
+                  "header": "${field.label}",
+                  "field": "${field.name}",
+                  "sortable": true,
+                  "filterable": true
+                },
+                "else": {
+                  "header": "${field.label}",
+                  "field": "${field.name}",
+                  "sortable": true
+                }
               }
             },
             "rowActions": [
               {
                 "label": "Delete",
                 "action": "delete",
-                "dataSource": "entriesDeleter",
+                "dataSource": "checksDeleter",
                 "matchField": "_id"
               }
             ],
@@ -129,15 +138,15 @@
           },
           {
             "component": "button",
-            "label": "New ${entryName}",
-            "onClick": [{ "action": "navigate", "target": "writePage" }],
+            "label": "New Check",
+            "onClick": [{ "action": "navigate", "target": "checkPage" }],
             "styleHint": { "emphasis": "primary" }
           }
         ]
       },
       "editPage": {
         "component": "page",
-        "title": "Edit ${entryName}",
+        "title": "Edit Check",
         "content": [
           {
             "component": "form",
@@ -164,27 +173,27 @@
             "component": "button",
             "label": "Save Changes",
             "onClick": [
-              { "action": "update", "dataSource": "entriesUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "browsePage" }
+              { "action": "update", "dataSource": "checksUpdater", "target": "editForm", "matchField": "_id" },
+              { "action": "navigate", "target": "listPage" }
             ],
             "styleHint": { "emphasis": "primary" }
           },
           {
             "component": "button",
             "label": "Back",
-            "onClick": [{ "action": "navigate", "target": "browsePage" }],
+            "onClick": [{ "action": "navigate", "target": "listPage" }],
             "styleHint": { "emphasis": "secondary" }
           }
         ]
       }
     },
     "dataSources": {
-      "entriesStore": {
-        "url": "local://entries",
+      "checksStore": {
+        "url": "local://checks",
         "method": "POST"
       },
-      "entriesReader": {
-        "url": "local://entries",
+      "checksReader": {
+        "url": "local://checks",
         "method": "GET",
         "fields": {
           "$map": "fields",
@@ -194,17 +203,17 @@
           }
         }
       },
-      "entriesUpdater": {
-        "url": "local://entries",
+      "checksUpdater": {
+        "url": "local://checks",
         "method": "PUT"
       },
-      "entriesDeleter": {
-        "url": "local://entries",
+      "checksDeleter": {
+        "url": "local://checks",
         "method": "DELETE"
       }
     },
     "help": {
-      "overview": "${appName} is your personal log. Write new entries, browse past ones, and edit or delete as needed. All data stays on your device."
+      "overview": "${appName} helps you run ${checklistName} checks and inspections. Record results, track pass/fail status with color-coded rows, and review your inspection history. All data stays on your device."
     }
   }
 }

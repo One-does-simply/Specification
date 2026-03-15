@@ -53,8 +53,16 @@
           "visibleWhen": { "source": "booksReader", "countEquals": 0 }
         },
         {
+          "component": "summary",
+          "label": "Books Read",
+          "value": "{COUNT(booksReader)}",
+          "icon": "book"
+        },
+        {
           "component": "list",
           "dataSource": "booksReader",
+          "searchable": true,
+          "displayAs": "cards",
           "columns": [
             { "header": "Title", "field": "bookTitle", "sortable": true },
             { "header": "Author", "field": "author", "sortable": true },

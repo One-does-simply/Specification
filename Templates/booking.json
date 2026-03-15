@@ -1,0 +1,279 @@
+{
+  "templateName": "Booking / Sign-up",
+  "description": "Manage bookings, reservations, or sign-ups with date tracking, status updates, and searchable lists.",
+  "icon": "event",
+  "questions": [
+    {
+      "id": "appName",
+      "label": "What do you want to call your app?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Room Bookings, Event Sign-ups"
+    },
+    {
+      "id": "bookingName",
+      "label": "What's being booked?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Room, Event, Appointment, Class"
+    },
+    {
+      "id": "fields",
+      "label": "What info for each booking?",
+      "type": "field-list",
+      "required": true,
+      "presets": [
+        { "label": "Name", "name": "name", "type": "text" },
+        { "label": "Date", "name": "date", "type": "date" },
+        { "label": "Time", "name": "time", "type": "text" },
+        { "label": "Location", "name": "location", "type": "text" },
+        { "label": "Contact Email", "name": "contactEmail", "type": "email" },
+        { "label": "Attendees", "name": "attendees", "type": "number" },
+        { "label": "Category", "name": "category", "type": "select", "options": ["General"] },
+        { "label": "Notes", "name": "notes", "type": "multiline" }
+      ]
+    },
+    {
+      "id": "wantChart",
+      "label": "Include a chart?",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "chartField",
+      "label": "Chart: group by which field?",
+      "type": "field-ref",
+      "ref": "fields"
+    }
+  ],
+  "template": {
+    "appName": "${appName}",
+    "startPage": "listPage",
+    "menu": [
+      { "label": "Bookings", "mapsTo": "listPage" },
+      { "label": "New Booking", "mapsTo": "bookPage" }
+    ],
+    "pages": {
+      "bookPage": {
+        "component": "page",
+        "title": "New ${bookingName}",
+        "content": [
+          {
+            "component": "text",
+            "content": "Create a new ${bookingName} booking.",
+            "styleHint": { "variant": "body" }
+          },
+          {
+            "component": "form",
+            "id": "bookForm",
+            "fields": {
+              "$flatten": [
+                [{ "name": "status", "type": "hidden", "default": "Confirmed" }],
+                {
+                  "$map": "fields",
+                  "each(field)": {
+                    "$if": "field.type == 'select'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "select",
+                      "options": { "$eval": "field.options" }
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "component": "button",
+            "label": "Book",
+            "onClick": [
+              { "action": "submit", "dataSource": "bookingsStore", "target": "bookForm" },
+              { "action": "navigate", "target": "listPage" },
+              { "action": "showMessage", "message": "${bookingName} booked!" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          }
+        ]
+      },
+      "listPage": {
+        "component": "page",
+        "title": "${appName}",
+        "content": {
+          "$flatten": [
+            [
+              {
+                "component": "summary",
+                "label": "Total Bookings",
+                "value": "{COUNT(bookingsReader)}",
+                "icon": "event"
+              },
+              {
+                "component": "list",
+                "dataSource": "bookingsReader",
+                "searchable": true,
+                "rowColorField": "status",
+                "rowColorMap": {
+                  "Confirmed": "green",
+                  "Cancelled": "red",
+                  "Pending": "orange"
+                },
+                "columns": {
+                  "$flatten": [
+                    {
+                      "$map": "fields",
+                      "each(field)": {
+                        "header": "${field.label}",
+                        "field": "${field.name}",
+                        "sortable": true
+                      }
+                    },
+                    [{ "header": "Status", "field": "status", "sortable": true, "filterable": true }]
+                  ]
+                },
+                "rowActions": [
+                  {
+                    "label": "Cancel",
+                    "action": "update",
+                    "dataSource": "bookingsUpdater",
+                    "matchField": "_id",
+                    "values": { "status": "Cancelled" },
+                    "confirm": "Cancel this booking?"
+                  },
+                  {
+                    "label": "Delete",
+                    "action": "delete",
+                    "dataSource": "bookingsDeleter",
+                    "matchField": "_id"
+                  }
+                ],
+                "onRowTap": {
+                  "action": "navigate",
+                  "target": "editPage",
+                  "populateForm": "editForm"
+                }
+              },
+              {
+                "component": "button",
+                "label": "New ${bookingName}",
+                "onClick": [{ "action": "navigate", "target": "bookPage" }],
+                "styleHint": { "emphasis": "primary" }
+              }
+            ],
+            {
+              "$if": "wantChart",
+              "then": [
+                {
+                  "component": "chart",
+                  "dataSource": "bookingsReader",
+                  "chartType": "bar",
+                  "labelField": "${chartField}",
+                  "valueField": "attendees",
+                  "title": "Bookings by ${chartField}"
+                }
+              ],
+              "else": []
+            }
+          ]
+        }
+      },
+      "editPage": {
+        "component": "page",
+        "title": "Edit ${bookingName}",
+        "content": [
+          {
+            "component": "form",
+            "id": "editForm",
+            "fields": {
+              "$flatten": [
+                [{ "name": "status", "type": "hidden", "default": "Confirmed" }],
+                {
+                  "$map": "fields",
+                  "each(field)": {
+                    "$if": "field.type == 'select'",
+                    "then": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "select",
+                      "options": { "$eval": "field.options" }
+                    },
+                    "else": {
+                      "name": "${field.name}",
+                      "label": "${field.label}",
+                      "type": "${field.type}"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "component": "button",
+            "label": "Save Changes",
+            "onClick": [
+              { "action": "update", "dataSource": "bookingsUpdater", "target": "editForm", "matchField": "_id" },
+              { "action": "navigate", "target": "listPage" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          },
+          {
+            "component": "button",
+            "label": "Back",
+            "onClick": [{ "action": "navigate", "target": "listPage" }],
+            "styleHint": { "emphasis": "secondary" }
+          }
+        ]
+      }
+    },
+    "dataSources": {
+      "bookingsStore": {
+        "url": "local://bookings",
+        "method": "POST",
+        "fields": {
+          "$flatten": [
+            [{ "name": "status", "type": "text" }],
+            {
+              "$map": "fields",
+              "each(field)": {
+                "name": "${field.name}",
+                "type": "${field.type}"
+              }
+            }
+          ]
+        }
+      },
+      "bookingsReader": {
+        "url": "local://bookings",
+        "method": "GET",
+        "fields": {
+          "$flatten": [
+            [{ "name": "status", "type": "text" }],
+            {
+              "$map": "fields",
+              "each(field)": {
+                "name": "${field.name}",
+                "type": "${field.type}"
+              }
+            }
+          ]
+        }
+      },
+      "bookingsUpdater": {
+        "url": "local://bookings",
+        "method": "PUT"
+      },
+      "bookingsDeleter": {
+        "url": "local://bookings",
+        "method": "DELETE"
+      }
+    },
+    "help": {
+      "overview": "${appName} helps you manage ${bookingName} bookings. Create new bookings, track their status, cancel or delete as needed. All data stays on your device."
+    }
+  }
+}

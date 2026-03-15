@@ -87,6 +87,7 @@
           "label": "Submit Survey",
           "onClick": [
             { "action": "submit", "dataSource": "surveyStore", "target": "surveyForm" },
+            { "action": "showMessage", "message": "Survey submitted — thank you!" },
             { "action": "navigate", "target": "thankYouPage" }
           ],
           "styleHint": { "emphasis": "primary" }
@@ -120,6 +121,18 @@
       "component": "page",
       "title": "Survey Results",
       "content": [
+        {
+          "component": "summary",
+          "label": "Total Responses",
+          "value": "{COUNT(surveyReader)}",
+          "icon": "people"
+        },
+        {
+          "component": "summary",
+          "label": "Avg Satisfaction",
+          "value": "{AVG(surveyReader, satisfaction)}",
+          "icon": "trending_up"
+        },
         {
           "component": "text",
           "content": "No responses yet. Take the survey to see results here!",
@@ -156,6 +169,7 @@
         {
           "component": "list",
           "dataSource": "surveyReader",
+          "searchable": true,
           "columns": [
             { "header": "Role", "field": "role", "sortable": true, "filterable": true },
             { "header": "Satisfaction", "field": "satisfaction", "sortable": true },

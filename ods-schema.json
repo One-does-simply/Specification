@@ -153,6 +153,21 @@
             "valueField": {
               "description": "The field/column name whose values become the dropdown options.",
               "type": "string"
+            },
+            "filter": {
+              "description": "Optional. Filters the data source rows before extracting options, creating dependent dropdowns. 'field' is the column in the data source to filter on, 'fromField' is the name of a sibling form field whose current value provides the filter criteria.",
+              "type": "object",
+              "properties": {
+                "field": {
+                  "description": "The column name in the data source to filter on.",
+                  "type": "string"
+                },
+                "fromField": {
+                  "description": "The name of a sibling form field whose current value is used as the filter value.",
+                  "type": "string"
+                }
+              },
+              "required": ["field", "fromField"]
             }
           },
           "required": ["dataSource", "valueField"]
@@ -171,12 +186,32 @@
           "type": "string"
         },
         "default": {
-          "description": "Optional. A default value to pre-fill the field with when the form is first displayed. The user can change it. For date and datetime fields, use 'NOW' or 'CURRENTDATE' to default to the current date/time.",
+          "description": "Optional. A default value to pre-fill the field with when the form is first displayed. The user can change it. Supports magic values: 'NOW' (current datetime), 'CURRENTDATE' (current date), and relative offsets like '+7d' (7 days from today) or '+1m' (1 month from today). For date and datetime fields only.",
           "type": "string"
         },
         "formula": {
-          "description": "Optional. A formula that computes this field's value from other fields. Reference fields with {fieldName}. Supports basic math (+, -, *, /, parentheses) for number fields, or string interpolation for text fields. Computed fields are read-only and not stored in the database.",
+          "description": "Optional. A formula that computes this field's value from other fields at render time. Reference fields with {fieldName}. Number-type fields use math expressions (e.g., \"{qty} * {price}\"), text-type fields use string interpolation (e.g., \"{firstName} {lastName}\"). Computed fields are read-only and not stored in the database.",
           "type": "string"
+        },
+        "readOnly": {
+          "description": "Optional. When true, the field is displayed but not editable by the user. Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "displayVariant": {
+          "description": "Optional. Controls how a read-only field is rendered visually. Only meaningful when readOnly is true.",
+          "type": "string",
+          "enum": ["heading", "body", "caption", "subtitle"]
+        },
+        "optionLabels": {
+          "description": "Optional. An array of human-friendly labels corresponding positionally to the 'options' array. When present, the dropdown displays these labels but stores the original option values.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "currency": {
+          "description": "Optional. When true, the field value is formatted with the currency symbol defined in app settings. Applies to number fields.",
+          "type": "boolean",
+          "default": false
         },
         "visibleWhen": {
           "description": "Optional. Makes this field conditionally visible based on another field's value. The field is hidden (and its value excluded from submission) until the condition is met.",
@@ -237,7 +272,10 @@
               { "$ref": "#/$defs/listComponent" },
               { "$ref": "#/$defs/formComponent" },
               { "$ref": "#/$defs/buttonComponent" },
-              { "$ref": "#/$defs/chartComponent" }
+              { "$ref": "#/$defs/chartComponent" },
+              { "$ref": "#/$defs/summaryComponent" },
+              { "$ref": "#/$defs/tabsComponent" },
+              { "$ref": "#/$defs/detailComponent" }
             ]
           }
         }
@@ -249,7 +287,21 @@
       "type": "object",
       "properties": {
         "component": { "const": "text" },
-        "content": { "type": "string" },
+        "content": {
+          "description": "The text content to display. May include aggregate expressions using {FUNC(dataSourceId, field)} syntax where FUNC is one of SUM, COUNT, AVG, MIN, MAX, or PCT. For example: 'Total: {SUM(expenses, amount)}' or 'Completed: {PCT(tasks, status, done)}%'. These are evaluated at render time against the referenced data source.",
+          "type": "string"
+        },
+        "format": {
+          "description": "Optional. The text format. 'plain' (default) renders as simple text, 'markdown' renders basic Markdown syntax (headings, bold, italic, lists, links).",
+          "type": "string",
+          "enum": ["plain", "markdown"],
+          "default": "plain"
+        },
+        "visible": {
+          "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy. Uses {fieldName} references and supports ==, != comparisons.",
+          "type": "string"
+        },
+        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
         "styleHint": { "$ref": "#/$defs/styleHint" }
       },
       "required": ["component", "content"]
@@ -276,10 +328,64 @@
                 "description": "Optional. When true, a filter dropdown appears above the list for this column, letting the user filter rows by the column's distinct values. Defaults to false.",
                 "type": "boolean",
                 "default": false
+              },
+              "displayMap": {
+                "description": "Optional. Maps raw stored values to human-friendly display labels (e.g., {\"true\": \"Yes\", \"false\": \"No\"}). The list shows the mapped label instead of the raw value.",
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              },
+              "colorMap": {
+                "description": "Optional. Maps raw field values to color names for per-cell coloring. Colors: red, green, blue, orange, grey, purple, teal, amber.",
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              },
+              "currency": {
+                "description": "Optional. When true, formats the column value with the currency symbol from app settings.",
+                "type": "boolean",
+                "default": false
               }
             },
             "required": ["header", "field"]
           }
+        },
+        "searchable": {
+          "description": "Optional. When true, a search bar appears above the list. Filters rows where any displayed column contains the search text (case-insensitive). Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "displayAs": {
+          "description": "Optional. How to render the list data. 'table' (default) renders a DataTable, 'cards' renders a scrollable grid of cards showing each row's column values.",
+          "type": "string",
+          "enum": ["table", "cards"],
+          "default": "table"
+        },
+        "rowColorField": {
+          "description": "Optional. The field name to evaluate for row-level background coloring. Used with rowColorMap.",
+          "type": "string"
+        },
+        "rowColorMap": {
+          "description": "Optional. Maps field values to background color names for entire rows. Requires rowColorField. Colors: red, green, blue, orange, grey, purple, teal, amber.",
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "onRowTap": {
+          "description": "Optional. Defines what happens when a user taps a row. Typically navigates to a detail or edit page, optionally pre-filling a form with the tapped row's data.",
+          "type": "object",
+          "properties": {
+            "action": {
+              "description": "The action to perform on row tap (e.g., 'navigate').",
+              "type": "string"
+            },
+            "target": {
+              "description": "The page ID to navigate to when a row is tapped.",
+              "type": "string"
+            },
+            "populateForm": {
+              "description": "Optional. The form ID on the target page to pre-fill with the tapped row's data.",
+              "type": "string"
+            }
+          },
+          "required": ["action", "target"]
         },
         "rowActions": {
           "description": "Optional. An array of actions rendered as buttons in each row. Allows inline operations like marking a task done without navigating to a separate page.",
@@ -309,6 +415,11 @@
             "required": ["column", "function"]
           }
         },
+        "visible": {
+          "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
+          "type": "string"
+        },
+        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
         "styleHint": { "$ref": "#/$defs/styleHint" }
       },
       "required": ["component", "dataSource", "columns"]
@@ -323,6 +434,15 @@
           "type": "array",
           "items": { "$ref": "#/$defs/fieldDefinition" }
         },
+        "recordSource": {
+          "description": "Optional. The ID of a GET data source. When set, the form is populated from a record cursor rather than manual entry. Used with record navigation actions (firstRecord, nextRecord, previousRecord, lastRecord).",
+          "type": "string"
+        },
+        "visible": {
+          "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
+          "type": "string"
+        },
+        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
         "styleHint": { "$ref": "#/$defs/styleHint" }
       },
       "required": ["component", "id", "fields"]
@@ -337,6 +457,11 @@
           "type": "array",
           "items": { "$ref": "#/$defs/action" }
         },
+        "visible": {
+          "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
+          "type": "string"
+        },
+        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
         "styleHint": { "$ref": "#/$defs/styleHint" }
       },
       "required": ["component", "label", "onClick"]
@@ -356,19 +481,171 @@
         "labelField": { "description": "The field to use for category labels (X axis or pie slice names).", "type": "string" },
         "valueField": { "description": "The field to use for numeric values (Y axis height or pie slice size).", "type": "string" },
         "title": { "description": "Optional. A title displayed above the chart.", "type": "string" },
+        "visible": {
+          "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
+          "type": "string"
+        },
+        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
         "styleHint": { "$ref": "#/$defs/styleHint" }
       },
       "required": ["component", "dataSource", "chartType", "labelField", "valueField"]
     },
+    "summaryComponent": {
+      "title": "Summary Component",
+      "description": "Renders a styled card showing a label, a large aggregate value, and an optional icon. Ideal for dashboard KPI displays.",
+      "type": "object",
+      "properties": {
+        "component": { "const": "summary" },
+        "label": {
+          "description": "The label text shown above the value (e.g., 'Total Spent', 'Active Users').",
+          "type": "string"
+        },
+        "value": {
+          "description": "The value expression. Supports aggregate syntax like {SUM(expenses, amount)}, {COUNT(tasks)}, or static text.",
+          "type": "string"
+        },
+        "icon": {
+          "description": "Optional. Material icon name (e.g., 'attach_money', 'trending_up', 'people', 'check_circle').",
+          "type": "string"
+        },
+        "visible": {
+          "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
+          "type": "string"
+        },
+        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
+        "styleHint": { "$ref": "#/$defs/styleHint" }
+      },
+      "required": ["component", "label", "value"]
+    },
+    "tabsComponent": {
+      "title": "Tabs Component",
+      "description": "Renders a tabbed layout within a page. Each tab has its own content array of components.",
+      "type": "object",
+      "properties": {
+        "component": { "const": "tabs" },
+        "tabs": {
+          "description": "An array of tab definitions, each with a label and content array.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "description": "The tab's label shown in the tab bar.",
+                "type": "string"
+              },
+              "content": {
+                "description": "An array of components to render inside this tab.",
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    { "$ref": "#/$defs/textComponent" },
+                    { "$ref": "#/$defs/listComponent" },
+                    { "$ref": "#/$defs/formComponent" },
+                    { "$ref": "#/$defs/buttonComponent" },
+                    { "$ref": "#/$defs/chartComponent" },
+                    { "$ref": "#/$defs/summaryComponent" },
+                    { "$ref": "#/$defs/detailComponent" }
+                  ]
+                }
+              }
+            },
+            "required": ["label", "content"]
+          }
+        },
+        "visible": {
+          "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
+          "type": "string"
+        },
+        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
+        "styleHint": { "$ref": "#/$defs/styleHint" }
+      },
+      "required": ["component", "tabs"]
+    },
+    "detailComponent": {
+      "title": "Detail Component",
+      "description": "Renders a read-only detail view showing field values from a data source record or form state. Ideal for 'view record' pages.",
+      "type": "object",
+      "properties": {
+        "component": { "const": "detail" },
+        "dataSource": {
+          "description": "The ID of the GET data source to read from.",
+          "type": "string"
+        },
+        "fields": {
+          "description": "Optional. An array of field names to display, in order. If omitted, all columns from the record are shown.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "labels": {
+          "description": "Optional. Maps field names to display labels. If a field is not in this map, the field name is used as the label.",
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "fromForm": {
+          "description": "Optional. The form ID whose current state provides the record to display. Used with the populateForm flow.",
+          "type": "string"
+        },
+        "visible": {
+          "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
+          "type": "string"
+        },
+        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
+        "styleHint": { "$ref": "#/$defs/styleHint" }
+      },
+      "required": ["component", "dataSource"]
+    },
+    "visibleWhen": {
+      "title": "Visibility Condition",
+      "description": "Controls component visibility based on form field values or data source row counts.",
+      "type": "object",
+      "properties": {
+        "field": {
+          "description": "The form field name to watch.",
+          "type": "string"
+        },
+        "form": {
+          "description": "The form ID containing the field. If omitted, checks all forms.",
+          "type": "string"
+        },
+        "equals": {
+          "description": "The value the field must equal for the component to be visible.",
+          "type": "string"
+        },
+        "notEquals": {
+          "description": "The value the field must NOT equal for the component to be visible.",
+          "type": "string"
+        },
+        "source": {
+          "description": "A data source ID to check row count against.",
+          "type": "string"
+        },
+        "countEquals": {
+          "description": "Show when data source row count equals this value.",
+          "type": "integer"
+        },
+        "countMin": {
+          "description": "Show when data source row count is >= this value.",
+          "type": "integer"
+        },
+        "countMax": {
+          "description": "Show when data source row count is <= this value.",
+          "type": "integer"
+        }
+      }
+    },
     "action": {
       "title": "Action Object",
-      "description": "Defines an action to be performed: navigate (go to a page), submit (insert a new row), or update (modify an existing row).",
+      "description": "Defines an action to be performed: navigate (go to a page), submit (insert a new row), update (modify an existing row), showMessage (display a snackbar), or record navigation (firstRecord, nextRecord, previousRecord, lastRecord) for cursor-based form browsing.",
       "type": "object",
       "oneOf": [
         {
           "properties": {
             "action": { "const": "navigate" },
             "target": { "description": "The ID of the page to navigate to.", "type": "string" },
+            "populateForm": {
+              "description": "Optional. The form ID on the target page to pre-fill with row data from the originating list. When present, the tapped row's data is used to populate the named form.",
+              "type": "string"
+            },
             "withData": {
               "description": "An optional object of data to pass to the target page.",
               "type": "object",
@@ -383,6 +660,24 @@
             "action": { "const": "submit" },
             "dataSource": { "description": "The ID of the dataSource to submit to.", "type": "string" },
             "target": { "description": "The ID of the form to submit.", "type": "string" },
+            "computedFields": {
+              "description": "Optional. An array of fields whose values are computed at submit time from expressions referencing form fields. These are added to the submitted data.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "description": "The field name to set in the submitted data.",
+                    "type": "string"
+                  },
+                  "expression": {
+                    "description": "An expression using {fieldName} references and math operators to compute the value.",
+                    "type": "string"
+                  }
+                },
+                "required": ["field", "expression"]
+              }
+            },
             "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" }
           },
           "required": ["action", "dataSource", "target"]
@@ -393,9 +688,101 @@
             "dataSource": { "description": "The ID of the PUT dataSource to update.", "type": "string" },
             "target": { "description": "The ID of the form whose values provide the update data.", "type": "string" },
             "matchField": { "description": "The field name used to find the row to update. The row where this field matches the form value is updated.", "type": "string" },
+            "computedFields": {
+              "description": "Optional. An array of fields whose values are computed at update time from expressions referencing form fields. These are merged into the update data.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "field": {
+                    "description": "The field name to set in the updated data.",
+                    "type": "string"
+                  },
+                  "expression": {
+                    "description": "An expression using {fieldName} references and math operators to compute the value.",
+                    "type": "string"
+                  }
+                },
+                "required": ["field", "expression"]
+              }
+            },
             "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" }
           },
           "required": ["action", "dataSource", "target", "matchField"]
+        },
+        {
+          "properties": {
+            "action": { "const": "showMessage" },
+            "message": {
+              "description": "The text to display in a snackbar notification.",
+              "type": "string"
+            }
+          },
+          "required": ["action", "message"]
+        },
+        {
+          "properties": {
+            "action": { "const": "firstRecord" },
+            "target": { "description": "The form ID whose record cursor should move to the first record.", "type": "string" },
+            "filter": {
+              "description": "Optional. A filter object to constrain which records the cursor navigates through.",
+              "type": "object",
+              "additionalProperties": true
+            },
+            "onEnd": {
+              "description": "Optional. A nested action to execute when the cursor is already at the first record.",
+              "$ref": "#/$defs/action"
+            }
+          },
+          "required": ["action", "target"]
+        },
+        {
+          "properties": {
+            "action": { "const": "nextRecord" },
+            "target": { "description": "The form ID whose record cursor should advance to the next record.", "type": "string" },
+            "filter": {
+              "description": "Optional. A filter object to constrain which records the cursor navigates through.",
+              "type": "object",
+              "additionalProperties": true
+            },
+            "onEnd": {
+              "description": "Optional. A nested action to execute when the cursor has reached the last record and cannot advance further.",
+              "$ref": "#/$defs/action"
+            }
+          },
+          "required": ["action", "target"]
+        },
+        {
+          "properties": {
+            "action": { "const": "previousRecord" },
+            "target": { "description": "The form ID whose record cursor should move to the previous record.", "type": "string" },
+            "filter": {
+              "description": "Optional. A filter object to constrain which records the cursor navigates through.",
+              "type": "object",
+              "additionalProperties": true
+            },
+            "onEnd": {
+              "description": "Optional. A nested action to execute when the cursor is already at the first record and cannot move back further.",
+              "$ref": "#/$defs/action"
+            }
+          },
+          "required": ["action", "target"]
+        },
+        {
+          "properties": {
+            "action": { "const": "lastRecord" },
+            "target": { "description": "The form ID whose record cursor should move to the last record.", "type": "string" },
+            "filter": {
+              "description": "Optional. A filter object to constrain which records the cursor navigates through.",
+              "type": "object",
+              "additionalProperties": true
+            },
+            "onEnd": {
+              "description": "Optional. A nested action to execute when the cursor is already at the last record.",
+              "$ref": "#/$defs/action"
+            }
+          },
+          "required": ["action", "target"]
         }
       ]
     },
@@ -429,6 +816,21 @@
         "confirm": {
           "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the row action. Overrides the default delete confirmation for delete actions.",
           "type": "string"
+        },
+        "hideWhen": {
+          "description": "Optional. Hides the row action button when the specified field in the row matches the given value. Useful for conditionally showing actions (e.g., hide 'Complete' when status is already 'done').",
+          "type": "object",
+          "properties": {
+            "field": {
+              "description": "The field name in the row data to evaluate.",
+              "type": "string"
+            },
+            "equals": {
+              "description": "The value that, when matched, causes the button to be hidden.",
+              "type": "string"
+            }
+          },
+          "required": ["field", "equals"]
         }
       },
       "required": ["label", "action", "dataSource", "matchField"]

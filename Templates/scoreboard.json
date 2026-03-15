@@ -70,7 +70,8 @@
                 "label": "Record Score",
                 "onClick": [
                   { "action": "submit", "dataSource": "scoresStore", "target": "scoreForm" },
-                  { "action": "navigate", "target": "leaderboardPage" }
+                  { "action": "navigate", "target": "leaderboardPage" },
+                  { "action": "showMessage", "message": "Score recorded!" }
                 ],
                 "styleHint": { "emphasis": "primary" }
               }
@@ -85,12 +86,19 @@
           "$flatten": [
             [
               {
+                "component": "summary",
+                "label": "Total Scores",
+                "value": "{COUNT(scoresReader)}",
+                "icon": "star"
+              },
+              {
                 "component": "text",
                 "content": "{COUNT(scoresReader)} scores recorded",
                 "styleHint": { "variant": "subheading" }
               },
               {
                 "component": "list",
+                "searchable": true,
                 "dataSource": "scoresReader",
                 "columns": {
                   "$flatten": [

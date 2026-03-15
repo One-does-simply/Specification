@@ -54,6 +54,7 @@
         {
           "component": "list",
           "dataSource": "habitsReader",
+          "searchable": true,
           "columns": [
             { "header": "Habit", "field": "habitName" },
             { "header": "Category", "field": "category", "sortable": true, "filterable": true }
@@ -132,7 +133,8 @@
           "component": "button",
           "label": "Save Log Entry",
           "onClick": [
-            { "action": "submit", "dataSource": "habitLogStore", "target": "logHabitForm" }
+            { "action": "submit", "dataSource": "habitLogStore", "target": "logHabitForm" },
+            { "action": "showMessage", "message": "Habit logged! Keep up the streak!" }
           ],
           "styleHint": { "emphasis": "primary" }
         },
@@ -161,8 +163,15 @@
           "visibleWhen": { "source": "habitLogReader", "countEquals": 0 }
         },
         {
+          "component": "summary",
+          "label": "Total Logs",
+          "value": "{COUNT(habitLogReader)}",
+          "icon": "check_circle"
+        },
+        {
           "component": "list",
           "dataSource": "habitLogReader",
+          "searchable": true,
           "columns": [
             { "header": "Date", "field": "date", "sortable": true },
             { "header": "Habit", "field": "habitName", "sortable": true, "filterable": true },

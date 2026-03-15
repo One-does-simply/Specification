@@ -55,10 +55,22 @@
       "file": "team-survey-app.json"
     },
     {
+      "id": "team-wiki",
+      "name": "Team Wiki",
+      "description": "A shared knowledge base with Markdown-formatted articles.",
+      "file": "team-wiki-app.json"
+    },
+    {
       "id": "todo-list",
       "name": "To-Do List",
       "description": "Track tasks, set priorities, and mark them complete.",
       "file": "todo-list-app.json"
+    },
+    {
+      "id": "project-dashboard",
+      "name": "Project Dashboard",
+      "description": "Manage tasks across projects with a tabbed dashboard, charts, and color-coded lists.",
+      "file": "project-dashboard-app.json"
     }
   ]
 }
