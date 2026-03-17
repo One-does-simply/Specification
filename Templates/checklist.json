@@ -1,5 +1,5 @@
 {
-  "templateName": "Checklist",
+  "templateName": "Advanced Checklist",
   "description": "Run checklists and inspections with pass/fail tracking, completion counts, and color-coded results.",
   "icon": "check_circle",
   "questions": [

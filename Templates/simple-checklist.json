@@ -1,6 +1,6 @@
 {
   "templateName": "Simple Checklist",
-  "description": "A quick check-off list — add items, tap to check them off. Perfect for grocery lists, to-dos, and packing lists.",
+  "description": "Manage multiple check-off lists — add items, tap to check them off, complete entire lists, and reuse old lists. Perfect for grocery shopping, packing, and to-dos.",
   "icon": "checklist",
   "questions": [
     {
@@ -8,7 +8,14 @@
       "label": "What do you want to call your app?",
       "type": "text",
       "required": true,
-      "placeholder": "e.g., Grocery List, Packing List, To-Do"
+      "placeholder": "e.g., Grocery Lists, Packing Lists, To-Do Lists"
+    },
+    {
+      "id": "listName",
+      "label": "What is each list called?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., List, Trip, Shopping Run"
     },
     {
       "id": "itemName",
@@ -32,22 +39,225 @@
   ],
   "template": {
     "appName": "${appName}",
-    "startPage": "listPage",
+    "startPage": "myListsPage",
     "menu": [
-      { "label": "My List", "mapsTo": "listPage" },
-      { "label": "Add ${itemName}", "mapsTo": "addPage" }
+      { "label": "My ${listName}s", "mapsTo": "myListsPage" },
+      { "label": "All ${itemName}s", "mapsTo": "allItemsPage" }
     ],
     "pages": {
-      "addPage": {
+      "myListsPage": {
+        "component": "page",
+        "title": "My ${listName}s",
+        "content": [
+          {
+            "component": "summary",
+            "label": "Active ${listName}s",
+            "value": "{COUNT(listsReader, status=Active)}",
+            "icon": "checklist"
+          },
+          {
+            "component": "text",
+            "content": "No lists yet. Create your first ${listName} to get started!",
+            "styleHint": { "variant": "body" },
+            "visibleWhen": { "source": "listsReader", "countEquals": 0 }
+          },
+          {
+            "component": "list",
+            "dataSource": "listsReader",
+            "searchable": true,
+            "rowColorField": "status",
+            "rowColorMap": {
+              "Active": "green",
+              "Complete": "grey"
+            },
+            "columns": [
+              { "header": "${listName}", "field": "name", "sortable": true },
+              { "header": "Created", "field": "createdDate", "sortable": true },
+              { "header": "Status", "field": "status", "sortable": true, "filterable": true }
+            ],
+            "rowActions": [
+              {
+                "label": "Complete",
+                "action": "update",
+                "dataSource": "listsUpdater",
+                "matchField": "_id",
+                "values": { "status": "Complete" },
+                "hideWhen": { "field": "status", "equals": "Complete" }
+              },
+              {
+                "label": "Reactivate",
+                "action": "update",
+                "dataSource": "listsUpdater",
+                "matchField": "_id",
+                "values": { "status": "Active" },
+                "hideWhen": { "field": "status", "equals": "Active" }
+              },
+              {
+                "label": "Reuse",
+                "action": "copyRows",
+                "sourceDataSource": "itemsReader",
+                "targetDataSource": "itemsStore",
+                "parentDataSource": "listsStore",
+                "linkField": "listName",
+                "nameField": "name",
+                "resetValues": { "done": "false", "status": "Active" },
+                "confirm": "Create a new ${listName} by copying all items from this one?"
+              },
+              {
+                "label": "Delete",
+                "action": "delete",
+                "dataSource": "listsDeleter",
+                "matchField": "_id"
+              }
+            ],
+            "onRowTap": {
+              "action": "navigate",
+              "target": "listItemsPage",
+              "populateForm": "listContextForm"
+            }
+          },
+          {
+            "component": "button",
+            "label": "New ${listName}",
+            "onClick": [{ "action": "navigate", "target": "newListPage" }],
+            "styleHint": { "emphasis": "primary" }
+          }
+        ]
+      },
+      "newListPage": {
+        "component": "page",
+        "title": "New ${listName}",
+        "content": [
+          {
+            "component": "form",
+            "id": "newListForm",
+            "fields": [
+              {
+                "name": "name",
+                "label": "${listName} Name",
+                "type": "text",
+                "required": true
+              },
+              {
+                "name": "createdDate",
+                "label": "Date",
+                "type": "date",
+                "default": "CURRENTDATE"
+              },
+              {
+                "name": "status",
+                "type": "hidden",
+                "default": "Active"
+              }
+            ]
+          },
+          {
+            "component": "button",
+            "label": "Create ${listName}",
+            "onClick": [
+              { "action": "submit", "dataSource": "listsStore", "target": "newListForm" },
+              { "action": "navigate", "target": "myListsPage" },
+              { "action": "showMessage", "message": "${listName} created!" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          }
+        ]
+      },
+      "listItemsPage": {
+        "component": "page",
+        "title": "${listName} Items",
+        "content": [
+          {
+            "component": "form",
+            "id": "listContextForm",
+            "fields": [
+              { "name": "name", "type": "hidden" }
+            ]
+          },
+          {
+            "component": "list",
+            "dataSource": "itemsReader",
+            "searchable": true,
+            "columns": {
+              "$flatten": [
+                [
+                  {
+                    "header": "",
+                    "field": "done",
+                    "toggle": {
+                      "dataSource": "itemsUpdater",
+                      "matchField": "_id"
+                    }
+                  },
+                  {
+                    "header": "${itemName}",
+                    "field": "name",
+                    "sortable": true
+                  },
+                  {
+                    "header": "${listName}",
+                    "field": "listName",
+                    "sortable": true,
+                    "filterable": true
+                  }
+                ],
+                {
+                  "$if": "fields",
+                  "then": {
+                    "$map": "fields",
+                    "each(field)": {
+                      "header": "${field.label}",
+                      "field": "${field.name}",
+                      "sortable": true
+                    }
+                  },
+                  "else": []
+                }
+              ]
+            },
+            "rowActions": [
+              {
+                "label": "Delete",
+                "action": "delete",
+                "dataSource": "itemsDeleter",
+                "matchField": "_id"
+              }
+            ]
+          },
+          {
+            "component": "button",
+            "label": "Add ${itemName}",
+            "onClick": [{ "action": "navigate", "target": "addItemPage" }],
+            "styleHint": { "emphasis": "primary" }
+          },
+          {
+            "component": "button",
+            "label": "Back to ${listName}s",
+            "onClick": [{ "action": "navigate", "target": "myListsPage" }],
+            "styleHint": { "emphasis": "secondary" }
+          }
+        ]
+      },
+      "addItemPage": {
         "component": "page",
         "title": "Add ${itemName}",
         "content": [
           {
             "component": "form",
-            "id": "addForm",
+            "id": "addItemForm",
             "fields": {
               "$flatten": [
                 [
+                  {
+                    "name": "listName",
+                    "label": "${listName}",
+                    "type": "select",
+                    "required": true,
+                    "optionsFrom": {
+                      "dataSource": "listsReader",
+                      "valueField": "name"
+                    }
+                  },
                   {
                     "name": "name",
                     "label": "${itemName} Name",
@@ -88,29 +298,29 @@
             "component": "button",
             "label": "Add to List",
             "onClick": [
-              { "action": "submit", "dataSource": "itemsStore", "target": "addForm" },
-              { "action": "navigate", "target": "listPage" },
+              { "action": "submit", "dataSource": "itemsStore", "target": "addItemForm" },
+              { "action": "navigate", "target": "listItemsPage" },
               { "action": "showMessage", "message": "${itemName} added!" }
             ],
             "styleHint": { "emphasis": "primary" }
           }
         ]
       },
-      "listPage": {
+      "allItemsPage": {
         "component": "page",
-        "title": "${appName}",
+        "title": "All ${itemName}s",
         "content": [
+          {
+            "component": "summary",
+            "label": "Total ${itemName}s",
+            "value": "{COUNT(itemsReader)}",
+            "icon": "list"
+          },
           {
             "component": "summary",
             "label": "Remaining",
             "value": "{COUNT(itemsReader, done=false)}",
             "icon": "checklist"
-          },
-          {
-            "component": "text",
-            "content": "Your list is empty. Tap below to add your first ${itemName}!",
-            "styleHint": { "variant": "body" },
-            "visibleWhen": { "source": "itemsReader", "countEquals": 0 }
           },
           {
             "component": "list",
@@ -131,6 +341,12 @@
                     "header": "${itemName}",
                     "field": "name",
                     "sortable": true
+                  },
+                  {
+                    "header": "${listName}",
+                    "field": "listName",
+                    "sortable": true,
+                    "filterable": true
                   }
                 ],
                 {
@@ -159,13 +375,34 @@
           {
             "component": "button",
             "label": "Add ${itemName}",
-            "onClick": [{ "action": "navigate", "target": "addPage" }],
+            "onClick": [{ "action": "navigate", "target": "addItemPage" }],
             "styleHint": { "emphasis": "primary" }
           }
         ]
       }
     },
     "dataSources": {
+      "listsStore": {
+        "url": "local://lists",
+        "method": "POST"
+      },
+      "listsReader": {
+        "url": "local://lists",
+        "method": "GET",
+        "fields": [
+          { "name": "name", "type": "text" },
+          { "name": "createdDate", "type": "date" },
+          { "name": "status", "type": "text" }
+        ]
+      },
+      "listsUpdater": {
+        "url": "local://lists",
+        "method": "PUT"
+      },
+      "listsDeleter": {
+        "url": "local://lists",
+        "method": "DELETE"
+      },
       "itemsStore": {
         "url": "local://items",
         "method": "POST"
@@ -176,6 +413,7 @@
         "fields": {
           "$flatten": [
             [
+              { "name": "listName", "type": "text" },
               { "name": "name", "type": "text" },
               { "name": "done", "type": "checkbox" }
             ],
@@ -203,7 +441,7 @@
       }
     },
     "help": {
-      "overview": "${appName} is a simple check-off list. Add items, tap the checkbox to mark them done, and delete what you no longer need. All data stays on your device."
+      "overview": "${appName} lets you manage multiple ${listName}s. Create lists, add items, tap checkboxes to check them off. Complete a list when you're done, or reuse it to start fresh with the same items. All data stays on your device."
     }
   }
 }

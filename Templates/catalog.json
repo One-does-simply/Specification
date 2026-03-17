@@ -56,7 +56,7 @@
     },
     {
       "id": "checklist",
-      "name": "Checklist",
+      "name": "Advanced Checklist",
       "description": "Run checklists and inspections with pass/fail tracking, completion counts, and color-coded results.",
       "file": "checklist.json"
     },

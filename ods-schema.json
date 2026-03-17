@@ -835,9 +835,9 @@
           "type": "string"
         },
         "action": {
-          "description": "The action type: 'update' sets new values on the row, 'delete' removes the row (with confirmation).",
+          "description": "The action type: 'update' sets new values on the row, 'delete' removes the row (with confirmation), 'copyRows' copies the parent row and linked child rows to create a duplicate.",
           "type": "string",
-          "enum": ["update", "delete"]
+          "enum": ["update", "delete", "copyRows"]
         },
         "dataSource": {
           "description": "The ID of the dataSource (PUT for update, DELETE for delete) to perform the action.",
@@ -855,6 +855,31 @@
         "confirm": {
           "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the row action. Overrides the default delete confirmation for delete actions.",
           "type": "string"
+        },
+        "sourceDataSource": {
+          "description": "For copyRows: the GET data source to read child rows from.",
+          "type": "string"
+        },
+        "targetDataSource": {
+          "description": "For copyRows: the POST data source to write copied child rows to.",
+          "type": "string"
+        },
+        "parentDataSource": {
+          "description": "For copyRows: the POST data source to create the new parent record.",
+          "type": "string"
+        },
+        "linkField": {
+          "description": "For copyRows: the field on child rows that links them to the parent's name.",
+          "type": "string"
+        },
+        "nameField": {
+          "description": "For copyRows: the parent field used as the name. The copy gets '(copy)' appended.",
+          "type": "string"
+        },
+        "resetValues": {
+          "description": "For copyRows: fields to reset on copied children (e.g., {\"done\": \"false\"}).",
+          "type": "object",
+          "additionalProperties": { "type": "string" }
         },
         "hideWhen": {
           "description": "Optional. Hides the row action button when the specified field in the row matches the given value. Useful for conditionally showing actions (e.g., hide 'Complete' when status is already 'done').",
@@ -876,7 +901,7 @@
           "required": ["field"]
         }
       },
-      "required": ["label", "action", "dataSource", "matchField"]
+      "required": ["label", "action"]
     },
     "styleHint": {
       "title": "StyleHint Object",
