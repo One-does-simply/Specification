@@ -343,6 +343,22 @@
                 "description": "Optional. When true, formats the column value with the currency symbol from app settings.",
                 "type": "boolean",
                 "default": false
+              },
+              "toggle": {
+                "description": "Optional. Renders this column as an inline checkbox toggle. Tapping the checkbox flips the field value between 'true' and 'false' and fires an update to the specified data source. Ideal for simple checklists and to-do items.",
+                "type": "object",
+                "properties": {
+                  "dataSource": {
+                    "description": "The ID of a PUT data source to update when the toggle is tapped.",
+                    "type": "string"
+                  },
+                  "matchField": {
+                    "description": "Optional. The field used to identify the row for the update. Defaults to '_id'.",
+                    "type": "string",
+                    "default": "_id"
+                  }
+                },
+                "required": ["dataSource"]
               }
             },
             "required": ["header", "field"]

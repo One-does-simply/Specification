@@ -1,0 +1,209 @@
+{
+  "templateName": "Simple Checklist",
+  "description": "A quick check-off list — add items, tap to check them off. Perfect for grocery lists, to-dos, and packing lists.",
+  "icon": "checklist",
+  "questions": [
+    {
+      "id": "appName",
+      "label": "What do you want to call your app?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Grocery List, Packing List, To-Do"
+    },
+    {
+      "id": "itemName",
+      "label": "What are the items called?",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Item, Task, Thing to Pack"
+    },
+    {
+      "id": "fields",
+      "label": "Any extra info per item? (optional)",
+      "type": "field-list",
+      "required": false,
+      "presets": [
+        { "label": "Category", "name": "category", "type": "select", "options": ["General"] },
+        { "label": "Priority", "name": "priority", "type": "select", "options": ["Low", "Medium", "High"] },
+        { "label": "Quantity", "name": "quantity", "type": "number" },
+        { "label": "Notes",    "name": "notes",    "type": "text" }
+      ]
+    }
+  ],
+  "template": {
+    "appName": "${appName}",
+    "startPage": "listPage",
+    "menu": [
+      { "label": "My List", "mapsTo": "listPage" },
+      { "label": "Add ${itemName}", "mapsTo": "addPage" }
+    ],
+    "pages": {
+      "addPage": {
+        "component": "page",
+        "title": "Add ${itemName}",
+        "content": [
+          {
+            "component": "form",
+            "id": "addForm",
+            "fields": {
+              "$flatten": [
+                [
+                  {
+                    "name": "name",
+                    "label": "${itemName} Name",
+                    "type": "text",
+                    "required": true
+                  },
+                  {
+                    "name": "done",
+                    "type": "hidden",
+                    "default": "false"
+                  }
+                ],
+                {
+                  "$if": "fields",
+                  "then": {
+                    "$map": "fields",
+                    "each(field)": {
+                      "$if": "field.type == 'select'",
+                      "then": {
+                        "name": "${field.name}",
+                        "label": "${field.label}",
+                        "type": "select",
+                        "options": { "$eval": "field.options" }
+                      },
+                      "else": {
+                        "name": "${field.name}",
+                        "label": "${field.label}",
+                        "type": "${field.type}"
+                      }
+                    }
+                  },
+                  "else": []
+                }
+              ]
+            }
+          },
+          {
+            "component": "button",
+            "label": "Add to List",
+            "onClick": [
+              { "action": "submit", "dataSource": "itemsStore", "target": "addForm" },
+              { "action": "navigate", "target": "listPage" },
+              { "action": "showMessage", "message": "${itemName} added!" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          }
+        ]
+      },
+      "listPage": {
+        "component": "page",
+        "title": "${appName}",
+        "content": [
+          {
+            "component": "summary",
+            "label": "Remaining",
+            "value": "{COUNT(itemsReader, done=false)}",
+            "icon": "checklist"
+          },
+          {
+            "component": "text",
+            "content": "Your list is empty. Tap below to add your first ${itemName}!",
+            "styleHint": { "variant": "body" },
+            "visibleWhen": { "source": "itemsReader", "countEquals": 0 }
+          },
+          {
+            "component": "list",
+            "dataSource": "itemsReader",
+            "searchable": true,
+            "columns": {
+              "$flatten": [
+                [
+                  {
+                    "header": "",
+                    "field": "done",
+                    "toggle": {
+                      "dataSource": "itemsUpdater",
+                      "matchField": "_id"
+                    }
+                  },
+                  {
+                    "header": "${itemName}",
+                    "field": "name",
+                    "sortable": true
+                  }
+                ],
+                {
+                  "$if": "fields",
+                  "then": {
+                    "$map": "fields",
+                    "each(field)": {
+                      "header": "${field.label}",
+                      "field": "${field.name}",
+                      "sortable": true
+                    }
+                  },
+                  "else": []
+                }
+              ]
+            },
+            "rowActions": [
+              {
+                "label": "Delete",
+                "action": "delete",
+                "dataSource": "itemsDeleter",
+                "matchField": "_id"
+              }
+            ]
+          },
+          {
+            "component": "button",
+            "label": "Add ${itemName}",
+            "onClick": [{ "action": "navigate", "target": "addPage" }],
+            "styleHint": { "emphasis": "primary" }
+          }
+        ]
+      }
+    },
+    "dataSources": {
+      "itemsStore": {
+        "url": "local://items",
+        "method": "POST"
+      },
+      "itemsReader": {
+        "url": "local://items",
+        "method": "GET",
+        "fields": {
+          "$flatten": [
+            [
+              { "name": "name", "type": "text" },
+              { "name": "done", "type": "checkbox" }
+            ],
+            {
+              "$if": "fields",
+              "then": {
+                "$map": "fields",
+                "each(field)": {
+                  "name": "${field.name}",
+                  "type": "${field.type}"
+                }
+              },
+              "else": []
+            }
+          ]
+        }
+      },
+      "itemsUpdater": {
+        "url": "local://items",
+        "method": "PUT"
+      },
+      "itemsDeleter": {
+        "url": "local://items",
+        "method": "DELETE"
+      }
+    },
+    "help": {
+      "overview": "${appName} is a simple check-off list. Add items, tap the checkbox to mark them done, and delete what you no longer need. All data stays on your device."
+    }
+  }
+}

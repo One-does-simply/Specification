@@ -49,6 +49,12 @@
       "file": "inventory.json"
     },
     {
+      "id": "simple-checklist",
+      "name": "Simple Checklist",
+      "description": "A quick check-off list — add items, tap to check them off. Perfect for grocery lists, to-dos, and packing lists.",
+      "file": "simple-checklist.json"
+    },
+    {
       "id": "checklist",
       "name": "Checklist",
       "description": "Run checklists and inspections with pass/fail tracking, completion counts, and color-coded results.",
