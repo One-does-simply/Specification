@@ -171,7 +171,8 @@
             "component": "form",
             "id": "listContextForm",
             "fields": [
-              { "name": "name", "type": "hidden" }
+              { "name": "name", "type": "hidden" },
+              { "name": "_id", "type": "hidden" }
             ]
           },
           {
@@ -186,7 +187,13 @@
                     "field": "done",
                     "toggle": {
                       "dataSource": "itemsUpdater",
-                      "matchField": "_id"
+                      "matchField": "_id",
+                      "autoComplete": {
+                        "groupField": "listName",
+                        "parentDataSource": "listsUpdater",
+                        "parentMatchField": "name",
+                        "parentValues": { "status": "Complete" }
+                      }
                     }
                   },
                   {
@@ -227,13 +234,73 @@
           {
             "component": "button",
             "label": "Add ${itemName}",
-            "onClick": [{ "action": "navigate", "target": "addItemPage" }],
+            "onClick": [{
+              "action": "navigate",
+              "target": "addItemPage",
+              "populateForm": "addItemForm",
+              "withData": { "listName": "{name}" }
+            }],
             "styleHint": { "emphasis": "primary" }
+          },
+          {
+            "component": "button",
+            "label": "Rename ${listName}",
+            "onClick": [{
+              "action": "navigate",
+              "target": "editListPage",
+              "populateForm": "editListForm",
+              "withData": { "name": "{name}", "_id": "{_id}" }
+            }],
+            "styleHint": { "emphasis": "secondary" }
           },
           {
             "component": "button",
             "label": "Back to ${listName}s",
             "onClick": [{ "action": "navigate", "target": "myListsPage" }],
+            "styleHint": { "emphasis": "secondary" }
+          }
+        ]
+      },
+      "editListPage": {
+        "component": "page",
+        "title": "Rename ${listName}",
+        "content": [
+          {
+            "component": "form",
+            "id": "editListForm",
+            "fields": [
+              {
+                "name": "name",
+                "label": "${listName} Name",
+                "type": "text",
+                "required": true
+              }
+            ]
+          },
+          {
+            "component": "button",
+            "label": "Save",
+            "onClick": [
+              {
+                "action": "update",
+                "dataSource": "listsUpdater",
+                "target": "editListForm",
+                "matchField": "_id",
+                "cascade": {
+                  "childDataSource": "itemsUpdater",
+                  "childLinkField": "listName",
+                  "parentField": "name"
+                }
+              },
+              { "action": "navigate", "target": "myListsPage" },
+              { "action": "showMessage", "message": "${listName} renamed!" }
+            ],
+            "styleHint": { "emphasis": "primary" }
+          },
+          {
+            "component": "button",
+            "label": "Cancel",
+            "onClick": [{ "action": "navigate", "target": "listItemsPage" }],
             "styleHint": { "emphasis": "secondary" }
           }
         ]
@@ -334,7 +401,13 @@
                     "field": "done",
                     "toggle": {
                       "dataSource": "itemsUpdater",
-                      "matchField": "_id"
+                      "matchField": "_id",
+                      "autoComplete": {
+                        "groupField": "listName",
+                        "parentDataSource": "listsUpdater",
+                        "parentMatchField": "name",
+                        "parentValues": { "status": "Complete" }
+                      }
                     }
                   },
                   {
