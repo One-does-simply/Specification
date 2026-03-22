@@ -23,12 +23,41 @@
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Title", "name": "title", "type": "text" },
-        { "label": "Requested By", "name": "requestedBy", "type": "text" },
-        { "label": "Date", "name": "date", "type": "date" },
-        { "label": "Priority", "name": "priority", "type": "select", "options": ["Low", "Medium", "High"] },
-        { "label": "Description", "name": "description", "type": "multiline" },
-        { "label": "Amount", "name": "amount", "type": "number" }
+        {
+          "label": "Title",
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "label": "Requested By",
+          "name": "requestedBy",
+          "type": "text"
+        },
+        {
+          "label": "Date",
+          "name": "date",
+          "type": "date"
+        },
+        {
+          "label": "Priority",
+          "name": "priority",
+          "type": "select",
+          "options": [
+            "Low",
+            "Medium",
+            "High"
+          ]
+        },
+        {
+          "label": "Description",
+          "name": "description",
+          "type": "multiline"
+        },
+        {
+          "label": "Amount",
+          "name": "amount",
+          "type": "number"
+        }
       ]
     },
     {
@@ -42,8 +71,14 @@
     "appName": "${appName}",
     "startPage": "dashboardPage",
     "menu": [
-      { "label": "Dashboard", "mapsTo": "dashboardPage" },
-      { "label": "Submit Request", "mapsTo": "submitPage" }
+      {
+        "label": "Dashboard",
+        "mapsTo": "dashboardPage"
+      },
+      {
+        "label": "Submit Request",
+        "mapsTo": "submitPage"
+      }
     ],
     "pages": {
       "submitPage": {
@@ -53,7 +88,9 @@
           {
             "component": "text",
             "content": "Submit a new ${requestName} request.",
-            "styleHint": { "variant": "body" }
+            "styleHint": {
+              "variant": "body"
+            }
           },
           {
             "component": "form",
@@ -68,7 +105,9 @@
                       "name": "${field.name}",
                       "label": "${field.label}",
                       "type": "select",
-                      "options": { "$eval": "field.options" }
+                      "options": {
+                        "$eval": "field.options"
+                      }
                     },
                     "else": {
                       "name": "${field.name}",
@@ -91,11 +130,24 @@
             "component": "button",
             "label": "Submit Request",
             "onClick": [
-              { "action": "submit", "dataSource": "requestsStore", "target": "submitForm" },
-              { "action": "navigate", "target": "thankYouPage" },
-              { "action": "showMessage", "message": "${requestName} submitted!" }
+              {
+                "action": "submit",
+                "dataSource": "requestsStore",
+                "target": "submitForm"
+              },
+              {
+                "action": "navigate",
+                "target": "thankYouPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${requestName} submitted!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "send"
+            }
           }
         ]
       },
@@ -106,19 +158,38 @@
           {
             "component": "text",
             "content": "Your ${requestName} request has been submitted and is pending review.",
-            "styleHint": { "variant": "subheading" }
+            "styleHint": {
+              "variant": "subheading"
+            }
           },
           {
             "component": "button",
             "label": "Submit Another",
-            "onClick": [{ "action": "navigate", "target": "submitPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "submitPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "send",
+              "variant": "outlined"
+            }
           },
           {
             "component": "button",
             "label": "View All Requests",
-            "onClick": [{ "action": "navigate", "target": "dashboardPage" }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "dashboardPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "visibility"
+            }
           }
         ]
       },
@@ -143,8 +214,13 @@
               {
                 "component": "text",
                 "content": "No requests yet. Submit your first ${requestName} request to get started!",
-                "styleHint": { "variant": "body" },
-                "visibleWhen": { "source": "requestsReader", "countEquals": 0 }
+                "styleHint": {
+                  "variant": "body"
+                },
+                "visibleWhen": {
+                  "source": "requestsReader",
+                  "countEquals": 0
+                }
               },
               {
                 "component": "list",
@@ -182,20 +258,30 @@
                     "action": "update",
                     "dataSource": "requestsUpdater",
                     "matchField": "_id",
-                    "values": { "status": "Approved" },
+                    "values": {
+                      "status": "Approved"
+                    },
                     "confirm": "Approve this request?",
                     "showMessage": "Request approved!",
-                    "hideWhen": { "field": "status", "notEquals": "Pending" }
+                    "hideWhen": {
+                      "field": "status",
+                      "notEquals": "Pending"
+                    }
                   },
                   {
                     "label": "Reject",
                     "action": "update",
                     "dataSource": "requestsUpdater",
                     "matchField": "_id",
-                    "values": { "status": "Rejected" },
+                    "values": {
+                      "status": "Rejected"
+                    },
                     "confirm": "Reject this request?",
                     "showMessage": "Request rejected!",
-                    "hideWhen": { "field": "status", "notEquals": "Pending" }
+                    "hideWhen": {
+                      "field": "status",
+                      "notEquals": "Pending"
+                    }
                   }
                 ],
                 "onRowTap": {
@@ -207,8 +293,15 @@
               {
                 "component": "button",
                 "label": "Submit New Request",
-                "onClick": [{ "action": "navigate", "target": "submitPage" }],
-                "styleHint": { "emphasis": "primary" }
+                "onClick": [
+                  {
+                    "action": "navigate",
+                    "target": "submitPage"
+                  }
+                ],
+                "styleHint": {
+                  "emphasis": "primary"
+                }
               }
             ],
             {
@@ -251,7 +344,9 @@
                       "name": "${field.name}",
                       "label": "${field.label}",
                       "type": "select",
-                      "options": { "$eval": "field.options" }
+                      "options": {
+                        "$eval": "field.options"
+                      }
                     },
                     "else": {
                       "name": "${field.name}",
@@ -273,8 +368,17 @@
           {
             "component": "button",
             "label": "Back to Dashboard",
-            "onClick": [{ "action": "navigate", "target": "dashboardPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "dashboardPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "arrow_back",
+              "variant": "outlined"
+            }
           }
         ]
       }

@@ -35,8 +35,14 @@
     "appName": "${appName}",
     "startPage": "leaderboardPage",
     "menu": [
-      { "label": "Leaderboard", "mapsTo": "leaderboardPage" },
-      { "label": "Add Score", "mapsTo": "addScorePage" }
+      {
+        "label": "Leaderboard",
+        "mapsTo": "leaderboardPage"
+      },
+      {
+        "label": "Add Score",
+        "mapsTo": "addScorePage"
+      }
     ],
     "pages": {
       "addScorePage": {
@@ -51,14 +57,33 @@
                 "fields": {
                   "$flatten": [
                     [
-                      { "name": "playerName", "label": "${playerName}", "type": "text", "required": true },
-                      { "name": "score", "label": "${scoreName}", "type": "number", "required": true },
-                      { "name": "date", "label": "Date", "type": "date", "default": "CURRENTDATE" }
+                      {
+                        "name": "playerName",
+                        "label": "${playerName}",
+                        "type": "text",
+                        "required": true
+                      },
+                      {
+                        "name": "score",
+                        "label": "${scoreName}",
+                        "type": "number",
+                        "required": true
+                      },
+                      {
+                        "name": "date",
+                        "label": "Date",
+                        "type": "date",
+                        "default": "CURRENTDATE"
+                      }
                     ],
                     {
                       "$if": "wantCategories",
                       "then": [
-                        { "name": "category", "label": "Category / Round", "type": "text" }
+                        {
+                          "name": "category",
+                          "label": "Category / Round",
+                          "type": "text"
+                        }
                       ],
                       "else": []
                     }
@@ -69,11 +94,23 @@
                 "component": "button",
                 "label": "Record Score",
                 "onClick": [
-                  { "action": "submit", "dataSource": "scoresStore", "target": "scoreForm" },
-                  { "action": "navigate", "target": "leaderboardPage" },
-                  { "action": "showMessage", "message": "Score recorded!" }
+                  {
+                    "action": "submit",
+                    "dataSource": "scoresStore",
+                    "target": "scoreForm"
+                  },
+                  {
+                    "action": "navigate",
+                    "target": "leaderboardPage"
+                  },
+                  {
+                    "action": "showMessage",
+                    "message": "Score recorded!"
+                  }
                 ],
-                "styleHint": { "emphasis": "primary" }
+                "styleHint": {
+                  "emphasis": "primary"
+                }
               }
             ]
           ]
@@ -94,34 +131,71 @@
               {
                 "component": "text",
                 "content": "No scores yet. Tap the button below to record your first!",
-                "styleHint": { "variant": "body" },
-                "visibleWhen": { "source": "scoresReader", "countEquals": 0 }
+                "styleHint": {
+                  "variant": "body"
+                },
+                "visibleWhen": {
+                  "source": "scoresReader",
+                  "countEquals": 0
+                }
               },
               {
                 "component": "list",
                 "searchable": true,
                 "dataSource": "scoresReader",
-                "defaultSort": { "field": "date", "direction": "desc" },
+                "defaultSort": {
+                  "field": "date",
+                  "direction": "desc"
+                },
                 "columns": {
                   "$flatten": [
                     [
-                      { "header": "${playerName}", "field": "playerName", "sortable": true },
-                      { "header": "${scoreName}", "field": "score", "sortable": true },
-                      { "header": "Date", "field": "date", "sortable": true }
+                      {
+                        "header": "${playerName}",
+                        "field": "playerName",
+                        "sortable": true
+                      },
+                      {
+                        "header": "${scoreName}",
+                        "field": "score",
+                        "sortable": true
+                      },
+                      {
+                        "header": "Date",
+                        "field": "date",
+                        "sortable": true
+                      }
                     ],
                     {
                       "$if": "wantCategories",
                       "then": [
-                        { "header": "Category", "field": "category", "sortable": true, "filterable": true }
+                        {
+                          "header": "Category",
+                          "field": "category",
+                          "sortable": true,
+                          "filterable": true
+                        }
                       ],
                       "else": []
                     }
                   ]
                 },
                 "summary": [
-                  { "column": "score", "function": "sum", "label": "Total ${scoreName}" },
-                  { "column": "score", "function": "avg", "label": "Average" },
-                  { "column": "score", "function": "max", "label": "Best" }
+                  {
+                    "column": "score",
+                    "function": "sum",
+                    "label": "Total ${scoreName}"
+                  },
+                  {
+                    "column": "score",
+                    "function": "avg",
+                    "label": "Average"
+                  },
+                  {
+                    "column": "score",
+                    "function": "max",
+                    "label": "Best"
+                  }
                 ],
                 "rowActions": [
                   {
@@ -143,8 +217,15 @@
               {
                 "component": "button",
                 "label": "Add Score",
-                "onClick": [{ "action": "navigate", "target": "addScorePage" }],
-                "styleHint": { "emphasis": "primary" }
+                "onClick": [
+                  {
+                    "action": "navigate",
+                    "target": "addScorePage"
+                  }
+                ],
+                "styleHint": {
+                  "emphasis": "primary"
+                }
               }
             ]
           ]
@@ -162,14 +243,26 @@
         "fields": {
           "$flatten": [
             [
-              { "name": "playerName", "type": "text" },
-              { "name": "score", "type": "number" },
-              { "name": "date", "type": "date" }
+              {
+                "name": "playerName",
+                "type": "text"
+              },
+              {
+                "name": "score",
+                "type": "number"
+              },
+              {
+                "name": "date",
+                "type": "date"
+              }
             ],
             {
               "$if": "wantCategories",
               "then": [
-                { "name": "category", "type": "text" }
+                {
+                  "name": "category",
+                  "type": "text"
+                }
               ],
               "else": []
             }

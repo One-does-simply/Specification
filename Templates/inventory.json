@@ -23,13 +23,44 @@
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Name",      "name": "name",      "type": "text" },
-        { "label": "Category",  "name": "category",  "type": "select", "options": ["General"] },
-        { "label": "Location",  "name": "location",  "type": "text" },
-        { "label": "Quantity",  "name": "quantity",   "type": "number" },
-        { "label": "Min Stock", "name": "minStock",   "type": "number" },
-        { "label": "Unit Cost", "name": "unitCost",   "type": "number" },
-        { "label": "Notes",     "name": "notes",      "type": "multiline" }
+        {
+          "label": "Name",
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "label": "Category",
+          "name": "category",
+          "type": "select",
+          "options": [
+            "General"
+          ]
+        },
+        {
+          "label": "Location",
+          "name": "location",
+          "type": "text"
+        },
+        {
+          "label": "Quantity",
+          "name": "quantity",
+          "type": "number"
+        },
+        {
+          "label": "Min Stock",
+          "name": "minStock",
+          "type": "number"
+        },
+        {
+          "label": "Unit Cost",
+          "name": "unitCost",
+          "type": "number"
+        },
+        {
+          "label": "Notes",
+          "name": "notes",
+          "type": "multiline"
+        }
       ]
     },
     {
@@ -54,7 +85,11 @@
       "id": "chartAggregate",
       "label": "Chart: how to aggregate?",
       "type": "select",
-      "options": ["Count", "Sum", "Average"],
+      "options": [
+        "Count",
+        "Sum",
+        "Average"
+      ],
       "default": "Sum"
     }
   ],
@@ -62,8 +97,14 @@
     "appName": "${appName}",
     "startPage": "listPage",
     "menu": [
-      { "label": "${itemName}", "mapsTo": "listPage" },
-      { "label": "Add ${itemName}", "mapsTo": "addPage" }
+      {
+        "label": "${itemName}",
+        "mapsTo": "listPage"
+      },
+      {
+        "label": "Add ${itemName}",
+        "mapsTo": "addPage"
+      }
     ],
     "pages": {
       "addPage": {
@@ -73,7 +114,9 @@
           {
             "component": "text",
             "content": "Add a new ${itemName} to your inventory.",
-            "styleHint": { "variant": "body" }
+            "styleHint": {
+              "variant": "body"
+            }
           },
           {
             "component": "form",
@@ -88,14 +131,18 @@
                     "name": "${field.name}",
                     "label": "${field.label}",
                     "type": "select",
-                    "options": { "$eval": "field.options" },
+                    "options": {
+                      "$eval": "field.options"
+                    },
                     "required": true
                   },
                   "else": {
                     "name": "${field.name}",
                     "label": "${field.label}",
                     "type": "select",
-                    "options": { "$eval": "field.options" }
+                    "options": {
+                      "$eval": "field.options"
+                    }
                   }
                 },
                 "else": {
@@ -138,11 +185,24 @@
             "component": "button",
             "label": "Save",
             "onClick": [
-              { "action": "submit", "dataSource": "itemsStore", "target": "addForm" },
-              { "action": "navigate", "target": "listPage" },
-              { "action": "showMessage", "message": "${itemName} saved!" }
+              {
+                "action": "submit",
+                "dataSource": "itemsStore",
+                "target": "addForm"
+              },
+              {
+                "action": "navigate",
+                "target": "listPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${itemName} saved!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           }
         ]
       },
@@ -161,8 +221,13 @@
               {
                 "component": "text",
                 "content": "No items yet. Tap the button below to add your first!",
-                "styleHint": { "variant": "body" },
-                "visibleWhen": { "source": "itemsReader", "countEquals": 0 }
+                "styleHint": {
+                  "variant": "body"
+                },
+                "visibleWhen": {
+                  "source": "itemsReader",
+                  "countEquals": 0
+                }
               },
               {
                 "component": "list",
@@ -203,8 +268,15 @@
               {
                 "component": "button",
                 "label": "Add ${itemName}",
-                "onClick": [{ "action": "navigate", "target": "addPage" }],
-                "styleHint": { "emphasis": "primary" }
+                "onClick": [
+                  {
+                    "action": "navigate",
+                    "target": "addPage"
+                  }
+                ],
+                "styleHint": {
+                  "emphasis": "primary"
+                }
               }
             ],
             {
@@ -240,7 +312,9 @@
                   "name": "${field.name}",
                   "label": "${field.label}",
                   "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "options": {
+                    "$eval": "field.options"
+                  }
                 },
                 "else": {
                   "name": "${field.name}",
@@ -254,17 +328,40 @@
             "component": "button",
             "label": "Save Changes",
             "onClick": [
-              { "action": "update", "dataSource": "itemsUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "listPage" },
-              { "action": "showMessage", "message": "${itemName} updated!" }
+              {
+                "action": "update",
+                "dataSource": "itemsUpdater",
+                "target": "editForm",
+                "matchField": "_id"
+              },
+              {
+                "action": "navigate",
+                "target": "listPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${itemName} updated!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           },
           {
             "component": "button",
             "label": "Back",
-            "onClick": [{ "action": "navigate", "target": "listPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "listPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "arrow_back",
+              "variant": "outlined"
+            }
           }
         ]
       }

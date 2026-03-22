@@ -2,8 +2,14 @@
   "appName": "Expense Tracker",
   "startPage": "viewExpensesPage",
   "menu": [
-    { "label": "Log Expense", "mapsTo": "logExpensePage" },
-    { "label": "View Expenses", "mapsTo": "viewExpensesPage" }
+    {
+      "label": "Log Expense",
+      "mapsTo": "logExpensePage"
+    },
+    {
+      "label": "View Expenses",
+      "mapsTo": "viewExpensesPage"
+    }
   ],
   "pages": {
     "logExpensePage": {
@@ -13,36 +19,125 @@
         {
           "component": "text",
           "content": "Record a new expense to keep track of your spending.",
-          "styleHint": { "variant": "body" }
+          "styleHint": {
+            "variant": "body"
+          }
         },
         {
           "component": "form",
           "id": "expenseForm",
           "fields": [
-            { "name": "description", "label": "Description", "type": "text", "required": true, "placeholder": "e.g., Weekly groceries", "validation": { "minLength": 3, "message": "Description must be at least 3 characters" } },
-            { "name": "quantity", "label": "Quantity", "type": "number", "required": true, "default": "1", "validation": { "min": 1, "max": 999 } },
-            { "name": "unitPrice", "label": "Unit Price", "type": "number", "required": true, "currency": true, "validation": { "min": 0.01, "max": 99999 } },
-            { "name": "total", "label": "Total", "type": "number", "currency": true, "formula": "{quantity} * {unitPrice}" },
-            { "name": "category", "label": "Category", "type": "select", "options": ["Food", "Transport", "Bills", "Entertainment", "Medical", "Shopping", "Other"] },
-            { "name": "otherCategory", "label": "Specify category", "type": "text", "placeholder": "What kind of expense?", "visibleWhen": { "field": "category", "equals": "Other" } },
-            { "name": "date", "label": "Date", "type": "date", "required": true, "default": "NOW" }
+            {
+              "name": "description",
+              "label": "Description",
+              "type": "text",
+              "required": true,
+              "placeholder": "e.g., Weekly groceries",
+              "validation": {
+                "minLength": 3,
+                "message": "Description must be at least 3 characters"
+              }
+            },
+            {
+              "name": "quantity",
+              "label": "Quantity",
+              "type": "number",
+              "required": true,
+              "default": "1",
+              "validation": {
+                "min": 1,
+                "max": 999
+              }
+            },
+            {
+              "name": "unitPrice",
+              "label": "Unit Price",
+              "type": "number",
+              "required": true,
+              "currency": true,
+              "validation": {
+                "min": 0.01,
+                "max": 99999
+              }
+            },
+            {
+              "name": "total",
+              "label": "Total",
+              "type": "number",
+              "currency": true,
+              "formula": "{quantity} * {unitPrice}"
+            },
+            {
+              "name": "category",
+              "label": "Category",
+              "type": "select",
+              "options": [
+                "Food",
+                "Transport",
+                "Bills",
+                "Entertainment",
+                "Medical",
+                "Shopping",
+                "Other"
+              ]
+            },
+            {
+              "name": "otherCategory",
+              "label": "Specify category",
+              "type": "text",
+              "placeholder": "What kind of expense?",
+              "visibleWhen": {
+                "field": "category",
+                "equals": "Other"
+              }
+            },
+            {
+              "name": "date",
+              "label": "Date",
+              "type": "date",
+              "required": true,
+              "default": "NOW"
+            }
           ]
         },
         {
           "component": "button",
           "label": "Save Expense",
           "onClick": [
-            { "action": "submit", "dataSource": "expensesStore", "target": "expenseForm", "confirm": "Save this expense?" },
-            { "action": "navigate", "target": "viewExpensesPage" },
-            { "action": "showMessage", "message": "Expense recorded!" }
+            {
+              "action": "submit",
+              "dataSource": "expensesStore",
+              "target": "expenseForm",
+              "confirm": "Save this expense?"
+            },
+            {
+              "action": "navigate",
+              "target": "viewExpensesPage"
+            },
+            {
+              "action": "showMessage",
+              "message": "Expense recorded!"
+            }
           ],
-          "styleHint": { "emphasis": "primary" }
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "save"
+          }
         },
         {
           "component": "button",
           "label": "View All Expenses",
-          "onClick": [{ "action": "navigate", "target": "viewExpensesPage" }],
-          "styleHint": { "emphasis": "secondary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "viewExpensesPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "secondary",
+            "icon": "visibility",
+            "variant": "outlined"
+          }
         }
       ]
     },
@@ -53,26 +148,44 @@
         {
           "component": "text",
           "content": "Total: ${SUM(expensesReader, total)} across {COUNT(expensesReader)} expenses (avg ${AVG(expensesReader, total)})",
-          "styleHint": { "variant": "subheading" },
-          "visibleWhen": { "source": "expensesReader", "countMin": 1 }
+          "styleHint": {
+            "variant": "subheading"
+          },
+          "visibleWhen": {
+            "source": "expensesReader",
+            "countMin": 1
+          }
         },
         {
           "component": "text",
           "content": "No expenses recorded yet. Log your first expense to get started!",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "expensesReader", "countEquals": 0 }
+          "styleHint": {
+            "variant": "body",
+            "align": "center",
+            "color": "grey"
+          },
+          "visibleWhen": {
+            "source": "expensesReader",
+            "countEquals": 0
+          }
         },
         {
           "component": "summary",
           "label": "Total Spent",
           "value": "{SUM(expensesReader, total)}",
-          "icon": "attach_money"
+          "icon": "attach_money",
+          "styleHint": {
+            "color": "error"
+          }
         },
         {
           "component": "summary",
           "label": "Number of Expenses",
           "value": "{COUNT(expensesReader)}",
-          "icon": "receipt"
+          "icon": "receipt",
+          "styleHint": {
+            "color": "success"
+          }
         },
         {
           "component": "chart",
@@ -81,20 +194,52 @@
           "labelField": "category",
           "valueField": "total",
           "title": "Spending by Category",
-          "visibleWhen": { "source": "expensesReader", "countMin": 1 }
+          "visibleWhen": {
+            "source": "expensesReader",
+            "countMin": 1
+          }
         },
         {
           "component": "list",
           "dataSource": "expensesReader",
           "searchable": true,
-          "defaultSort": { "field": "date", "direction": "desc" },
+          "defaultSort": {
+            "field": "date",
+            "direction": "desc"
+          },
           "columns": [
-            { "header": "Date", "field": "date", "sortable": true, "filterable": true },
-            { "header": "Description", "field": "description" },
-            { "header": "Qty", "field": "quantity" },
-            { "header": "Unit Price", "field": "unitPrice", "sortable": true, "currency": true },
-            { "header": "Total", "field": "total", "sortable": true, "currency": true },
-            { "header": "Category", "field": "category", "sortable": true, "filterable": true }
+            {
+              "header": "Date",
+              "field": "date",
+              "sortable": true,
+              "filterable": true
+            },
+            {
+              "header": "Description",
+              "field": "description"
+            },
+            {
+              "header": "Qty",
+              "field": "quantity"
+            },
+            {
+              "header": "Unit Price",
+              "field": "unitPrice",
+              "sortable": true,
+              "currency": true
+            },
+            {
+              "header": "Total",
+              "field": "total",
+              "sortable": true,
+              "currency": true
+            },
+            {
+              "header": "Category",
+              "field": "category",
+              "sortable": true,
+              "filterable": true
+            }
           ],
           "rowActions": [
             {
@@ -110,16 +255,39 @@
             "populateForm": "editExpenseForm"
           },
           "summary": [
-            { "column": "total", "function": "sum", "label": "Total Spent" },
-            { "column": "total", "function": "avg", "label": "Average" },
-            { "column": "total", "function": "count", "label": "Expenses" }
-          ]
+            {
+              "column": "total",
+              "function": "sum",
+              "label": "Total Spent"
+            },
+            {
+              "column": "total",
+              "function": "avg",
+              "label": "Average"
+            },
+            {
+              "column": "total",
+              "function": "count",
+              "label": "Expenses"
+            }
+          ],
+          "styleHint": {
+            "density": "compact"
+          }
         },
         {
           "component": "button",
           "label": "Log Another Expense",
-          "onClick": [{ "action": "navigate", "target": "logExpensePage" }],
-          "styleHint": { "emphasis": "primary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "logExpensePage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "add_circle"
+          }
         }
       ]
     },
@@ -131,30 +299,114 @@
           "component": "form",
           "id": "editExpenseForm",
           "fields": [
-            { "name": "description", "label": "Description", "type": "text", "required": true, "validation": { "minLength": 3, "message": "Description must be at least 3 characters" } },
-            { "name": "quantity", "label": "Quantity", "type": "number", "required": true, "validation": { "min": 1, "max": 999 } },
-            { "name": "unitPrice", "label": "Unit Price", "type": "number", "required": true, "currency": true, "validation": { "min": 0.01, "max": 99999 } },
-            { "name": "total", "label": "Total", "type": "number", "currency": true, "formula": "{quantity} * {unitPrice}" },
-            { "name": "category", "label": "Category", "type": "select", "options": ["Food", "Transport", "Bills", "Entertainment", "Medical", "Shopping", "Other"] },
-            { "name": "otherCategory", "label": "Specify category", "type": "text", "placeholder": "What kind of expense?", "visibleWhen": { "field": "category", "equals": "Other" } },
-            { "name": "date", "label": "Date", "type": "date", "required": true }
+            {
+              "name": "description",
+              "label": "Description",
+              "type": "text",
+              "required": true,
+              "validation": {
+                "minLength": 3,
+                "message": "Description must be at least 3 characters"
+              }
+            },
+            {
+              "name": "quantity",
+              "label": "Quantity",
+              "type": "number",
+              "required": true,
+              "validation": {
+                "min": 1,
+                "max": 999
+              }
+            },
+            {
+              "name": "unitPrice",
+              "label": "Unit Price",
+              "type": "number",
+              "required": true,
+              "currency": true,
+              "validation": {
+                "min": 0.01,
+                "max": 99999
+              }
+            },
+            {
+              "name": "total",
+              "label": "Total",
+              "type": "number",
+              "currency": true,
+              "formula": "{quantity} * {unitPrice}"
+            },
+            {
+              "name": "category",
+              "label": "Category",
+              "type": "select",
+              "options": [
+                "Food",
+                "Transport",
+                "Bills",
+                "Entertainment",
+                "Medical",
+                "Shopping",
+                "Other"
+              ]
+            },
+            {
+              "name": "otherCategory",
+              "label": "Specify category",
+              "type": "text",
+              "placeholder": "What kind of expense?",
+              "visibleWhen": {
+                "field": "category",
+                "equals": "Other"
+              }
+            },
+            {
+              "name": "date",
+              "label": "Date",
+              "type": "date",
+              "required": true
+            }
           ]
         },
         {
           "component": "button",
           "label": "Save Changes",
           "onClick": [
-            { "action": "update", "dataSource": "expensesUpdater", "target": "editExpenseForm", "matchField": "_id" },
-            { "action": "showMessage", "message": "Expense updated!" },
-            { "action": "navigate", "target": "viewExpensesPage" }
+            {
+              "action": "update",
+              "dataSource": "expensesUpdater",
+              "target": "editExpenseForm",
+              "matchField": "_id"
+            },
+            {
+              "action": "showMessage",
+              "message": "Expense updated!"
+            },
+            {
+              "action": "navigate",
+              "target": "viewExpensesPage"
+            }
           ],
-          "styleHint": { "emphasis": "primary" }
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "save"
+          }
         },
         {
           "component": "button",
           "label": "Back",
-          "onClick": [{ "action": "navigate", "target": "viewExpensesPage" }],
-          "styleHint": { "emphasis": "secondary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "viewExpensesPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "secondary",
+            "icon": "arrow_back",
+            "variant": "outlined"
+          }
         }
       ]
     }
@@ -168,13 +420,35 @@
       "url": "local://expenses",
       "method": "GET",
       "fields": [
-        { "name": "description", "type": "text" },
-        { "name": "quantity", "type": "number" },
-        { "name": "unitPrice", "type": "number" },
-        { "name": "total", "type": "number", "formula": "{quantity} * {unitPrice}" },
-        { "name": "category", "type": "select" },
-        { "name": "otherCategory", "type": "text" },
-        { "name": "date", "type": "date" }
+        {
+          "name": "description",
+          "type": "text"
+        },
+        {
+          "name": "quantity",
+          "type": "number"
+        },
+        {
+          "name": "unitPrice",
+          "type": "number"
+        },
+        {
+          "name": "total",
+          "type": "number",
+          "formula": "{quantity} * {unitPrice}"
+        },
+        {
+          "name": "category",
+          "type": "select"
+        },
+        {
+          "name": "otherCategory",
+          "type": "text"
+        },
+        {
+          "name": "date",
+          "type": "date"
+        }
       ],
       "seedData": [
         {
@@ -233,7 +507,15 @@
     "defaultCategory": {
       "label": "Default category for new expenses",
       "type": "select",
-      "options": ["Food", "Transport", "Bills", "Entertainment", "Medical", "Shopping", "Other"],
+      "options": [
+        "Food",
+        "Transport",
+        "Bills",
+        "Entertainment",
+        "Medical",
+        "Shopping",
+        "Other"
+      ],
       "default": "Food"
     }
   },

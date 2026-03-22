@@ -15,7 +15,7 @@
     {
       "id": "daily-log",
       "name": "Daily Log",
-      "description": "A journal for date-based entries — write, browse, and edit. Great for diaries, standups, or gratitude logs.",
+      "description": "A journal for date-based entries \u00e2\u20ac\u201d write, browse, and edit. Great for diaries, standups, or gratitude logs.",
       "file": "daily-log.json"
     },
     {
@@ -51,7 +51,7 @@
     {
       "id": "simple-checklist",
       "name": "Simple Checklist",
-      "description": "A quick check-off list — add items, tap to check them off. Perfect for grocery lists, to-dos, and packing lists.",
+      "description": "A quick check-off list \u00e2\u20ac\u201d add items, tap to check them off. Perfect for grocery lists, to-dos, and packing lists.",
       "file": "simple-checklist.json"
     },
     {
@@ -63,7 +63,7 @@
     {
       "id": "master-detail",
       "name": "Master-Detail",
-      "description": "Two related tables — manage parent records and their child items. Great for projects & tasks, orders & line items, or classes & students.",
+      "description": "Two related tables \u00e2\u20ac\u201d manage parent records and their child items. Great for projects & tasks, orders & line items, or classes & students.",
       "file": "master-detail.json"
     },
     {

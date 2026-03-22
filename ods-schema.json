@@ -717,7 +717,12 @@
                 "required": ["field", "expression"]
               }
             },
-            "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" }
+            "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" },
+            "preserveFields": {
+              "description": "Optional. An array of field names to preserve after the form is cleared on successful submit. Enables 'Add & Add Another' flows where contextual fields (e.g., the selected list) are kept while other fields reset.",
+              "type": "array",
+              "items": { "type": "string" }
+            }
           },
           "required": ["action", "dataSource", "target"]
         },
@@ -905,9 +910,19 @@
     },
     "styleHint": {
       "title": "StyleHint Object",
-      "description": "An optional object providing abstract styling guidance. Frameworks should interpret known hints and gracefully ignore unknown ones.",
+      "description": "An optional object providing abstract styling guidance. Frameworks should interpret known hints and gracefully ignore unknown ones. Known hints: 'variant' (text: heading/subheading/body/caption; button: filled/outlined/text/tonal), 'emphasis' (button: primary/secondary/danger), 'color' (semantic: primary/secondary/tertiary/success/warning/error/info, or named: green/red/blue/orange/purple/teal/pink/amber/indigo/grey), 'icon' (Material icon name for buttons and summaries), 'align' (left/center/right for text and buttons), 'size' (compact/default/large for buttons and summaries), 'density' (compact/default/comfortable for lists), 'elevation' (0-3 for summaries).",
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "properties": {
+        "variant": { "type": "string", "description": "Text: heading/subheading/body/caption. Button: filled/outlined/text/tonal." },
+        "emphasis": { "type": "string", "description": "Button color: primary/secondary/danger." },
+        "color": { "type": "string", "description": "Accent color: primary/success/warning/error/info, or named: green/red/blue/orange/purple/teal/pink/amber/indigo/grey." },
+        "icon": { "type": "string", "description": "Material icon name (e.g., 'add', 'check', 'star', 'shopping_cart')." },
+        "align": { "type": "string", "description": "Content alignment: left/center/right." },
+        "size": { "type": "string", "description": "Component size: compact/default/large." },
+        "density": { "type": "string", "description": "List row density: compact/default/comfortable." },
+        "elevation": { "type": "integer", "description": "Card shadow depth: 0, 1, 2, or 3." }
+      }
     },
     "appSetting": {
       "title": "App Setting",

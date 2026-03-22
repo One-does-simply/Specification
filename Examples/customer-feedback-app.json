@@ -2,8 +2,14 @@
   "appName": "Customer Feedback",
   "startPage": "feedbackFormPage",
   "menu": [
-    { "label": "Submit Feedback", "mapsTo": "feedbackFormPage" },
-    { "label": "View Responses", "mapsTo": "viewFeedbackPage" }
+    {
+      "label": "Submit Feedback",
+      "mapsTo": "feedbackFormPage"
+    },
+    {
+      "label": "View Responses",
+      "mapsTo": "viewFeedbackPage"
+    }
   ],
   "pages": {
     "feedbackFormPage": {
@@ -13,28 +19,77 @@
         {
           "component": "text",
           "content": "Please let us know how we're doing. Your feedback helps us improve our service.",
-          "styleHint": { "variant": "body" }
+          "styleHint": {
+            "variant": "body"
+          }
         },
         {
           "component": "form",
           "id": "feedbackForm",
           "fields": [
-            { "name": "customerName", "label": "Your Name", "type": "text", "required": true, "placeholder": "e.g., Jane Smith" },
-            { "name": "customerEmail", "label": "Email Address", "type": "email", "required": true, "placeholder": "you@example.com" },
-            { "name": "date", "label": "Date", "type": "date", "default": "NOW" },
-            { "name": "rating", "label": "Rating", "type": "select", "options": ["1 - Poor", "2 - Fair", "3 - Good", "4 - Very Good", "5 - Excellent"], "required": true },
-            { "name": "comments", "label": "Comments", "type": "multiline", "placeholder": "Tell us about your experience..." }
+            {
+              "name": "customerName",
+              "label": "Your Name",
+              "type": "text",
+              "required": true,
+              "placeholder": "e.g., Jane Smith"
+            },
+            {
+              "name": "customerEmail",
+              "label": "Email Address",
+              "type": "email",
+              "required": true,
+              "placeholder": "you@example.com"
+            },
+            {
+              "name": "date",
+              "label": "Date",
+              "type": "date",
+              "default": "NOW"
+            },
+            {
+              "name": "rating",
+              "label": "Rating",
+              "type": "select",
+              "options": [
+                "1 - Poor",
+                "2 - Fair",
+                "3 - Good",
+                "4 - Very Good",
+                "5 - Excellent"
+              ],
+              "required": true
+            },
+            {
+              "name": "comments",
+              "label": "Comments",
+              "type": "multiline",
+              "placeholder": "Tell us about your experience..."
+            }
           ]
         },
         {
           "component": "button",
           "label": "Submit Feedback",
           "onClick": [
-            { "action": "submit", "dataSource": "feedbackStore", "target": "feedbackForm" },
-            { "action": "showMessage", "message": "Thank you for your feedback!" },
-            { "action": "navigate", "target": "thankYouPage" }
+            {
+              "action": "submit",
+              "dataSource": "feedbackStore",
+              "target": "feedbackForm"
+            },
+            {
+              "action": "showMessage",
+              "message": "Thank you for your feedback!"
+            },
+            {
+              "action": "navigate",
+              "target": "thankYouPage"
+            }
           ],
-          "styleHint": { "emphasis": "primary" }
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "send"
+          }
         }
       ]
     },
@@ -45,19 +100,38 @@
         {
           "component": "text",
           "content": "Your feedback has been submitted successfully. We appreciate you taking the time to help us.",
-          "styleHint": { "variant": "heading" }
+          "styleHint": {
+            "variant": "heading"
+          }
         },
         {
           "component": "button",
           "label": "Submit Another Response",
-          "onClick": [{ "action": "navigate", "target": "feedbackFormPage" }],
-          "styleHint": { "emphasis": "primary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "feedbackFormPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "send"
+          }
         },
         {
           "component": "button",
           "label": "View All Responses",
-          "onClick": [{ "action": "navigate", "target": "viewFeedbackPage" }],
-          "styleHint": { "emphasis": "secondary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "viewFeedbackPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "secondary",
+            "icon": "visibility",
+            "variant": "outlined"
+          }
         }
       ]
     },
@@ -69,30 +143,66 @@
           "component": "summary",
           "label": "Total Responses",
           "value": "{COUNT(feedbackReader)}",
-          "icon": "people"
+          "icon": "people",
+          "styleHint": {
+            "color": "info"
+          }
         },
         {
           "component": "summary",
           "label": "Average Rating",
           "value": "{AVG(feedbackReader, rating)}",
-          "icon": "star"
+          "icon": "star",
+          "styleHint": {
+            "color": "success"
+          }
         },
         {
           "component": "text",
           "content": "No feedback yet. Share the feedback form to start collecting responses!",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "feedbackReader", "countEquals": 0 }
+          "styleHint": {
+            "variant": "body",
+            "align": "center",
+            "color": "grey"
+          },
+          "visibleWhen": {
+            "source": "feedbackReader",
+            "countEquals": 0
+          }
         },
         {
           "component": "list",
           "dataSource": "feedbackReader",
           "searchable": true,
           "columns": [
-            { "header": "Date", "field": "date", "sortable": true },
-            { "header": "Name", "field": "customerName", "sortable": true },
-            { "header": "Rating", "field": "rating", "sortable": true, "filterable": true, "colorMap": { "5 - Excellent": "green", "4 - Very Good": "green", "3 - Good": "blue", "2 - Fair": "orange", "1 - Poor": "red" } }
+            {
+              "header": "Date",
+              "field": "date",
+              "sortable": true
+            },
+            {
+              "header": "Name",
+              "field": "customerName",
+              "sortable": true
+            },
+            {
+              "header": "Rating",
+              "field": "rating",
+              "sortable": true,
+              "filterable": true,
+              "colorMap": {
+                "5 - Excellent": "green",
+                "4 - Very Good": "green",
+                "3 - Good": "blue",
+                "2 - Fair": "orange",
+                "1 - Poor": "red"
+              }
+            }
           ],
-          "defaultSort": { "field": "date", "direction": "desc" },
+          "defaultSort": {
+            "field": "date",
+            "direction": "desc"
+          },
           "rowActions": [
             {
               "label": "Delete",
@@ -105,13 +215,23 @@
             "action": "navigate",
             "target": "viewDetailPage",
             "populateForm": "detailForm"
+          },
+          "styleHint": {
+            "density": "compact"
           }
         },
         {
           "component": "button",
           "label": "Collect More Feedback",
-          "onClick": [{ "action": "navigate", "target": "feedbackFormPage" }],
-          "styleHint": { "emphasis": "primary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "feedbackFormPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "primary"
+          }
         }
       ]
     },
@@ -122,25 +242,77 @@
         {
           "component": "detail",
           "fromForm": "detailForm",
-          "fields": ["customerName", "customerEmail", "date", "rating", "comments"],
-          "labels": { "customerName": "Name", "customerEmail": "Email", "rating": "Rating", "comments": "Comments" }
+          "fields": [
+            "customerName",
+            "customerEmail",
+            "date",
+            "rating",
+            "comments"
+          ],
+          "labels": {
+            "customerName": "Name",
+            "customerEmail": "Email",
+            "rating": "Rating",
+            "comments": "Comments"
+          }
         },
         {
           "component": "form",
           "id": "detailForm",
           "fields": [
-            { "name": "customerName", "label": "Name", "type": "text", "readOnly": true },
-            { "name": "customerEmail", "label": "Email", "type": "email", "readOnly": true },
-            { "name": "date", "label": "Date", "type": "date", "readOnly": true },
-            { "name": "rating", "label": "Rating", "type": "select", "options": ["1 - Poor", "2 - Fair", "3 - Good", "4 - Very Good", "5 - Excellent"], "readOnly": true },
-            { "name": "comments", "label": "Comments", "type": "multiline", "readOnly": true }
+            {
+              "name": "customerName",
+              "label": "Name",
+              "type": "text",
+              "readOnly": true
+            },
+            {
+              "name": "customerEmail",
+              "label": "Email",
+              "type": "email",
+              "readOnly": true
+            },
+            {
+              "name": "date",
+              "label": "Date",
+              "type": "date",
+              "readOnly": true
+            },
+            {
+              "name": "rating",
+              "label": "Rating",
+              "type": "select",
+              "options": [
+                "1 - Poor",
+                "2 - Fair",
+                "3 - Good",
+                "4 - Very Good",
+                "5 - Excellent"
+              ],
+              "readOnly": true
+            },
+            {
+              "name": "comments",
+              "label": "Comments",
+              "type": "multiline",
+              "readOnly": true
+            }
           ]
         },
         {
           "component": "button",
           "label": "Back to Responses",
-          "onClick": [{ "action": "navigate", "target": "viewFeedbackPage" }],
-          "styleHint": { "emphasis": "secondary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "viewFeedbackPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "secondary",
+            "icon": "arrow_back",
+            "variant": "outlined"
+          }
         }
       ]
     }
@@ -154,11 +326,26 @@
       "url": "local://feedback",
       "method": "GET",
       "fields": [
-        { "name": "customerName", "type": "text" },
-        { "name": "customerEmail", "type": "email" },
-        { "name": "date", "type": "date" },
-        { "name": "rating", "type": "select" },
-        { "name": "comments", "type": "multiline" }
+        {
+          "name": "customerName",
+          "type": "text"
+        },
+        {
+          "name": "customerEmail",
+          "type": "email"
+        },
+        {
+          "name": "date",
+          "type": "date"
+        },
+        {
+          "name": "rating",
+          "type": "select"
+        },
+        {
+          "name": "comments",
+          "type": "multiline"
+        }
       ],
       "seedData": [
         {

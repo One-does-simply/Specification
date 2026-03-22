@@ -23,13 +23,44 @@
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Name",       "name": "name",       "type": "text" },
-        { "label": "Email",      "name": "email",      "type": "email" },
-        { "label": "Phone",      "name": "phone",      "type": "text" },
-        { "label": "Role",       "name": "role",       "type": "text" },
-        { "label": "Department", "name": "department",  "type": "select", "options": ["General"] },
-        { "label": "Location",   "name": "location",   "type": "text" },
-        { "label": "Notes",      "name": "notes",      "type": "multiline" }
+        {
+          "label": "Name",
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "label": "Email",
+          "name": "email",
+          "type": "email"
+        },
+        {
+          "label": "Phone",
+          "name": "phone",
+          "type": "text"
+        },
+        {
+          "label": "Role",
+          "name": "role",
+          "type": "text"
+        },
+        {
+          "label": "Department",
+          "name": "department",
+          "type": "select",
+          "options": [
+            "General"
+          ]
+        },
+        {
+          "label": "Location",
+          "name": "location",
+          "type": "text"
+        },
+        {
+          "label": "Notes",
+          "name": "notes",
+          "type": "multiline"
+        }
       ]
     }
   ],
@@ -37,8 +68,14 @@
     "appName": "${appName}",
     "startPage": "directoryPage",
     "menu": [
-      { "label": "Directory",          "mapsTo": "directoryPage" },
-      { "label": "Add ${entryName}",   "mapsTo": "addPage" }
+      {
+        "label": "Directory",
+        "mapsTo": "directoryPage"
+      },
+      {
+        "label": "Add ${entryName}",
+        "mapsTo": "addPage"
+      }
     ],
     "pages": {
       "directoryPage": {
@@ -49,13 +86,23 @@
             "component": "summary",
             "label": "Total ${entryName}s",
             "value": "{COUNT(entriesReader)}",
-            "icon": "people"
+            "icon": "people",
+            "styleHint": {
+              "color": "info"
+            }
           },
           {
             "component": "text",
             "content": "No entries yet. Add your first ${entryName} to get started!",
-            "styleHint": { "variant": "body" },
-            "visibleWhen": { "source": "entriesReader", "countEquals": 0 }
+            "styleHint": {
+              "variant": "body",
+              "align": "center",
+              "color": "grey"
+            },
+            "visibleWhen": {
+              "source": "entriesReader",
+              "countEquals": 0
+            }
           },
           {
             "component": "list",
@@ -96,8 +143,16 @@
           {
             "component": "button",
             "label": "Add ${entryName}",
-            "onClick": [{ "action": "navigate", "target": "addPage" }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "addPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           }
         ]
       },
@@ -108,7 +163,9 @@
           {
             "component": "text",
             "content": "Add a new ${entryName} to the directory.",
-            "styleHint": { "variant": "body" }
+            "styleHint": {
+              "variant": "body"
+            }
           },
           {
             "component": "form",
@@ -121,7 +178,9 @@
                   "name": "${field.name}",
                   "label": "${field.label}",
                   "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "options": {
+                    "$eval": "field.options"
+                  }
                 },
                 "else": {
                   "name": "${field.name}",
@@ -135,11 +194,24 @@
             "component": "button",
             "label": "Save",
             "onClick": [
-              { "action": "submit", "dataSource": "entriesStore", "target": "addForm" },
-              { "action": "navigate", "target": "directoryPage" },
-              { "action": "showMessage", "message": "${entryName} added!" }
+              {
+                "action": "submit",
+                "dataSource": "entriesStore",
+                "target": "addForm"
+              },
+              {
+                "action": "navigate",
+                "target": "directoryPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${entryName} added!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           }
         ]
       },
@@ -158,7 +230,9 @@
                   "name": "${field.name}",
                   "label": "${field.label}",
                   "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "options": {
+                    "$eval": "field.options"
+                  }
                 },
                 "else": {
                   "name": "${field.name}",
@@ -172,17 +246,40 @@
             "component": "button",
             "label": "Save Changes",
             "onClick": [
-              { "action": "update", "dataSource": "entriesUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "directoryPage" },
-              { "action": "showMessage", "message": "${entryName} updated!" }
+              {
+                "action": "update",
+                "dataSource": "entriesUpdater",
+                "target": "editForm",
+                "matchField": "_id"
+              },
+              {
+                "action": "navigate",
+                "target": "directoryPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${entryName} updated!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           },
           {
             "component": "button",
             "label": "Back",
-            "onClick": [{ "action": "navigate", "target": "directoryPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "directoryPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "arrow_back",
+              "variant": "outlined"
+            }
           }
         ]
       }

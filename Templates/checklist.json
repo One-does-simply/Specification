@@ -23,12 +23,44 @@
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Item Name", "name": "itemName", "type": "text" },
-        { "label": "Category",  "name": "category", "type": "select", "options": ["General"] },
-        { "label": "Result",    "name": "result",   "type": "select", "options": ["Pass", "Fail", "N/A"] },
-        { "label": "Inspector", "name": "inspector", "type": "text" },
-        { "label": "Date",      "name": "date",     "type": "date" },
-        { "label": "Notes",     "name": "notes",    "type": "multiline" }
+        {
+          "label": "Item Name",
+          "name": "itemName",
+          "type": "text"
+        },
+        {
+          "label": "Category",
+          "name": "category",
+          "type": "select",
+          "options": [
+            "General"
+          ]
+        },
+        {
+          "label": "Result",
+          "name": "result",
+          "type": "select",
+          "options": [
+            "Pass",
+            "Fail",
+            "N/A"
+          ]
+        },
+        {
+          "label": "Inspector",
+          "name": "inspector",
+          "type": "text"
+        },
+        {
+          "label": "Date",
+          "name": "date",
+          "type": "date"
+        },
+        {
+          "label": "Notes",
+          "name": "notes",
+          "type": "multiline"
+        }
       ]
     }
   ],
@@ -36,8 +68,14 @@
     "appName": "${appName}",
     "startPage": "listPage",
     "menu": [
-      { "label": "Results", "mapsTo": "listPage" },
-      { "label": "New Check", "mapsTo": "checkPage" }
+      {
+        "label": "Results",
+        "mapsTo": "listPage"
+      },
+      {
+        "label": "New Check",
+        "mapsTo": "checkPage"
+      }
     ],
     "pages": {
       "checkPage": {
@@ -47,7 +85,9 @@
           {
             "component": "text",
             "content": "Record a new ${checklistName} check.",
-            "styleHint": { "variant": "body" }
+            "styleHint": {
+              "variant": "body"
+            }
           },
           {
             "component": "form",
@@ -62,14 +102,18 @@
                     "name": "${field.name}",
                     "label": "${field.label}",
                     "type": "select",
-                    "options": { "$eval": "field.options" },
+                    "options": {
+                      "$eval": "field.options"
+                    },
                     "required": true
                   },
                   "else": {
                     "name": "${field.name}",
                     "label": "${field.label}",
                     "type": "select",
-                    "options": { "$eval": "field.options" }
+                    "options": {
+                      "$eval": "field.options"
+                    }
                   }
                 },
                 "else": {
@@ -112,11 +156,24 @@
             "component": "button",
             "label": "Submit",
             "onClick": [
-              { "action": "submit", "dataSource": "checksStore", "target": "checkForm" },
-              { "action": "navigate", "target": "listPage" },
-              { "action": "showMessage", "message": "Check recorded!" }
+              {
+                "action": "submit",
+                "dataSource": "checksStore",
+                "target": "checkForm"
+              },
+              {
+                "action": "navigate",
+                "target": "listPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "Check recorded!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "send"
+            }
           }
         ]
       },
@@ -128,25 +185,41 @@
             "component": "summary",
             "label": "Total Checks",
             "value": "{COUNT(checksReader)}",
-            "icon": "check_circle"
+            "icon": "check_circle",
+            "styleHint": {
+              "color": "info"
+            }
           },
           {
             "component": "summary",
             "label": "Pass",
             "value": "{COUNT(checksReader, result=Pass)}",
-            "icon": "check_circle"
+            "icon": "check_circle",
+            "styleHint": {
+              "color": "success"
+            }
           },
           {
             "component": "summary",
             "label": "Fail",
             "value": "{COUNT(checksReader, result=Fail)}",
-            "icon": "cancel"
+            "icon": "cancel",
+            "styleHint": {
+              "color": "error"
+            }
           },
           {
             "component": "text",
             "content": "No checks yet. Tap the button below to record your first!",
-            "styleHint": { "variant": "body" },
-            "visibleWhen": { "source": "checksReader", "countEquals": 0 }
+            "styleHint": {
+              "variant": "body",
+              "align": "center",
+              "color": "grey"
+            },
+            "visibleWhen": {
+              "source": "checksReader",
+              "countEquals": 0
+            }
           },
           {
             "component": "chart",
@@ -155,7 +228,10 @@
             "labelField": "result",
             "valueField": "result",
             "title": "Results Breakdown",
-            "visibleWhen": { "source": "checksReader", "countMin": 1 }
+            "visibleWhen": {
+              "source": "checksReader",
+              "countMin": 1
+            }
           },
           {
             "component": "list",
@@ -201,8 +277,16 @@
           {
             "component": "button",
             "label": "New Check",
-            "onClick": [{ "action": "navigate", "target": "checkPage" }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "checkPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           }
         ]
       },
@@ -221,7 +305,9 @@
                   "name": "${field.name}",
                   "label": "${field.label}",
                   "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "options": {
+                    "$eval": "field.options"
+                  }
                 },
                 "else": {
                   "name": "${field.name}",
@@ -235,17 +321,40 @@
             "component": "button",
             "label": "Save Changes",
             "onClick": [
-              { "action": "update", "dataSource": "checksUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "listPage" },
-              { "action": "showMessage", "message": "Check updated!" }
+              {
+                "action": "update",
+                "dataSource": "checksUpdater",
+                "target": "editForm",
+                "matchField": "_id"
+              },
+              {
+                "action": "navigate",
+                "target": "listPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "Check updated!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           },
           {
             "component": "button",
             "label": "Back",
-            "onClick": [{ "action": "navigate", "target": "listPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "listPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "arrow_back",
+              "variant": "outlined"
+            }
           }
         ]
       }

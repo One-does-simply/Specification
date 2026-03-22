@@ -1,6 +1,6 @@
 {
   "templateName": "Daily Log",
-  "description": "A simple journal for daily entries — write, browse, and edit. Perfect for diaries, standups, gratitude logs, or any date-based notes.",
+  "description": "A simple journal for daily entries \u00e2\u20ac\u201d write, browse, and edit. Perfect for diaries, standups, gratitude logs, or any date-based notes.",
   "icon": "edit_calendar",
   "questions": [
     {
@@ -23,12 +23,49 @@
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Title",    "name": "title",    "type": "text" },
-        { "label": "Date",     "name": "date",     "type": "date" },
-        { "label": "Mood",     "name": "mood",     "type": "select", "options": ["Great", "Good", "OK", "Rough", "Bad"] },
-        { "label": "Category", "name": "category", "type": "select", "options": ["General", "Work", "Personal", "Health"] },
-        { "label": "Content",  "name": "content",  "type": "multiline" },
-        { "label": "Tags",     "name": "tags",     "type": "text" }
+        {
+          "label": "Title",
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "label": "Date",
+          "name": "date",
+          "type": "date"
+        },
+        {
+          "label": "Mood",
+          "name": "mood",
+          "type": "select",
+          "options": [
+            "Great",
+            "Good",
+            "OK",
+            "Rough",
+            "Bad"
+          ]
+        },
+        {
+          "label": "Category",
+          "name": "category",
+          "type": "select",
+          "options": [
+            "General",
+            "Work",
+            "Personal",
+            "Health"
+          ]
+        },
+        {
+          "label": "Content",
+          "name": "content",
+          "type": "multiline"
+        },
+        {
+          "label": "Tags",
+          "name": "tags",
+          "type": "text"
+        }
       ]
     }
   ],
@@ -36,8 +73,14 @@
     "appName": "${appName}",
     "startPage": "browsePage",
     "menu": [
-      { "label": "New ${entryName}", "mapsTo": "writePage" },
-      { "label": "Browse", "mapsTo": "browsePage" }
+      {
+        "label": "New ${entryName}",
+        "mapsTo": "writePage"
+      },
+      {
+        "label": "Browse",
+        "mapsTo": "browsePage"
+      }
     ],
     "pages": {
       "writePage": {
@@ -57,14 +100,18 @@
                     "name": "${field.name}",
                     "label": "${field.label}",
                     "type": "select",
-                    "options": { "$eval": "field.options" },
+                    "options": {
+                      "$eval": "field.options"
+                    },
                     "required": true
                   },
                   "else": {
                     "name": "${field.name}",
                     "label": "${field.label}",
                     "type": "select",
-                    "options": { "$eval": "field.options" }
+                    "options": {
+                      "$eval": "field.options"
+                    }
                   }
                 },
                 "else": {
@@ -107,11 +154,24 @@
             "component": "button",
             "label": "Save ${entryName}",
             "onClick": [
-              { "action": "submit", "dataSource": "entriesStore", "target": "entryForm" },
-              { "action": "navigate", "target": "browsePage" },
-              { "action": "showMessage", "message": "Entry saved!" }
+              {
+                "action": "submit",
+                "dataSource": "entriesStore",
+                "target": "entryForm"
+              },
+              {
+                "action": "navigate",
+                "target": "browsePage"
+              },
+              {
+                "action": "showMessage",
+                "message": "Entry saved!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           }
         ]
       },
@@ -123,13 +183,23 @@
             "component": "summary",
             "label": "Total Entries",
             "value": "{COUNT(entriesReader)}",
-            "icon": "book"
+            "icon": "book",
+            "styleHint": {
+              "color": "teal"
+            }
           },
           {
             "component": "text",
             "content": "No entries yet. Tap the button below to add your first!",
-            "styleHint": { "variant": "body" },
-            "visibleWhen": { "source": "entriesReader", "countEquals": 0 }
+            "styleHint": {
+              "variant": "body",
+              "align": "center",
+              "color": "grey"
+            },
+            "visibleWhen": {
+              "source": "entriesReader",
+              "countEquals": 0
+            }
           },
           {
             "component": "list",
@@ -169,8 +239,16 @@
           {
             "component": "button",
             "label": "New ${entryName}",
-            "onClick": [{ "action": "navigate", "target": "writePage" }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "writePage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           }
         ]
       },
@@ -189,7 +267,9 @@
                   "name": "${field.name}",
                   "label": "${field.label}",
                   "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "options": {
+                    "$eval": "field.options"
+                  }
                 },
                 "else": {
                   "name": "${field.name}",
@@ -203,17 +283,40 @@
             "component": "button",
             "label": "Save Changes",
             "onClick": [
-              { "action": "update", "dataSource": "entriesUpdater", "target": "editForm", "matchField": "_id" },
-              { "action": "navigate", "target": "browsePage" },
-              { "action": "showMessage", "message": "Entry updated!" }
+              {
+                "action": "update",
+                "dataSource": "entriesUpdater",
+                "target": "editForm",
+                "matchField": "_id"
+              },
+              {
+                "action": "navigate",
+                "target": "browsePage"
+              },
+              {
+                "action": "showMessage",
+                "message": "Entry updated!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           },
           {
             "component": "button",
             "label": "Back",
-            "onClick": [{ "action": "navigate", "target": "browsePage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "browsePage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "arrow_back",
+              "variant": "outlined"
+            }
           }
         ]
       }

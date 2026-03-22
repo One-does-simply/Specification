@@ -2,8 +2,14 @@
   "appName": "Recipe Book",
   "startPage": "browseRecipesPage",
   "menu": [
-    { "label": "Browse Recipes", "mapsTo": "browseRecipesPage" },
-    { "label": "Add Recipe", "mapsTo": "addRecipePage" }
+    {
+      "label": "Browse Recipes",
+      "mapsTo": "browseRecipesPage"
+    },
+    {
+      "label": "Add Recipe",
+      "mapsTo": "addRecipePage"
+    }
   ],
   "pages": {
     "addRecipePage": {
@@ -13,31 +19,98 @@
         {
           "component": "text",
           "content": "Save a new recipe to your personal collection.",
-          "styleHint": { "variant": "body" }
+          "styleHint": {
+            "variant": "body"
+          }
         },
         {
           "component": "form",
           "id": "addRecipeForm",
           "fields": [
-            { "name": "recipeName", "label": "Recipe Name", "type": "text", "required": true, "placeholder": "e.g., Classic Tomato Pasta" },
-            { "name": "cuisine", "label": "Cuisine", "type": "select", "options": ["Italian", "Asian", "Mexican", "Indian", "Mediterranean", "American", "French", "Japanese", "Other"] },
-            { "name": "servings", "label": "Servings", "type": "number" },
-            { "name": "ingredients", "label": "Ingredients", "type": "multiline", "required": true, "placeholder": "List each ingredient separated by commas" },
-            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true, "placeholder": "Step-by-step cooking instructions" },
-            { "name": "prepTime", "label": "Prep Time (mins)", "type": "number", "placeholder": "e.g., 15" },
-            { "name": "cookTime", "label": "Cook Time (mins)", "type": "number", "placeholder": "e.g., 30" },
-            { "name": "dateAdded", "label": "Date Added", "type": "date", "default": "CURRENTDATE" }
+            {
+              "name": "recipeName",
+              "label": "Recipe Name",
+              "type": "text",
+              "required": true,
+              "placeholder": "e.g., Classic Tomato Pasta"
+            },
+            {
+              "name": "cuisine",
+              "label": "Cuisine",
+              "type": "select",
+              "options": [
+                "Italian",
+                "Asian",
+                "Mexican",
+                "Indian",
+                "Mediterranean",
+                "American",
+                "French",
+                "Japanese",
+                "Other"
+              ]
+            },
+            {
+              "name": "servings",
+              "label": "Servings",
+              "type": "number"
+            },
+            {
+              "name": "ingredients",
+              "label": "Ingredients",
+              "type": "multiline",
+              "required": true,
+              "placeholder": "List each ingredient separated by commas"
+            },
+            {
+              "name": "instructions",
+              "label": "Instructions",
+              "type": "multiline",
+              "required": true,
+              "placeholder": "Step-by-step cooking instructions"
+            },
+            {
+              "name": "prepTime",
+              "label": "Prep Time (mins)",
+              "type": "number",
+              "placeholder": "e.g., 15"
+            },
+            {
+              "name": "cookTime",
+              "label": "Cook Time (mins)",
+              "type": "number",
+              "placeholder": "e.g., 30"
+            },
+            {
+              "name": "dateAdded",
+              "label": "Date Added",
+              "type": "date",
+              "default": "CURRENTDATE"
+            }
           ]
         },
         {
           "component": "button",
           "label": "Save Recipe",
           "onClick": [
-            { "action": "submit", "dataSource": "recipesStore", "target": "addRecipeForm" },
-            { "action": "showMessage", "message": "Recipe saved!" },
-            { "action": "navigate", "target": "browseRecipesPage" }
+            {
+              "action": "submit",
+              "dataSource": "recipesStore",
+              "target": "addRecipeForm"
+            },
+            {
+              "action": "showMessage",
+              "message": "Recipe saved!"
+            },
+            {
+              "action": "navigate",
+              "target": "browseRecipesPage"
+            }
           ],
-          "styleHint": { "emphasis": "primary" }
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "save"
+          }
         }
       ]
     },
@@ -48,14 +121,24 @@
         {
           "component": "text",
           "content": "No recipes yet. Add your first recipe to start building your cookbook!",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "recipesReader", "countEquals": 0 }
+          "styleHint": {
+            "variant": "body",
+            "align": "center",
+            "color": "grey"
+          },
+          "visibleWhen": {
+            "source": "recipesReader",
+            "countEquals": 0
+          }
         },
         {
           "component": "summary",
           "label": "Total Recipes",
           "value": "{COUNT(recipesReader)}",
-          "icon": "restaurant"
+          "icon": "restaurant",
+          "styleHint": {
+            "color": "orange"
+          }
         },
         {
           "component": "list",
@@ -63,12 +146,32 @@
           "searchable": true,
           "displayAs": "cards",
           "columns": [
-            { "header": "Recipe", "field": "recipeName", "sortable": true },
-            { "header": "Cuisine", "field": "cuisine", "sortable": true, "filterable": true },
-            { "header": "Servings", "field": "servings", "sortable": true },
-            { "header": "Added", "field": "dateAdded", "sortable": true }
+            {
+              "header": "Recipe",
+              "field": "recipeName",
+              "sortable": true
+            },
+            {
+              "header": "Cuisine",
+              "field": "cuisine",
+              "sortable": true,
+              "filterable": true
+            },
+            {
+              "header": "Servings",
+              "field": "servings",
+              "sortable": true
+            },
+            {
+              "header": "Added",
+              "field": "dateAdded",
+              "sortable": true
+            }
           ],
-          "defaultSort": { "field": "dateAdded", "direction": "desc" },
+          "defaultSort": {
+            "field": "dateAdded",
+            "direction": "desc"
+          },
           "rowActions": [
             {
               "label": "Delete",
@@ -86,8 +189,16 @@
         {
           "component": "button",
           "label": "Add New Recipe",
-          "onClick": [{ "action": "navigate", "target": "addRecipePage" }],
-          "styleHint": { "emphasis": "primary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "addRecipePage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "add_circle"
+          }
         }
       ]
     },
@@ -99,31 +210,103 @@
           "component": "form",
           "id": "editRecipeForm",
           "fields": [
-            { "name": "recipeName", "label": "Recipe Name", "type": "text", "required": true },
-            { "name": "cuisine", "label": "Cuisine", "type": "select", "options": ["Italian", "Asian", "Mexican", "Indian", "Mediterranean", "American", "French", "Japanese", "Other"] },
-            { "name": "servings", "label": "Servings", "type": "number" },
-            { "name": "ingredients", "label": "Ingredients", "type": "multiline", "required": true },
-            { "name": "instructions", "label": "Instructions", "type": "multiline", "required": true },
-            { "name": "prepTime", "label": "Prep Time (mins)", "type": "number", "placeholder": "e.g., 15" },
-            { "name": "cookTime", "label": "Cook Time (mins)", "type": "number", "placeholder": "e.g., 30" },
-            { "name": "dateAdded", "label": "Date Added", "type": "date", "default": "CURRENTDATE" }
+            {
+              "name": "recipeName",
+              "label": "Recipe Name",
+              "type": "text",
+              "required": true
+            },
+            {
+              "name": "cuisine",
+              "label": "Cuisine",
+              "type": "select",
+              "options": [
+                "Italian",
+                "Asian",
+                "Mexican",
+                "Indian",
+                "Mediterranean",
+                "American",
+                "French",
+                "Japanese",
+                "Other"
+              ]
+            },
+            {
+              "name": "servings",
+              "label": "Servings",
+              "type": "number"
+            },
+            {
+              "name": "ingredients",
+              "label": "Ingredients",
+              "type": "multiline",
+              "required": true
+            },
+            {
+              "name": "instructions",
+              "label": "Instructions",
+              "type": "multiline",
+              "required": true
+            },
+            {
+              "name": "prepTime",
+              "label": "Prep Time (mins)",
+              "type": "number",
+              "placeholder": "e.g., 15"
+            },
+            {
+              "name": "cookTime",
+              "label": "Cook Time (mins)",
+              "type": "number",
+              "placeholder": "e.g., 30"
+            },
+            {
+              "name": "dateAdded",
+              "label": "Date Added",
+              "type": "date",
+              "default": "CURRENTDATE"
+            }
           ]
         },
         {
           "component": "button",
           "label": "Save Changes",
           "onClick": [
-            { "action": "update", "dataSource": "recipesUpdater", "target": "editRecipeForm", "matchField": "_id" },
-            { "action": "showMessage", "message": "Recipe updated!" },
-            { "action": "navigate", "target": "browseRecipesPage" }
+            {
+              "action": "update",
+              "dataSource": "recipesUpdater",
+              "target": "editRecipeForm",
+              "matchField": "_id"
+            },
+            {
+              "action": "showMessage",
+              "message": "Recipe updated!"
+            },
+            {
+              "action": "navigate",
+              "target": "browseRecipesPage"
+            }
           ],
-          "styleHint": { "emphasis": "primary" }
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "save"
+          }
         },
         {
           "component": "button",
           "label": "Back",
-          "onClick": [{ "action": "navigate", "target": "browseRecipesPage" }],
-          "styleHint": { "emphasis": "secondary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "browseRecipesPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "secondary",
+            "icon": "arrow_back",
+            "variant": "outlined"
+          }
         }
       ]
     }
@@ -137,14 +320,38 @@
       "url": "local://recipes",
       "method": "GET",
       "fields": [
-        { "name": "recipeName", "type": "text" },
-        { "name": "cuisine", "type": "select" },
-        { "name": "ingredients", "type": "multiline" },
-        { "name": "instructions", "type": "multiline" },
-        { "name": "servings", "type": "number" },
-        { "name": "prepTime", "type": "number" },
-        { "name": "cookTime", "type": "number" },
-        { "name": "dateAdded", "type": "date" }
+        {
+          "name": "recipeName",
+          "type": "text"
+        },
+        {
+          "name": "cuisine",
+          "type": "select"
+        },
+        {
+          "name": "ingredients",
+          "type": "multiline"
+        },
+        {
+          "name": "instructions",
+          "type": "multiline"
+        },
+        {
+          "name": "servings",
+          "type": "number"
+        },
+        {
+          "name": "prepTime",
+          "type": "number"
+        },
+        {
+          "name": "cookTime",
+          "type": "number"
+        },
+        {
+          "name": "dateAdded",
+          "type": "date"
+        }
       ],
       "seedData": [
         {
@@ -189,7 +396,17 @@
     "defaultCuisine": {
       "label": "Default cuisine",
       "type": "select",
-      "options": ["Italian", "Asian", "Mexican", "Indian", "Mediterranean", "American", "French", "Japanese", "Other"],
+      "options": [
+        "Italian",
+        "Asian",
+        "Mexican",
+        "Indian",
+        "Mediterranean",
+        "American",
+        "French",
+        "Japanese",
+        "Other"
+      ],
       "default": "Italian"
     }
   },

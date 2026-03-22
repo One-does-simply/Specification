@@ -2,8 +2,14 @@
   "appName": "Team Wiki",
   "startPage": "browseArticlesPage",
   "menu": [
-    { "label": "Browse Articles", "mapsTo": "browseArticlesPage" },
-    { "label": "Add Article", "mapsTo": "addArticlePage" }
+    {
+      "label": "Browse Articles",
+      "mapsTo": "browseArticlesPage"
+    },
+    {
+      "label": "Add Article",
+      "mapsTo": "addArticlePage"
+    }
   ],
   "pages": {
     "addArticlePage": {
@@ -13,28 +19,77 @@
         {
           "component": "text",
           "content": "Write a new knowledge-base article for the team. Use **Markdown** in the Content field for headings, lists, links, and more.",
-          "styleHint": { "variant": "body" }
+          "styleHint": {
+            "variant": "body"
+          }
         },
         {
           "component": "form",
           "id": "addArticleForm",
           "fields": [
-            { "name": "title", "label": "Title", "type": "text", "required": true, "placeholder": "e.g., How to Set Up Your Dev Environment" },
-            { "name": "category", "label": "Category", "type": "select", "options": ["Getting Started", "How To", "FAQ", "Reference", "Architecture", "Troubleshooting", "Onboarding"] },
-            { "name": "content", "label": "Content", "type": "multiline", "required": true, "placeholder": "Write your article using Markdown syntax..." },
-            { "name": "author", "label": "Author", "type": "text", "placeholder": "Your name" },
-            { "name": "lastUpdated", "label": "Last Updated", "type": "date", "default": "CURRENTDATE" }
+            {
+              "name": "title",
+              "label": "Title",
+              "type": "text",
+              "required": true,
+              "placeholder": "e.g., How to Set Up Your Dev Environment"
+            },
+            {
+              "name": "category",
+              "label": "Category",
+              "type": "select",
+              "options": [
+                "Getting Started",
+                "How To",
+                "FAQ",
+                "Reference",
+                "Architecture",
+                "Troubleshooting",
+                "Onboarding"
+              ]
+            },
+            {
+              "name": "content",
+              "label": "Content",
+              "type": "multiline",
+              "required": true,
+              "placeholder": "Write your article using Markdown syntax..."
+            },
+            {
+              "name": "author",
+              "label": "Author",
+              "type": "text",
+              "placeholder": "Your name"
+            },
+            {
+              "name": "lastUpdated",
+              "label": "Last Updated",
+              "type": "date",
+              "default": "CURRENTDATE"
+            }
           ]
         },
         {
           "component": "button",
           "label": "Publish Article",
           "onClick": [
-            { "action": "submit", "dataSource": "articlesStore", "target": "addArticleForm" },
-            { "action": "showMessage", "message": "Article saved!" },
-            { "action": "navigate", "target": "browseArticlesPage" }
+            {
+              "action": "submit",
+              "dataSource": "articlesStore",
+              "target": "addArticleForm"
+            },
+            {
+              "action": "showMessage",
+              "message": "Article saved!"
+            },
+            {
+              "action": "navigate",
+              "target": "browseArticlesPage"
+            }
           ],
-          "styleHint": { "emphasis": "primary" }
+          "styleHint": {
+            "emphasis": "primary"
+          }
         }
       ]
     },
@@ -44,20 +99,32 @@
       "content": [
         {
           "component": "text",
-          "content": "Your team's shared knowledge — {COUNT(articlesReader)} articles",
-          "styleHint": { "variant": "subheading" }
+          "content": "Your team's shared knowledge \u00e2\u20ac\u201d {COUNT(articlesReader)} articles",
+          "styleHint": {
+            "variant": "subheading"
+          }
         },
         {
           "component": "text",
           "content": "No articles yet. Add the first article to start building your team wiki!",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "articlesReader", "countEquals": 0 }
+          "styleHint": {
+            "variant": "body",
+            "align": "center",
+            "color": "grey"
+          },
+          "visibleWhen": {
+            "source": "articlesReader",
+            "countEquals": 0
+          }
         },
         {
           "component": "summary",
           "label": "Total Articles",
           "value": "{COUNT(articlesReader)}",
-          "icon": "article"
+          "icon": "article",
+          "styleHint": {
+            "color": "primary"
+          }
         },
         {
           "component": "list",
@@ -65,11 +132,27 @@
           "searchable": true,
           "displayAs": "cards",
           "columns": [
-            { "header": "Title", "field": "title", "sortable": true },
-            { "header": "Category", "field": "category", "sortable": true, "filterable": true },
-            { "header": "Updated", "field": "lastUpdated", "sortable": true }
+            {
+              "header": "Title",
+              "field": "title",
+              "sortable": true
+            },
+            {
+              "header": "Category",
+              "field": "category",
+              "sortable": true,
+              "filterable": true
+            },
+            {
+              "header": "Updated",
+              "field": "lastUpdated",
+              "sortable": true
+            }
           ],
-          "defaultSort": { "field": "lastUpdated", "direction": "desc" },
+          "defaultSort": {
+            "field": "lastUpdated",
+            "direction": "desc"
+          },
           "rowActions": [
             {
               "label": "Delete",
@@ -87,8 +170,16 @@
         {
           "component": "button",
           "label": "Add New Article",
-          "onClick": [{ "action": "navigate", "target": "addArticlePage" }],
-          "styleHint": { "emphasis": "primary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "addArticlePage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "add_circle"
+          }
         }
       ]
     },
@@ -100,39 +191,98 @@
           "component": "form",
           "id": "editArticleForm",
           "fields": [
-            { "name": "title", "label": "Title", "type": "text", "required": true },
-            { "name": "category", "label": "Category", "type": "select", "options": ["Getting Started", "How To", "FAQ", "Reference", "Architecture", "Troubleshooting", "Onboarding"] },
-            { "name": "content", "label": "Content", "type": "multiline", "required": true },
-            { "name": "author", "label": "Author", "type": "text", "placeholder": "Your name" },
-            { "name": "lastUpdated", "label": "Last Updated", "type": "date", "default": "CURRENTDATE" }
+            {
+              "name": "title",
+              "label": "Title",
+              "type": "text",
+              "required": true
+            },
+            {
+              "name": "category",
+              "label": "Category",
+              "type": "select",
+              "options": [
+                "Getting Started",
+                "How To",
+                "FAQ",
+                "Reference",
+                "Architecture",
+                "Troubleshooting",
+                "Onboarding"
+              ]
+            },
+            {
+              "name": "content",
+              "label": "Content",
+              "type": "multiline",
+              "required": true
+            },
+            {
+              "name": "author",
+              "label": "Author",
+              "type": "text",
+              "placeholder": "Your name"
+            },
+            {
+              "name": "lastUpdated",
+              "label": "Last Updated",
+              "type": "date",
+              "default": "CURRENTDATE"
+            }
           ]
         },
         {
           "component": "text",
           "content": "---\n\n## Preview\n\nThe rendered article appears below:",
           "format": "markdown",
-          "styleHint": { "variant": "body" }
+          "styleHint": {
+            "variant": "body"
+          }
         },
         {
           "component": "text",
           "content": "{editArticleForm.content}",
-          "format": "markdown"
+          "format": "markdown",
+          "styleHint": {}
         },
         {
           "component": "button",
           "label": "Save Changes",
           "onClick": [
-            { "action": "update", "dataSource": "articlesUpdater", "target": "editArticleForm", "matchField": "_id" },
-            { "action": "navigate", "target": "browseArticlesPage" },
-            { "action": "showMessage", "message": "Article updated!" }
+            {
+              "action": "update",
+              "dataSource": "articlesUpdater",
+              "target": "editArticleForm",
+              "matchField": "_id"
+            },
+            {
+              "action": "navigate",
+              "target": "browseArticlesPage"
+            },
+            {
+              "action": "showMessage",
+              "message": "Article updated!"
+            }
           ],
-          "styleHint": { "emphasis": "primary" }
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "save"
+          }
         },
         {
           "component": "button",
           "label": "Back",
-          "onClick": [{ "action": "navigate", "target": "browseArticlesPage" }],
-          "styleHint": { "emphasis": "secondary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "browseArticlesPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "secondary",
+            "icon": "arrow_back",
+            "variant": "outlined"
+          }
         }
       ]
     }
@@ -146,11 +296,26 @@
       "url": "local://articles",
       "method": "GET",
       "fields": [
-        { "name": "title", "type": "text" },
-        { "name": "category", "type": "select" },
-        { "name": "content", "type": "multiline" },
-        { "name": "author", "type": "text" },
-        { "name": "lastUpdated", "type": "date" }
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "category",
+          "type": "select"
+        },
+        {
+          "name": "content",
+          "type": "multiline"
+        },
+        {
+          "name": "author",
+          "type": "text"
+        },
+        {
+          "name": "lastUpdated",
+          "type": "date"
+        }
       ],
       "seedData": [
         {
@@ -171,7 +336,7 @@
         {
           "title": "Git Branch Naming Convention",
           "category": "Reference",
-          "content": "# Git Branch Naming Convention\n\nAll repositories follow this naming scheme:\n\n## Format\n\n```\n<type>/<ticket>-<short-description>\n```\n\n## Types\n\n- `feature/` — new functionality\n- `bugfix/` — fixing a defect\n- `hotfix/` — urgent production fix\n- `chore/` — maintenance tasks\n\n## Examples\n\n- `feature/PROJ-123-user-profile`\n- `bugfix/PROJ-456-login-redirect`\n- `hotfix/PROJ-789-crash-on-startup`\n\n## Rules\n\n1. Always **lowercase**\n2. Use **hyphens** to separate words\n3. Keep descriptions under **5 words**\n4. Include the **ticket number** from the issue tracker"
+          "content": "# Git Branch Naming Convention\n\nAll repositories follow this naming scheme:\n\n## Format\n\n```\n<type>/<ticket>-<short-description>\n```\n\n## Types\n\n- `feature/` \u00e2\u20ac\u201d new functionality\n- `bugfix/` \u00e2\u20ac\u201d fixing a defect\n- `hotfix/` \u00e2\u20ac\u201d urgent production fix\n- `chore/` \u00e2\u20ac\u201d maintenance tasks\n\n## Examples\n\n- `feature/PROJ-123-user-profile`\n- `bugfix/PROJ-456-login-redirect`\n- `hotfix/PROJ-789-crash-on-startup`\n\n## Rules\n\n1. Always **lowercase**\n2. Use **hyphens** to separate words\n3. Keep descriptions under **5 words**\n4. Include the **ticket number** from the issue tracker"
         }
       ]
     },
@@ -196,7 +361,15 @@
     "defaultCategory": {
       "label": "Default category for new articles",
       "type": "select",
-      "options": ["Getting Started", "How To", "FAQ", "Reference", "Architecture", "Troubleshooting", "Onboarding"],
+      "options": [
+        "Getting Started",
+        "How To",
+        "FAQ",
+        "Reference",
+        "Architecture",
+        "Troubleshooting",
+        "Onboarding"
+      ],
       "default": "How To"
     }
   },

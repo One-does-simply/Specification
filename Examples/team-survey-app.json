@@ -2,8 +2,14 @@
   "appName": "Team Survey",
   "startPage": "takeSurveyPage",
   "menu": [
-    { "label": "Take Survey", "mapsTo": "takeSurveyPage" },
-    { "label": "Results", "mapsTo": "resultsPage" }
+    {
+      "label": "Take Survey",
+      "mapsTo": "takeSurveyPage"
+    },
+    {
+      "label": "Results",
+      "mapsTo": "resultsPage"
+    }
   ],
   "pages": {
     "takeSurveyPage": {
@@ -13,7 +19,9 @@
         {
           "component": "text",
           "content": "Help us improve! Answer a few questions about your experience on the team. All responses are anonymous and stored locally on your device.",
-          "styleHint": { "variant": "body" }
+          "styleHint": {
+            "variant": "body"
+          }
         },
         {
           "component": "form",
@@ -24,42 +32,76 @@
               "label": "Your Role",
               "type": "select",
               "required": true,
-              "options": ["Developer", "Designer", "Manager", "QA", "Product", "Other"]
+              "options": [
+                "Developer",
+                "Designer",
+                "Manager",
+                "QA",
+                "Product",
+                "Other"
+              ]
             },
             {
               "name": "otherRole",
               "label": "Specify your role",
               "type": "text",
               "placeholder": "What is your role?",
-              "visibleWhen": { "field": "role", "equals": "Other" }
+              "visibleWhen": {
+                "field": "role",
+                "equals": "Other"
+              }
             },
             {
               "name": "satisfaction",
               "label": "Overall satisfaction (1-5)",
               "type": "select",
               "required": true,
-              "options": ["1", "2", "3", "4", "5"]
+              "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             },
             {
               "name": "communication",
               "label": "Team communication (1-5)",
               "type": "select",
               "required": true,
-              "options": ["1", "2", "3", "4", "5"]
+              "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             },
             {
               "name": "workload",
               "label": "Workload balance (1-5)",
               "type": "select",
               "required": true,
-              "options": ["1", "2", "3", "4", "5"]
+              "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             },
             {
               "name": "growth",
               "label": "Growth opportunities (1-5)",
               "type": "select",
               "required": true,
-              "options": ["1", "2", "3", "4", "5"]
+              "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+              ]
             },
             {
               "name": "bestThing",
@@ -78,20 +120,42 @@
               "label": "Would you recommend this team to a friend?",
               "type": "select",
               "required": true,
-              "options": ["Yes", "Maybe", "No"]
+              "options": [
+                "Yes",
+                "Maybe",
+                "No"
+              ]
             },
-            { "name": "submittedDate", "label": "Submitted", "type": "date", "default": "CURRENTDATE" }
+            {
+              "name": "submittedDate",
+              "label": "Submitted",
+              "type": "date",
+              "default": "CURRENTDATE"
+            }
           ]
         },
         {
           "component": "button",
           "label": "Submit Survey",
           "onClick": [
-            { "action": "submit", "dataSource": "surveyStore", "target": "surveyForm" },
-            { "action": "showMessage", "message": "Survey submitted — thank you!" },
-            { "action": "navigate", "target": "thankYouPage" }
+            {
+              "action": "submit",
+              "dataSource": "surveyStore",
+              "target": "surveyForm"
+            },
+            {
+              "action": "showMessage",
+              "message": "Survey submitted \u00e2\u20ac\u201d thank you!"
+            },
+            {
+              "action": "navigate",
+              "target": "thankYouPage"
+            }
           ],
-          "styleHint": { "emphasis": "primary" }
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "send"
+          }
         }
       ]
     },
@@ -102,19 +166,38 @@
         {
           "component": "text",
           "content": "Your response has been recorded. Thank you for your honest feedback!",
-          "styleHint": { "variant": "heading" }
+          "styleHint": {
+            "variant": "heading"
+          }
         },
         {
           "component": "button",
           "label": "Submit Another Response",
-          "onClick": [{ "action": "navigate", "target": "takeSurveyPage" }],
-          "styleHint": { "emphasis": "primary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "takeSurveyPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "primary",
+            "icon": "send"
+          }
         },
         {
           "component": "button",
           "label": "View Results",
-          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
-          "styleHint": { "emphasis": "secondary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "resultsPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "secondary",
+            "icon": "visibility",
+            "variant": "outlined"
+          }
         }
       ]
     },
@@ -126,31 +209,54 @@
           "component": "summary",
           "label": "Total Responses",
           "value": "{COUNT(surveyReader)}",
-          "icon": "people"
+          "icon": "people",
+          "styleHint": {
+            "color": "primary"
+          }
         },
         {
           "component": "summary",
           "label": "Avg Satisfaction",
           "value": "{AVG(surveyReader, satisfaction)}",
-          "icon": "trending_up"
+          "icon": "trending_up",
+          "styleHint": {
+            "color": "secondary"
+          }
         },
         {
           "component": "text",
           "content": "No responses yet. Take the survey to see results here!",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "surveyReader", "countEquals": 0 }
+          "styleHint": {
+            "variant": "body",
+            "align": "center",
+            "color": "grey"
+          },
+          "visibleWhen": {
+            "source": "surveyReader",
+            "countEquals": 0
+          }
         },
         {
           "component": "text",
-          "content": "Average Scores — Satisfaction: {AVG(surveyReader, satisfaction)} | Communication: {AVG(surveyReader, communication)} | Workload: {AVG(surveyReader, workload)} | Growth: {AVG(surveyReader, growth)}",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "surveyReader", "countMin": 1 }
+          "content": "Average Scores \u00e2\u20ac\u201d Satisfaction: {AVG(surveyReader, satisfaction)} | Communication: {AVG(surveyReader, communication)} | Workload: {AVG(surveyReader, workload)} | Growth: {AVG(surveyReader, growth)}",
+          "styleHint": {
+            "variant": "body"
+          },
+          "visibleWhen": {
+            "source": "surveyReader",
+            "countMin": 1
+          }
         },
         {
           "component": "text",
-          "content": "Recommendations — Yes: {COUNT(surveyReader, recommend=Yes)} | Maybe: {COUNT(surveyReader, recommend=Maybe)} | No: {COUNT(surveyReader, recommend=No)}",
-          "styleHint": { "variant": "body" },
-          "visibleWhen": { "source": "surveyReader", "countMin": 1 }
+          "content": "Recommendations \u00e2\u20ac\u201d Yes: {COUNT(surveyReader, recommend=Yes)} | Maybe: {COUNT(surveyReader, recommend=Maybe)} | No: {COUNT(surveyReader, recommend=No)}",
+          "styleHint": {
+            "variant": "body"
+          },
+          "visibleWhen": {
+            "source": "surveyReader",
+            "countMin": 1
+          }
         },
         {
           "component": "chart",
@@ -159,22 +265,63 @@
           "labelField": "role",
           "valueField": "satisfaction",
           "title": "Satisfaction by Role",
-          "visibleWhen": { "source": "surveyReader", "countMin": 1 }
+          "visibleWhen": {
+            "source": "surveyReader",
+            "countMin": 1
+          }
         },
         {
           "component": "list",
           "dataSource": "surveyReader",
           "searchable": true,
           "columns": [
-            { "header": "Role", "field": "role", "sortable": true, "filterable": true },
-            { "header": "Satisfaction", "field": "satisfaction", "sortable": true },
-            { "header": "Communication", "field": "communication", "sortable": true },
-            { "header": "Workload", "field": "workload", "sortable": true },
-            { "header": "Growth", "field": "growth", "sortable": true },
-            { "header": "Recommend", "field": "recommend", "sortable": true, "filterable": true, "colorMap": { "Yes": "green", "Maybe": "orange", "No": "red" } },
-            { "header": "Submitted", "field": "submittedDate", "sortable": true }
+            {
+              "header": "Role",
+              "field": "role",
+              "sortable": true,
+              "filterable": true
+            },
+            {
+              "header": "Satisfaction",
+              "field": "satisfaction",
+              "sortable": true
+            },
+            {
+              "header": "Communication",
+              "field": "communication",
+              "sortable": true
+            },
+            {
+              "header": "Workload",
+              "field": "workload",
+              "sortable": true
+            },
+            {
+              "header": "Growth",
+              "field": "growth",
+              "sortable": true
+            },
+            {
+              "header": "Recommend",
+              "field": "recommend",
+              "sortable": true,
+              "filterable": true,
+              "colorMap": {
+                "Yes": "green",
+                "Maybe": "orange",
+                "No": "red"
+              }
+            },
+            {
+              "header": "Submitted",
+              "field": "submittedDate",
+              "sortable": true
+            }
           ],
-          "defaultSort": { "field": "submittedDate", "direction": "desc" },
+          "defaultSort": {
+            "field": "submittedDate",
+            "direction": "desc"
+          },
           "rowActions": [
             {
               "label": "Delete",
@@ -189,18 +336,44 @@
             "populateForm": "responseDetailForm"
           },
           "summary": [
-            { "column": "satisfaction", "function": "avg", "label": "Average" },
-            { "column": "communication", "function": "avg", "label": "Average" },
-            { "column": "workload", "function": "avg", "label": "Average" },
-            { "column": "growth", "function": "avg", "label": "Average" }
+            {
+              "column": "satisfaction",
+              "function": "avg",
+              "label": "Average"
+            },
+            {
+              "column": "communication",
+              "function": "avg",
+              "label": "Average"
+            },
+            {
+              "column": "workload",
+              "function": "avg",
+              "label": "Average"
+            },
+            {
+              "column": "growth",
+              "function": "avg",
+              "label": "Average"
+            }
           ],
-          "visibleWhen": { "source": "surveyReader", "countMin": 1 }
+          "visibleWhen": {
+            "source": "surveyReader",
+            "countMin": 1
+          }
         },
         {
           "component": "button",
           "label": "Take the Survey",
-          "onClick": [{ "action": "navigate", "target": "takeSurveyPage" }],
-          "styleHint": { "emphasis": "primary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "takeSurveyPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "primary"
+          }
         }
       ]
     },
@@ -212,22 +385,76 @@
           "component": "form",
           "id": "responseDetailForm",
           "fields": [
-            { "name": "role", "label": "Role", "type": "text", "readOnly": true },
-            { "name": "satisfaction", "label": "Satisfaction", "type": "number", "readOnly": true },
-            { "name": "communication", "label": "Communication", "type": "number", "readOnly": true },
-            { "name": "workload", "label": "Workload", "type": "number", "readOnly": true },
-            { "name": "growth", "label": "Growth", "type": "number", "readOnly": true },
-            { "name": "recommend", "label": "Recommend", "type": "text", "readOnly": true },
-            { "name": "bestThing", "label": "Best Thing", "type": "multiline", "readOnly": true },
-            { "name": "improvement", "label": "What Could Improve", "type": "multiline", "readOnly": true },
-            { "name": "submittedDate", "label": "Submitted", "type": "date", "readOnly": true }
+            {
+              "name": "role",
+              "label": "Role",
+              "type": "text",
+              "readOnly": true
+            },
+            {
+              "name": "satisfaction",
+              "label": "Satisfaction",
+              "type": "number",
+              "readOnly": true
+            },
+            {
+              "name": "communication",
+              "label": "Communication",
+              "type": "number",
+              "readOnly": true
+            },
+            {
+              "name": "workload",
+              "label": "Workload",
+              "type": "number",
+              "readOnly": true
+            },
+            {
+              "name": "growth",
+              "label": "Growth",
+              "type": "number",
+              "readOnly": true
+            },
+            {
+              "name": "recommend",
+              "label": "Recommend",
+              "type": "text",
+              "readOnly": true
+            },
+            {
+              "name": "bestThing",
+              "label": "Best Thing",
+              "type": "multiline",
+              "readOnly": true
+            },
+            {
+              "name": "improvement",
+              "label": "What Could Improve",
+              "type": "multiline",
+              "readOnly": true
+            },
+            {
+              "name": "submittedDate",
+              "label": "Submitted",
+              "type": "date",
+              "readOnly": true
+            }
           ]
         },
         {
           "component": "button",
           "label": "Back to Results",
-          "onClick": [{ "action": "navigate", "target": "resultsPage" }],
-          "styleHint": { "emphasis": "secondary" }
+          "onClick": [
+            {
+              "action": "navigate",
+              "target": "resultsPage"
+            }
+          ],
+          "styleHint": {
+            "emphasis": "secondary",
+            "icon": "arrow_back",
+            "variant": "outlined"
+          }
         }
       ]
     }
@@ -241,16 +468,46 @@
       "url": "local://survey_responses",
       "method": "GET",
       "fields": [
-        { "name": "role", "type": "select" },
-        { "name": "otherRole", "type": "text" },
-        { "name": "satisfaction", "type": "number" },
-        { "name": "communication", "type": "number" },
-        { "name": "workload", "type": "number" },
-        { "name": "growth", "type": "number" },
-        { "name": "bestThing", "type": "multiline" },
-        { "name": "improvement", "type": "multiline" },
-        { "name": "recommend", "type": "select" },
-        { "name": "submittedDate", "type": "date" }
+        {
+          "name": "role",
+          "type": "select"
+        },
+        {
+          "name": "otherRole",
+          "type": "text"
+        },
+        {
+          "name": "satisfaction",
+          "type": "number"
+        },
+        {
+          "name": "communication",
+          "type": "number"
+        },
+        {
+          "name": "workload",
+          "type": "number"
+        },
+        {
+          "name": "growth",
+          "type": "number"
+        },
+        {
+          "name": "bestThing",
+          "type": "multiline"
+        },
+        {
+          "name": "improvement",
+          "type": "multiline"
+        },
+        {
+          "name": "recommend",
+          "type": "select"
+        },
+        {
+          "name": "submittedDate",
+          "type": "date"
+        }
       ],
       "seedData": [
         {

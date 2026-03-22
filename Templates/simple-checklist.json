@@ -1,6 +1,6 @@
 {
   "templateName": "Simple Checklist",
-  "description": "Manage multiple check-off lists — add items, tap to check them off, complete entire lists, and reuse old lists. Perfect for grocery shopping, packing, and to-dos.",
+  "description": "Manage multiple check-off lists \u00e2\u20ac\u201d add items, tap to check them off, complete entire lists, and reuse old lists. Perfect for grocery shopping, packing, and to-dos.",
   "icon": "checklist",
   "questions": [
     {
@@ -30,10 +30,34 @@
       "type": "field-list",
       "required": false,
       "presets": [
-        { "label": "Category", "name": "category", "type": "select", "options": ["General"] },
-        { "label": "Priority", "name": "priority", "type": "select", "options": ["Low", "Medium", "High"] },
-        { "label": "Quantity", "name": "quantity", "type": "number" },
-        { "label": "Notes",    "name": "notes",    "type": "text" }
+        {
+          "label": "Category",
+          "name": "category",
+          "type": "select",
+          "options": [
+            "General"
+          ]
+        },
+        {
+          "label": "Priority",
+          "name": "priority",
+          "type": "select",
+          "options": [
+            "Low",
+            "Medium",
+            "High"
+          ]
+        },
+        {
+          "label": "Quantity",
+          "name": "quantity",
+          "type": "number"
+        },
+        {
+          "label": "Notes",
+          "name": "notes",
+          "type": "text"
+        }
       ]
     }
   ],
@@ -41,8 +65,14 @@
     "appName": "${appName}",
     "startPage": "myListsPage",
     "menu": [
-      { "label": "My ${listName}s", "mapsTo": "myListsPage" },
-      { "label": "All ${itemName}s", "mapsTo": "allItemsPage" }
+      {
+        "label": "My ${listName}s",
+        "mapsTo": "myListsPage"
+      },
+      {
+        "label": "All ${itemName}s",
+        "mapsTo": "allItemsPage"
+      }
     ],
     "pages": {
       "myListsPage": {
@@ -53,13 +83,23 @@
             "component": "summary",
             "label": "Active ${listName}s",
             "value": "{COUNT(listsReader, status=Active)}",
-            "icon": "checklist"
+            "icon": "checklist",
+            "styleHint": {
+              "color": "success"
+            }
           },
           {
             "component": "text",
             "content": "No lists yet. Create your first ${listName} to get started!",
-            "styleHint": { "variant": "body" },
-            "visibleWhen": { "source": "listsReader", "countEquals": 0 }
+            "styleHint": {
+              "variant": "body",
+              "align": "center",
+              "color": "grey"
+            },
+            "visibleWhen": {
+              "source": "listsReader",
+              "countEquals": 0
+            }
           },
           {
             "component": "list",
@@ -71,9 +111,22 @@
               "Complete": "grey"
             },
             "columns": [
-              { "header": "${listName}", "field": "name", "sortable": true },
-              { "header": "Created", "field": "createdDate", "sortable": true },
-              { "header": "Status", "field": "status", "sortable": true, "filterable": true }
+              {
+                "header": "${listName}",
+                "field": "name",
+                "sortable": true
+              },
+              {
+                "header": "Created",
+                "field": "createdDate",
+                "sortable": true
+              },
+              {
+                "header": "Status",
+                "field": "status",
+                "sortable": true,
+                "filterable": true
+              }
             ],
             "rowActions": [
               {
@@ -81,16 +134,26 @@
                 "action": "update",
                 "dataSource": "listsUpdater",
                 "matchField": "_id",
-                "values": { "status": "Complete" },
-                "hideWhen": { "field": "status", "equals": "Complete" }
+                "values": {
+                  "status": "Complete"
+                },
+                "hideWhen": {
+                  "field": "status",
+                  "equals": "Complete"
+                }
               },
               {
                 "label": "Reactivate",
                 "action": "update",
                 "dataSource": "listsUpdater",
                 "matchField": "_id",
-                "values": { "status": "Active" },
-                "hideWhen": { "field": "status", "equals": "Active" }
+                "values": {
+                  "status": "Active"
+                },
+                "hideWhen": {
+                  "field": "status",
+                  "equals": "Active"
+                }
               },
               {
                 "label": "Reuse",
@@ -100,7 +163,10 @@
                 "parentDataSource": "listsStore",
                 "linkField": "listName",
                 "nameField": "name",
-                "resetValues": { "done": "false", "status": "Active" },
+                "resetValues": {
+                  "done": "false",
+                  "status": "Active"
+                },
                 "confirm": "Create a new ${listName} by copying all items from this one?"
               },
               {
@@ -119,8 +185,16 @@
           {
             "component": "button",
             "label": "New ${listName}",
-            "onClick": [{ "action": "navigate", "target": "newListPage" }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "newListPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           }
         ]
       },
@@ -155,11 +229,24 @@
             "component": "button",
             "label": "Create ${listName}",
             "onClick": [
-              { "action": "submit", "dataSource": "listsStore", "target": "newListForm" },
-              { "action": "navigate", "target": "myListsPage" },
-              { "action": "showMessage", "message": "${listName} created!" }
+              {
+                "action": "submit",
+                "dataSource": "listsStore",
+                "target": "newListForm"
+              },
+              {
+                "action": "navigate",
+                "target": "myListsPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${listName} created!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           }
         ]
       },
@@ -171,8 +258,14 @@
             "component": "form",
             "id": "listContextForm",
             "fields": [
-              { "name": "name", "type": "hidden" },
-              { "name": "_id", "type": "hidden" }
+              {
+                "name": "name",
+                "type": "hidden"
+              },
+              {
+                "name": "_id",
+                "type": "hidden"
+              }
             ]
           },
           {
@@ -192,7 +285,9 @@
                         "groupField": "listName",
                         "parentDataSource": "listsUpdater",
                         "parentMatchField": "name",
-                        "parentValues": { "status": "Complete" }
+                        "parentValues": {
+                          "status": "Complete"
+                        }
                       }
                     }
                   },
@@ -213,9 +308,18 @@
                   "then": {
                     "$map": "fields",
                     "each(field)": {
-                      "header": "${field.label}",
-                      "field": "${field.name}",
-                      "sortable": true
+                      "$if": "field.type == 'select'",
+                      "then": {
+                        "header": "${field.label}",
+                        "field": "${field.name}",
+                        "sortable": true,
+                        "filterable": true
+                      },
+                      "else": {
+                        "header": "${field.label}",
+                        "field": "${field.name}",
+                        "sortable": true
+                      }
                     }
                   },
                   "else": []
@@ -234,30 +338,55 @@
           {
             "component": "button",
             "label": "Add ${itemName}",
-            "onClick": [{
-              "action": "navigate",
-              "target": "addItemPage",
-              "populateForm": "addItemForm",
-              "withData": { "listName": "{name}" }
-            }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "addItemPage",
+                "populateForm": "addItemForm",
+                "withData": {
+                  "listName": "{name}"
+                }
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           },
           {
             "component": "button",
             "label": "Rename ${listName}",
-            "onClick": [{
-              "action": "navigate",
-              "target": "editListPage",
-              "populateForm": "editListForm",
-              "withData": { "name": "{name}", "_id": "{_id}" }
-            }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "editListPage",
+                "populateForm": "editListForm",
+                "withData": {
+                  "name": "{name}",
+                  "_id": "{_id}"
+                }
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "edit",
+              "variant": "outlined"
+            }
           },
           {
             "component": "button",
             "label": "Back to ${listName}s",
-            "onClick": [{ "action": "navigate", "target": "myListsPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "myListsPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "arrow_back",
+              "variant": "outlined"
+            }
           }
         ]
       },
@@ -292,16 +421,34 @@
                   "parentField": "name"
                 }
               },
-              { "action": "navigate", "target": "myListsPage" },
-              { "action": "showMessage", "message": "${listName} renamed!" }
+              {
+                "action": "navigate",
+                "target": "myListsPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${listName} renamed!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           },
           {
             "component": "button",
             "label": "Cancel",
-            "onClick": [{ "action": "navigate", "target": "listItemsPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "listItemsPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "close",
+              "variant": "outlined"
+            }
           }
         ]
       },
@@ -347,7 +494,9 @@
                         "name": "${field.name}",
                         "label": "${field.label}",
                         "type": "select",
-                        "options": { "$eval": "field.options" }
+                        "options": {
+                          "$eval": "field.options"
+                        }
                       },
                       "else": {
                         "name": "${field.name}",
@@ -363,13 +512,49 @@
           },
           {
             "component": "button",
-            "label": "Add to List",
+            "label": "Add & Add Another",
             "onClick": [
-              { "action": "submit", "dataSource": "itemsStore", "target": "addItemForm" },
-              { "action": "navigate", "target": "listItemsPage" },
-              { "action": "showMessage", "message": "${itemName} added!" }
+              {
+                "action": "submit",
+                "dataSource": "itemsStore",
+                "target": "addItemForm",
+                "preserveFields": [
+                  "listName"
+                ]
+              },
+              {
+                "action": "showMessage",
+                "message": "${itemName} added! Add another."
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
+          },
+          {
+            "component": "button",
+            "label": "Add & Done",
+            "onClick": [
+              {
+                "action": "submit",
+                "dataSource": "itemsStore",
+                "target": "addItemForm"
+              },
+              {
+                "action": "navigate",
+                "target": "listItemsPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${itemName} added!"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "check",
+              "variant": "outlined"
+            }
           }
         ]
       },
@@ -381,13 +566,19 @@
             "component": "summary",
             "label": "Total ${itemName}s",
             "value": "{COUNT(itemsReader)}",
-            "icon": "list"
+            "icon": "list",
+            "styleHint": {
+              "color": "info"
+            }
           },
           {
             "component": "summary",
             "label": "Remaining",
             "value": "{COUNT(itemsReader, done=false)}",
-            "icon": "checklist"
+            "icon": "checklist",
+            "styleHint": {
+              "color": "success"
+            }
           },
           {
             "component": "list",
@@ -406,7 +597,9 @@
                         "groupField": "listName",
                         "parentDataSource": "listsUpdater",
                         "parentMatchField": "name",
-                        "parentValues": { "status": "Complete" }
+                        "parentValues": {
+                          "status": "Complete"
+                        }
                       }
                     }
                   },
@@ -427,9 +620,18 @@
                   "then": {
                     "$map": "fields",
                     "each(field)": {
-                      "header": "${field.label}",
-                      "field": "${field.name}",
-                      "sortable": true
+                      "$if": "field.type == 'select'",
+                      "then": {
+                        "header": "${field.label}",
+                        "field": "${field.name}",
+                        "sortable": true,
+                        "filterable": true
+                      },
+                      "else": {
+                        "header": "${field.label}",
+                        "field": "${field.name}",
+                        "sortable": true
+                      }
                     }
                   },
                   "else": []
@@ -448,8 +650,16 @@
           {
             "component": "button",
             "label": "Add ${itemName}",
-            "onClick": [{ "action": "navigate", "target": "addItemPage" }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "addItemPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           }
         ]
       }
@@ -463,9 +673,18 @@
         "url": "local://lists",
         "method": "GET",
         "fields": [
-          { "name": "name", "type": "text" },
-          { "name": "createdDate", "type": "date" },
-          { "name": "status", "type": "text" }
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "createdDate",
+            "type": "date"
+          },
+          {
+            "name": "status",
+            "type": "text"
+          }
         ]
       },
       "listsUpdater": {
@@ -486,9 +705,18 @@
         "fields": {
           "$flatten": [
             [
-              { "name": "listName", "type": "text" },
-              { "name": "name", "type": "text" },
-              { "name": "done", "type": "checkbox" }
+              {
+                "name": "listName",
+                "type": "text"
+              },
+              {
+                "name": "name",
+                "type": "text"
+              },
+              {
+                "name": "done",
+                "type": "checkbox"
+              }
             ],
             {
               "$if": "fields",

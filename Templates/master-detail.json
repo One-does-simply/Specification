@@ -23,11 +23,39 @@
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Name",       "name": "name",       "type": "text" },
-        { "label": "Status",     "name": "status",     "type": "select", "options": ["Active", "Complete", "On Hold"] },
-        { "label": "Category",   "name": "category",   "type": "select", "options": ["General"] },
-        { "label": "Start Date", "name": "startDate",  "type": "date" },
-        { "label": "Notes",      "name": "notes",      "type": "multiline" }
+        {
+          "label": "Name",
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "label": "Status",
+          "name": "status",
+          "type": "select",
+          "options": [
+            "Active",
+            "Complete",
+            "On Hold"
+          ]
+        },
+        {
+          "label": "Category",
+          "name": "category",
+          "type": "select",
+          "options": [
+            "General"
+          ]
+        },
+        {
+          "label": "Start Date",
+          "name": "startDate",
+          "type": "date"
+        },
+        {
+          "label": "Notes",
+          "name": "notes",
+          "type": "multiline"
+        }
       ]
     },
     {
@@ -43,12 +71,46 @@
       "type": "field-list",
       "required": true,
       "presets": [
-        { "label": "Name",     "name": "name",     "type": "text" },
-        { "label": "Status",   "name": "status",   "type": "select", "options": ["To Do", "In Progress", "Done"] },
-        { "label": "Priority", "name": "priority", "type": "select", "options": ["Low", "Medium", "High"] },
-        { "label": "Due Date", "name": "dueDate",  "type": "date" },
-        { "label": "Amount",   "name": "amount",   "type": "number" },
-        { "label": "Notes",    "name": "notes",    "type": "multiline" }
+        {
+          "label": "Name",
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "label": "Status",
+          "name": "status",
+          "type": "select",
+          "options": [
+            "To Do",
+            "In Progress",
+            "Done"
+          ]
+        },
+        {
+          "label": "Priority",
+          "name": "priority",
+          "type": "select",
+          "options": [
+            "Low",
+            "Medium",
+            "High"
+          ]
+        },
+        {
+          "label": "Due Date",
+          "name": "dueDate",
+          "type": "date"
+        },
+        {
+          "label": "Amount",
+          "name": "amount",
+          "type": "number"
+        },
+        {
+          "label": "Notes",
+          "name": "notes",
+          "type": "multiline"
+        }
       ]
     }
   ],
@@ -56,8 +118,14 @@
     "appName": "${appName}",
     "startPage": "parentListPage",
     "menu": [
-      { "label": "${parentName}s", "mapsTo": "parentListPage" },
-      { "label": "${childName}s", "mapsTo": "childListPage" }
+      {
+        "label": "${parentName}s",
+        "mapsTo": "parentListPage"
+      },
+      {
+        "label": "${childName}s",
+        "mapsTo": "childListPage"
+      }
     ],
     "pages": {
       "parentListPage": {
@@ -68,13 +136,23 @@
             "component": "summary",
             "label": "Total ${parentName}s",
             "value": "{COUNT(parentsReader)}",
-            "icon": "list"
+            "icon": "list",
+            "styleHint": {
+              "color": "info"
+            }
           },
           {
             "component": "text",
             "content": "No ${parentName}s yet. Add your first one to get started!",
-            "styleHint": { "variant": "body" },
-            "visibleWhen": { "source": "parentsReader", "countEquals": 0 }
+            "styleHint": {
+              "variant": "body",
+              "align": "center",
+              "color": "grey"
+            },
+            "visibleWhen": {
+              "source": "parentsReader",
+              "countEquals": 0
+            }
           },
           {
             "component": "list",
@@ -105,8 +183,16 @@
           {
             "component": "button",
             "label": "Add ${parentName}",
-            "onClick": [{ "action": "navigate", "target": "addParentPage" }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "addParentPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           }
         ]
       },
@@ -125,7 +211,9 @@
                   "name": "${field.name}",
                   "label": "${field.label}",
                   "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "options": {
+                    "$eval": "field.options"
+                  }
                 },
                 "else": {
                   "name": "${field.name}",
@@ -139,11 +227,24 @@
             "component": "button",
             "label": "Save",
             "onClick": [
-              { "action": "submit", "dataSource": "parentsStore", "target": "addParentForm" },
-              { "action": "navigate", "target": "parentListPage" },
-              { "action": "showMessage", "message": "${parentName} saved!" }
+              {
+                "action": "submit",
+                "dataSource": "parentsStore",
+                "target": "addParentForm"
+              },
+              {
+                "action": "navigate",
+                "target": "parentListPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${parentName} saved!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           }
         ]
       },
@@ -162,7 +263,9 @@
                   "name": "${field.name}",
                   "label": "${field.label}",
                   "type": "select",
-                  "options": { "$eval": "field.options" }
+                  "options": {
+                    "$eval": "field.options"
+                  }
                 },
                 "else": {
                   "name": "${field.name}",
@@ -176,17 +279,40 @@
             "component": "button",
             "label": "Save Changes",
             "onClick": [
-              { "action": "update", "dataSource": "parentsUpdater", "target": "editParentForm", "matchField": "_id" },
-              { "action": "navigate", "target": "parentListPage" },
-              { "action": "showMessage", "message": "${parentName} updated!" }
+              {
+                "action": "update",
+                "dataSource": "parentsUpdater",
+                "target": "editParentForm",
+                "matchField": "_id"
+              },
+              {
+                "action": "navigate",
+                "target": "parentListPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${parentName} updated!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           },
           {
             "component": "button",
             "label": "Back",
-            "onClick": [{ "action": "navigate", "target": "parentListPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "parentListPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "arrow_back",
+              "variant": "outlined"
+            }
           }
         ]
       },
@@ -198,13 +324,23 @@
             "component": "summary",
             "label": "Total ${childName}s",
             "value": "{COUNT(childrenReader)}",
-            "icon": "task"
+            "icon": "task",
+            "styleHint": {
+              "color": "success"
+            }
           },
           {
             "component": "text",
             "content": "No ${childName}s yet. Add your first one to get started!",
-            "styleHint": { "variant": "body" },
-            "visibleWhen": { "source": "childrenReader", "countEquals": 0 }
+            "styleHint": {
+              "variant": "body",
+              "align": "center",
+              "color": "grey"
+            },
+            "visibleWhen": {
+              "source": "childrenReader",
+              "countEquals": 0
+            }
           },
           {
             "component": "list",
@@ -247,8 +383,16 @@
           {
             "component": "button",
             "label": "Add ${childName}",
-            "onClick": [{ "action": "navigate", "target": "addChildPage" }],
-            "styleHint": { "emphasis": "primary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "addChildPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "add_circle"
+            }
           }
         ]
       },
@@ -280,7 +424,9 @@
                       "name": "${field.name}",
                       "label": "${field.label}",
                       "type": "select",
-                      "options": { "$eval": "field.options" }
+                      "options": {
+                        "$eval": "field.options"
+                      }
                     },
                     "else": {
                       "name": "${field.name}",
@@ -296,11 +442,24 @@
             "component": "button",
             "label": "Save",
             "onClick": [
-              { "action": "submit", "dataSource": "childrenStore", "target": "addChildForm" },
-              { "action": "navigate", "target": "childListPage" },
-              { "action": "showMessage", "message": "${childName} saved!" }
+              {
+                "action": "submit",
+                "dataSource": "childrenStore",
+                "target": "addChildForm"
+              },
+              {
+                "action": "navigate",
+                "target": "childListPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${childName} saved!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           }
         ]
       },
@@ -332,7 +491,9 @@
                       "name": "${field.name}",
                       "label": "${field.label}",
                       "type": "select",
-                      "options": { "$eval": "field.options" }
+                      "options": {
+                        "$eval": "field.options"
+                      }
                     },
                     "else": {
                       "name": "${field.name}",
@@ -348,17 +509,40 @@
             "component": "button",
             "label": "Save Changes",
             "onClick": [
-              { "action": "update", "dataSource": "childrenUpdater", "target": "editChildForm", "matchField": "_id" },
-              { "action": "navigate", "target": "childListPage" },
-              { "action": "showMessage", "message": "${childName} updated!" }
+              {
+                "action": "update",
+                "dataSource": "childrenUpdater",
+                "target": "editChildForm",
+                "matchField": "_id"
+              },
+              {
+                "action": "navigate",
+                "target": "childListPage"
+              },
+              {
+                "action": "showMessage",
+                "message": "${childName} updated!"
+              }
             ],
-            "styleHint": { "emphasis": "primary" }
+            "styleHint": {
+              "emphasis": "primary",
+              "icon": "save"
+            }
           },
           {
             "component": "button",
             "label": "Back",
-            "onClick": [{ "action": "navigate", "target": "childListPage" }],
-            "styleHint": { "emphasis": "secondary" }
+            "onClick": [
+              {
+                "action": "navigate",
+                "target": "childListPage"
+              }
+            ],
+            "styleHint": {
+              "emphasis": "secondary",
+              "icon": "arrow_back",
+              "variant": "outlined"
+            }
           }
         ]
       }
