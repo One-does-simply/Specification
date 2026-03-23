@@ -65,15 +65,33 @@
       "label": "Include a chart showing requests by status?",
       "type": "checkbox",
       "default": false
+    },
+    {
+      "id": "wantMultiUser",
+      "label": "Should this app support multiple users with role-based approvals?",
+      "type": "checkbox",
+      "default": false
     }
   ],
   "template": {
     "appName": "${appName}",
     "startPage": "dashboardPage",
+    "auth": {
+      "$if": "wantMultiUser",
+      "then": {
+        "multiUser": true,
+        "roles": ["reviewer"],
+        "defaultRole": "user"
+      }
+    },
     "menu": [
       {
         "label": "Dashboard",
-        "mapsTo": "dashboardPage"
+        "mapsTo": "dashboardPage",
+        "roles": {
+          "$if": "wantMultiUser",
+          "then": ["admin", "reviewer"]
+        }
       },
       {
         "label": "Submit Request",
@@ -196,6 +214,10 @@
       "dashboardPage": {
         "component": "page",
         "title": "${appName}",
+        "roles": {
+          "$if": "wantMultiUser",
+          "then": ["admin", "reviewer"]
+        },
         "content": {
           "$flatten": [
             [
@@ -325,6 +347,10 @@
       "reviewPage": {
         "component": "page",
         "title": "Review ${requestName} Request",
+        "roles": {
+          "$if": "wantMultiUser",
+          "then": ["admin", "reviewer"]
+        },
         "content": [
           {
             "component": "detail",
@@ -387,6 +413,12 @@
       "requestsStore": {
         "url": "local://requests",
         "method": "POST",
+        "ownership": {
+          "$if": "wantMultiUser",
+          "then": {
+            "enabled": true
+          }
+        },
         "fields": {
           "$flatten": [
             {
@@ -408,6 +440,13 @@
       "requestsReader": {
         "url": "local://requests",
         "method": "GET",
+        "ownership": {
+          "$if": "wantMultiUser",
+          "then": {
+            "enabled": true,
+            "adminOverride": true
+          }
+        },
         "fields": {
           "$flatten": [
             {

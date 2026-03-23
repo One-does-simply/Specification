@@ -69,6 +69,12 @@
       ]
     },
     {
+      "id": "wantMultiUser",
+      "label": "Should this app support multiple users?",
+      "type": "checkbox",
+      "default": false
+    },
+    {
       "id": "wantChart",
       "label": "Include a chart?",
       "type": "checkbox",
@@ -101,6 +107,14 @@
   "template": {
     "appName": "${appName}",
     "startPage": "listPage",
+    "auth": {
+      "$if": "wantMultiUser",
+      "then": {
+        "multiUser": true,
+        "defaultRole": "user"
+      },
+      "else": null
+    },
     "menu": [
       {
         "label": "Bookings",
@@ -385,6 +399,13 @@
       "bookingsStore": {
         "url": "local://bookings",
         "method": "POST",
+        "ownership": {
+          "$if": "wantMultiUser",
+          "then": {
+            "enabled": true
+          },
+          "else": null
+        },
         "fields": {
           "$flatten": [
             [
@@ -406,6 +427,14 @@
       "bookingsReader": {
         "url": "local://bookings",
         "method": "GET",
+        "ownership": {
+          "$if": "wantMultiUser",
+          "then": {
+            "enabled": true,
+            "adminOverride": true
+          },
+          "else": null
+        },
         "fields": {
           "$flatten": [
             [

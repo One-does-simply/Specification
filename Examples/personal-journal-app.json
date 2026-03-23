@@ -1,5 +1,6 @@
 {
   "appName": "Personal Journal",
+  "auth": { "multiUser": false },
   "startPage": "viewEntriesPage",
   "menu": [
     {
@@ -313,7 +314,8 @@
   "dataSources": {
     "journalStore": {
       "url": "local://journal_entries",
-      "method": "POST"
+      "method": "POST",
+      "ownership": { "enabled": true }
     },
     "journalUpdater": {
       "url": "local://journal_entries",
@@ -326,6 +328,7 @@
     "journalReader": {
       "url": "local://journal_entries",
       "method": "GET",
+      "ownership": { "enabled": true, "adminOverride": true },
       "fields": [
         {
           "name": "title",

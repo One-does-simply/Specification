@@ -1,5 +1,8 @@
 {
   "appName": "Customer Feedback",
+  "auth": {
+    "multiUser": false
+  },
   "startPage": "feedbackFormPage",
   "menu": [
     {
@@ -8,7 +11,10 @@
     },
     {
       "label": "View Responses",
-      "mapsTo": "viewFeedbackPage"
+      "mapsTo": "viewFeedbackPage",
+      "roles": [
+        "admin"
+      ]
     }
   ],
   "pages": {
@@ -138,6 +144,9 @@
     "viewFeedbackPage": {
       "component": "page",
       "title": "All Feedback",
+      "roles": [
+        "admin"
+      ],
       "content": [
         {
           "component": "summary",
@@ -156,6 +165,15 @@
           "styleHint": {
             "color": "success"
           }
+        },
+        {
+          "component": "chart",
+          "dataSource": "feedbackReader",
+          "chartType": "pie",
+          "labelField": "rating",
+          "valueField": "rating",
+          "aggregate": "count",
+          "title": "Rating Distribution"
         },
         {
           "component": "text",

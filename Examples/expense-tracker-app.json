@@ -1,5 +1,6 @@
 {
   "appName": "Expense Tracker",
+  "auth": { "multiUser": false },
   "startPage": "viewExpensesPage",
   "menu": [
     {
@@ -414,11 +415,13 @@
   "dataSources": {
     "expensesStore": {
       "url": "local://expenses",
-      "method": "POST"
+      "method": "POST",
+      "ownership": { "enabled": true }
     },
     "expensesReader": {
       "url": "local://expenses",
       "method": "GET",
+      "ownership": { "enabled": true, "adminOverride": true },
       "fields": [
         {
           "name": "description",

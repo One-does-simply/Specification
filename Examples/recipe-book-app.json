@@ -1,5 +1,6 @@
 {
   "appName": "Recipe Book",
+  "auth": { "multiUser": false },
   "startPage": "browseRecipesPage",
   "menu": [
     {
@@ -314,11 +315,13 @@
   "dataSources": {
     "recipesStore": {
       "url": "local://recipes",
-      "method": "POST"
+      "method": "POST",
+      "ownership": { "enabled": true }
     },
     "recipesReader": {
       "url": "local://recipes",
       "method": "GET",
+      "ownership": { "enabled": true, "adminOverride": true },
       "fields": [
         {
           "name": "recipeName",

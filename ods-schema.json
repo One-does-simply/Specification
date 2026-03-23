@@ -14,8 +14,32 @@
       "type": "string"
     },
     "auth": {
-      "description": "RESERVED FOR FUTURE USE: Defines authentication requirements for the app.",
-      "type": "object"
+      "description": "Optional. Configures multi-user authentication and role-based access control. When omitted or multiUser is false, the app runs in single-user mode with no login or roles.",
+      "type": "object",
+      "properties": {
+        "multiUser": {
+          "description": "When true, enables login, user management, and role-based access control. Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "multiUserOnly": {
+          "description": "When true, the app refuses to run without admin setup \u00e2\u20ac\u201d the framework shows a setup wizard. Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "roles": {
+          "description": "Custom roles beyond the three built-in defaults (guest, user, admin). The built-in roles always exist implicitly.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultRole": {
+          "description": "The role automatically assigned to newly registered users. Defaults to 'user'.",
+          "type": "string",
+          "default": "user"
+        }
+      }
     },
     "menu": {
       "description": "Defines the primary navigation menu.",
@@ -23,21 +47,35 @@
       "items": {
         "type": "object",
         "properties": {
-          "label": { "type": "string" },
-          "mapsTo": { "type": "string" }
+          "label": {
+            "type": "string"
+          },
+          "mapsTo": {
+            "type": "string"
+          },
+          "roles": {
+            "$ref": "#/$defs/rolesArray"
+          }
         },
-        "required": ["label", "mapsTo"]
+        "required": [
+          "label",
+          "mapsTo"
+        ]
       }
     },
     "pages": {
       "description": "A dictionary of all pages available in the application.",
       "type": "object",
-      "additionalProperties": { "$ref": "#/$defs/page" }
+      "additionalProperties": {
+        "$ref": "#/$defs/page"
+      }
     },
     "dataSources": {
       "description": "A dictionary of all data sources used by the application. Each key is a unique identifier referenced by components and actions.",
       "type": "object",
-      "additionalProperties": { "$ref": "#/$defs/dataSource" }
+      "additionalProperties": {
+        "$ref": "#/$defs/dataSource"
+      }
     },
     "help": {
       "description": "Optional. Provides help and guidance content for the application.",
@@ -46,15 +84,23 @@
     "tour": {
       "description": "Optional. Defines a guided tour shown on first launch to introduce the user to the app.",
       "type": "array",
-      "items": { "$ref": "#/$defs/tourStep" }
+      "items": {
+        "$ref": "#/$defs/tourStep"
+      }
     },
     "settings": {
       "description": "Optional. Defines user-configurable app settings with default values. Each key is the setting's programmatic name.",
       "type": "object",
-      "additionalProperties": { "$ref": "#/$defs/appSetting" }
+      "additionalProperties": {
+        "$ref": "#/$defs/appSetting"
+      }
     }
   },
-  "required": ["appName", "startPage", "pages"],
+  "required": [
+    "appName",
+    "startPage",
+    "pages"
+  ],
   "$defs": {
     "helpObject": {
       "title": "Help Object",
@@ -68,10 +114,14 @@
         "pages": {
           "description": "Per-page help text, keyed by page ID.",
           "type": "object",
-          "additionalProperties": { "type": "string" }
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
-      "required": ["overview"]
+      "required": [
+        "overview"
+      ]
     },
     "tourStep": {
       "title": "Tour Step",
@@ -91,7 +141,10 @@
           "type": "string"
         }
       },
-      "required": ["title", "content"]
+      "required": [
+        "title",
+        "content"
+      ]
     },
     "dataSource": {
       "title": "DataSource Object",
@@ -105,12 +158,19 @@
         "method": {
           "description": "The access method. For local:// sources, GET reads all rows, POST inserts a new row, PUT updates an existing row, and DELETE removes a row. For external URLs, this is the HTTP method.",
           "type": "string",
-          "enum": ["GET", "POST", "PUT", "DELETE"]
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE"
+          ]
         },
         "fields": {
           "description": "Optional. Explicitly defines the columns/fields for a local:// data source. If omitted for a local:// source, the schema is auto-inferred from the first form that submits to it.",
           "type": "array",
-          "items": { "$ref": "#/$defs/fieldDefinition" }
+          "items": {
+            "$ref": "#/$defs/fieldDefinition"
+          }
         },
         "seedData": {
           "description": "Optional. An array of objects to pre-populate a local:// data source when the table is first created. Each object's keys must match the field names.",
@@ -119,9 +179,15 @@
             "type": "object",
             "additionalProperties": true
           }
+        },
+        "ownership": {
+          "$ref": "#/$defs/ownership"
         }
       },
-      "required": ["url", "method"]
+      "required": [
+        "url",
+        "method"
+      ]
     },
     "fieldDefinition": {
       "title": "Field Definition",
@@ -135,12 +201,24 @@
         "type": {
           "description": "The data type of the field. Used for input widget selection and display formatting.",
           "type": "string",
-          "enum": ["text", "email", "number", "date", "datetime", "multiline", "select", "checkbox", "hidden"]
+          "enum": [
+            "text",
+            "email",
+            "number",
+            "date",
+            "datetime",
+            "multiline",
+            "select",
+            "checkbox",
+            "hidden"
+          ]
         },
         "options": {
           "description": "An array of string values the user can choose from, rendered as a dropdown. Required when type is 'select' unless optionsFrom is provided.",
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "optionsFrom": {
           "description": "Optional. Dynamically populates dropdown options from a GET data source. When provided on a 'select' field, the framework queries the referenced data source and uses the specified column as dropdown values. Takes priority over static 'options' if both are present.",
@@ -167,10 +245,16 @@
                   "type": "string"
                 }
               },
-              "required": ["field", "fromField"]
+              "required": [
+                "field",
+                "fromField"
+              ]
             }
           },
-          "required": ["dataSource", "valueField"]
+          "required": [
+            "dataSource",
+            "valueField"
+          ]
         },
         "label": {
           "description": "Optional. A human-readable label for the field.",
@@ -201,12 +285,19 @@
         "displayVariant": {
           "description": "Optional. Controls how a read-only field is rendered visually. Only meaningful when readOnly is true.",
           "type": "string",
-          "enum": ["heading", "body", "caption", "subtitle"]
+          "enum": [
+            "heading",
+            "body",
+            "caption",
+            "subtitle"
+          ]
         },
         "optionLabels": {
           "description": "Optional. An array of human-friendly labels corresponding positionally to the 'options' array. When present, the dropdown displays these labels but stores the original option values.",
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "currency": {
           "description": "Optional. When true, the field value is formatted with the currency symbol defined in app settings. Applies to number fields.",
@@ -226,7 +317,10 @@
               "type": "string"
             }
           },
-          "required": ["field", "equals"]
+          "required": [
+            "field",
+            "equals"
+          ]
         },
         "validation": {
           "description": "Optional. Validation constraints beyond 'required'. The framework shows inline error text when the value fails validation. Validation runs on submit, not on every keystroke.",
@@ -253,40 +347,76 @@
               "type": "string"
             }
           }
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
         }
       },
-      "required": ["name", "type"]
+      "required": [
+        "name",
+        "type"
+      ]
     },
     "page": {
       "title": "Page Object",
       "type": "object",
       "properties": {
-        "component": { "const": "page" },
-        "title": { "description": "The title displayed for the page.", "type": "string" },
+        "component": {
+          "const": "page"
+        },
+        "title": {
+          "description": "The title displayed for the page.",
+          "type": "string"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        },
         "content": {
           "description": "An array of components to render on the page.",
           "type": "array",
           "items": {
             "oneOf": [
-              { "$ref": "#/$defs/textComponent" },
-              { "$ref": "#/$defs/listComponent" },
-              { "$ref": "#/$defs/formComponent" },
-              { "$ref": "#/$defs/buttonComponent" },
-              { "$ref": "#/$defs/chartComponent" },
-              { "$ref": "#/$defs/summaryComponent" },
-              { "$ref": "#/$defs/tabsComponent" },
-              { "$ref": "#/$defs/detailComponent" }
+              {
+                "$ref": "#/$defs/textComponent"
+              },
+              {
+                "$ref": "#/$defs/listComponent"
+              },
+              {
+                "$ref": "#/$defs/formComponent"
+              },
+              {
+                "$ref": "#/$defs/buttonComponent"
+              },
+              {
+                "$ref": "#/$defs/chartComponent"
+              },
+              {
+                "$ref": "#/$defs/summaryComponent"
+              },
+              {
+                "$ref": "#/$defs/tabsComponent"
+              },
+              {
+                "$ref": "#/$defs/detailComponent"
+              }
             ]
           }
         }
       },
-      "required": ["component", "title", "content"]
+      "required": [
+        "component",
+        "title",
+        "content"
+      ]
     },
     "textComponent": {
       "title": "Text Component",
       "type": "object",
       "properties": {
-        "component": { "const": "text" },
+        "component": {
+          "const": "text"
+        },
         "content": {
           "description": "The text content to display. May include aggregate expressions using {FUNC(dataSourceId, field)} syntax where FUNC is one of SUM, COUNT, AVG, MIN, MAX, or PCT. For example: 'Total: {SUM(expenses, amount)}' or 'Completed: {PCT(tasks, status, done)}%'. These are evaluated at render time against the referenced data source.",
           "type": "string"
@@ -294,31 +424,53 @@
         "format": {
           "description": "Optional. The text format. 'plain' (default) renders as simple text, 'markdown' renders basic Markdown syntax (headings, bold, italic, lists, links).",
           "type": "string",
-          "enum": ["plain", "markdown"],
+          "enum": [
+            "plain",
+            "markdown"
+          ],
           "default": "plain"
         },
         "visible": {
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy. Uses {fieldName} references and supports ==, != comparisons.",
           "type": "string"
         },
-        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
-        "styleHint": { "$ref": "#/$defs/styleHint" }
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
       },
-      "required": ["component", "content"]
+      "required": [
+        "component",
+        "content"
+      ]
     },
     "listComponent": {
       "title": "List Component",
       "type": "object",
       "properties": {
-        "component": { "const": "list" },
-        "dataSource": { "description": "The ID of the dataSource to read data from.", "type": "string" },
+        "component": {
+          "const": "list"
+        },
+        "dataSource": {
+          "description": "The ID of the dataSource to read data from.",
+          "type": "string"
+        },
         "columns": {
           "type": "array",
           "items": {
             "type": "object",
             "properties": {
-              "header": { "type": "string" },
-              "field": { "type": "string" },
+              "header": {
+                "type": "string"
+              },
+              "field": {
+                "type": "string"
+              },
               "sortable": {
                 "description": "Optional. When true, the column header becomes tappable to sort the list by this field. Defaults to false.",
                 "type": "boolean",
@@ -332,12 +484,16 @@
               "displayMap": {
                 "description": "Optional. Maps raw stored values to human-friendly display labels (e.g., {\"true\": \"Yes\", \"false\": \"No\"}). The list shows the mapped label instead of the raw value.",
                 "type": "object",
-                "additionalProperties": { "type": "string" }
+                "additionalProperties": {
+                  "type": "string"
+                }
               },
               "colorMap": {
                 "description": "Optional. Maps raw field values to color names for per-cell coloring. Colors: red, green, blue, orange, grey, purple, teal, amber.",
                 "type": "object",
-                "additionalProperties": { "type": "string" }
+                "additionalProperties": {
+                  "type": "string"
+                }
               },
               "currency": {
                 "description": "Optional. When true, formats the column value with the currency symbol from app settings.",
@@ -358,10 +514,18 @@
                     "default": "_id"
                   }
                 },
-                "required": ["dataSource"]
+                "required": [
+                  "dataSource"
+                ]
+              },
+              "roles": {
+                "$ref": "#/$defs/rolesArray"
               }
             },
-            "required": ["header", "field"]
+            "required": [
+              "header",
+              "field"
+            ]
           }
         },
         "searchable": {
@@ -380,16 +544,24 @@
             "direction": {
               "description": "The sort direction. 'asc' for ascending (A-Z, oldest first), 'desc' for descending (Z-A, newest first).",
               "type": "string",
-              "enum": ["asc", "desc"],
+              "enum": [
+                "asc",
+                "desc"
+              ],
               "default": "asc"
             }
           },
-          "required": ["field"]
+          "required": [
+            "field"
+          ]
         },
         "displayAs": {
           "description": "Optional. How to render the list data. 'table' (default) renders a DataTable, 'cards' renders a scrollable grid of cards showing each row's column values.",
           "type": "string",
-          "enum": ["table", "cards"],
+          "enum": [
+            "table",
+            "cards"
+          ],
           "default": "table"
         },
         "rowColorField": {
@@ -399,7 +571,9 @@
         "rowColorMap": {
           "description": "Optional. Maps field values to background color names for entire rows. Requires rowColorField. Colors: red, green, blue, orange, grey, purple, teal, amber.",
           "type": "object",
-          "additionalProperties": { "type": "string" }
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "onRowTap": {
           "description": "Optional. Defines what happens when a user taps a row. Typically navigates to a detail or edit page, optionally pre-filling a form with the tapped row's data.",
@@ -418,12 +592,17 @@
               "type": "string"
             }
           },
-          "required": ["action", "target"]
+          "required": [
+            "action",
+            "target"
+          ]
         },
         "rowActions": {
           "description": "Optional. An array of actions rendered as buttons in each row. Allows inline operations like marking a task done without navigating to a separate page.",
           "type": "array",
-          "items": { "$ref": "#/$defs/rowAction" }
+          "items": {
+            "$ref": "#/$defs/rowAction"
+          }
         },
         "summary": {
           "description": "Optional. An array of aggregation rules to display as a summary row at the bottom of the list. Supported functions: sum, avg, count, min, max.",
@@ -438,34 +617,61 @@
               "function": {
                 "description": "The aggregation function to apply.",
                 "type": "string",
-                "enum": ["sum", "avg", "count", "min", "max"]
+                "enum": [
+                  "sum",
+                  "avg",
+                  "count",
+                  "min",
+                  "max"
+                ]
               },
               "label": {
                 "description": "Optional. A custom label for the summary value (e.g., 'Total Spent'). If omitted, the framework generates one from the function name.",
                 "type": "string"
               }
             },
-            "required": ["column", "function"]
+            "required": [
+              "column",
+              "function"
+            ]
           }
         },
         "visible": {
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
           "type": "string"
         },
-        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
-        "styleHint": { "$ref": "#/$defs/styleHint" }
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
       },
-      "required": ["component", "dataSource", "columns"]
+      "required": [
+        "component",
+        "dataSource",
+        "columns"
+      ]
     },
     "formComponent": {
       "title": "Form Component",
       "type": "object",
       "properties": {
-        "component": { "const": "form" },
-        "id": { "description": "A unique identifier for the form.", "type": "string" },
+        "component": {
+          "const": "form"
+        },
+        "id": {
+          "description": "A unique identifier for the form.",
+          "type": "string"
+        },
         "fields": {
           "type": "array",
-          "items": { "$ref": "#/$defs/fieldDefinition" }
+          "items": {
+            "$ref": "#/$defs/fieldDefinition"
+          }
         },
         "recordSource": {
           "description": "Optional. The ID of a GET data source. When set, the form is populated from a record cursor rather than manual entry. Used with record navigation actions (firstRecord, nextRecord, previousRecord, lastRecord).",
@@ -475,66 +681,131 @@
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
           "type": "string"
         },
-        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
-        "styleHint": { "$ref": "#/$defs/styleHint" }
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
       },
-      "required": ["component", "id", "fields"]
+      "required": [
+        "component",
+        "id",
+        "fields"
+      ]
     },
     "buttonComponent": {
       "title": "Button Component",
       "type": "object",
       "properties": {
-        "component": { "const": "button" },
-        "label": { "type": "string" },
+        "component": {
+          "const": "button"
+        },
+        "label": {
+          "type": "string"
+        },
         "onClick": {
           "type": "array",
-          "items": { "$ref": "#/$defs/action" }
+          "items": {
+            "$ref": "#/$defs/action"
+          }
         },
         "visible": {
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
           "type": "string"
         },
-        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
-        "styleHint": { "$ref": "#/$defs/styleHint" }
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
       },
-      "required": ["component", "label", "onClick"]
+      "required": [
+        "component",
+        "label",
+        "onClick"
+      ]
     },
     "chartComponent": {
       "title": "Chart Component",
       "description": "Renders a data visualization chart from a data source. Supports bar, line, and pie chart types.",
       "type": "object",
       "properties": {
-        "component": { "const": "chart" },
-        "dataSource": { "description": "The ID of the GET dataSource to read data from.", "type": "string" },
+        "component": {
+          "const": "chart"
+        },
+        "dataSource": {
+          "description": "The ID of the GET dataSource to read data from.",
+          "type": "string"
+        },
         "chartType": {
           "description": "The type of chart to render.",
           "type": "string",
-          "enum": ["bar", "line", "pie"]
+          "enum": [
+            "bar",
+            "line",
+            "pie"
+          ]
         },
-        "labelField": { "description": "The field to use for category labels (X axis or pie slice names).", "type": "string" },
-        "valueField": { "description": "The field to use for numeric values (Y axis height or pie slice size). For 'count' aggregate, can be the same as labelField.", "type": "string" },
+        "labelField": {
+          "description": "The field to use for category labels (X axis or pie slice names).",
+          "type": "string"
+        },
+        "valueField": {
+          "description": "The field to use for numeric values (Y axis height or pie slice size). For 'count' aggregate, can be the same as labelField.",
+          "type": "string"
+        },
         "aggregate": {
           "description": "Optional. How to aggregate values per label group. 'count' counts rows, 'sum' totals the valueField (default), 'avg' averages the valueField. When labelField equals valueField, defaults to 'count'.",
           "type": "string",
-          "enum": ["count", "sum", "avg"],
+          "enum": [
+            "count",
+            "sum",
+            "avg"
+          ],
           "default": "sum"
         },
-        "title": { "description": "Optional. A title displayed above the chart.", "type": "string" },
+        "title": {
+          "description": "Optional. A title displayed above the chart.",
+          "type": "string"
+        },
         "visible": {
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
           "type": "string"
         },
-        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
-        "styleHint": { "$ref": "#/$defs/styleHint" }
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
       },
-      "required": ["component", "dataSource", "chartType", "labelField", "valueField"]
+      "required": [
+        "component",
+        "dataSource",
+        "chartType",
+        "labelField",
+        "valueField"
+      ]
     },
     "summaryComponent": {
       "title": "Summary Component",
       "description": "Renders a styled card showing a label, a large aggregate value, and an optional icon. Ideal for dashboard KPI displays.",
       "type": "object",
       "properties": {
-        "component": { "const": "summary" },
+        "component": {
+          "const": "summary"
+        },
         "label": {
           "description": "The label text shown above the value (e.g., 'Total Spent', 'Active Users').",
           "type": "string"
@@ -551,17 +822,30 @@
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
           "type": "string"
         },
-        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
-        "styleHint": { "$ref": "#/$defs/styleHint" }
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
       },
-      "required": ["component", "label", "value"]
+      "required": [
+        "component",
+        "label",
+        "value"
+      ]
     },
     "tabsComponent": {
       "title": "Tabs Component",
       "description": "Renders a tabbed layout within a page. Each tab has its own content array of components.",
       "type": "object",
       "properties": {
-        "component": { "const": "tabs" },
+        "component": {
+          "const": "tabs"
+        },
         "tabs": {
           "description": "An array of tab definitions, each with a label and content array.",
           "type": "array",
@@ -577,35 +861,64 @@
                 "type": "array",
                 "items": {
                   "oneOf": [
-                    { "$ref": "#/$defs/textComponent" },
-                    { "$ref": "#/$defs/listComponent" },
-                    { "$ref": "#/$defs/formComponent" },
-                    { "$ref": "#/$defs/buttonComponent" },
-                    { "$ref": "#/$defs/chartComponent" },
-                    { "$ref": "#/$defs/summaryComponent" },
-                    { "$ref": "#/$defs/detailComponent" }
+                    {
+                      "$ref": "#/$defs/textComponent"
+                    },
+                    {
+                      "$ref": "#/$defs/listComponent"
+                    },
+                    {
+                      "$ref": "#/$defs/formComponent"
+                    },
+                    {
+                      "$ref": "#/$defs/buttonComponent"
+                    },
+                    {
+                      "$ref": "#/$defs/chartComponent"
+                    },
+                    {
+                      "$ref": "#/$defs/summaryComponent"
+                    },
+                    {
+                      "$ref": "#/$defs/detailComponent"
+                    }
                   ]
                 }
               }
             },
-            "required": ["label", "content"]
+            "required": [
+              "label",
+              "content"
+            ]
           }
         },
         "visible": {
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
           "type": "string"
         },
-        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
-        "styleHint": { "$ref": "#/$defs/styleHint" }
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
       },
-      "required": ["component", "tabs"]
+      "required": [
+        "component",
+        "tabs"
+      ]
     },
     "detailComponent": {
       "title": "Detail Component",
       "description": "Renders a read-only detail view showing field values from a data source record or form state. Ideal for 'view record' pages.",
       "type": "object",
       "properties": {
-        "component": { "const": "detail" },
+        "component": {
+          "const": "detail"
+        },
         "dataSource": {
           "description": "The ID of the GET data source to read from.",
           "type": "string"
@@ -613,12 +926,16 @@
         "fields": {
           "description": "Optional. An array of field names to display, in order. If omitted, all columns from the record are shown.",
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "labels": {
           "description": "Optional. Maps field names to display labels. If a field is not in this map, the field name is used as the label.",
           "type": "object",
-          "additionalProperties": { "type": "string" }
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "fromForm": {
           "description": "Optional. The form ID whose current state provides the record to display. Used with the populateForm flow.",
@@ -628,10 +945,20 @@
           "description": "Optional. An expression evaluated against form state. Component is shown only when the expression is truthy.",
           "type": "string"
         },
-        "visibleWhen": { "$ref": "#/$defs/visibleWhen" },
-        "styleHint": { "$ref": "#/$defs/styleHint" }
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
       },
-      "required": ["component", "dataSource"]
+      "required": [
+        "component",
+        "dataSource"
+      ]
     },
     "visibleWhen": {
       "title": "Visibility Condition",
@@ -679,8 +1006,13 @@
       "oneOf": [
         {
           "properties": {
-            "action": { "const": "navigate" },
-            "target": { "description": "The ID of the page to navigate to.", "type": "string" },
+            "action": {
+              "const": "navigate"
+            },
+            "target": {
+              "description": "The ID of the page to navigate to.",
+              "type": "string"
+            },
             "populateForm": {
               "description": "Optional. The form ID on the target page to pre-fill with row data from the originating list. When present, the tapped row's data is used to populate the named form.",
               "type": "string"
@@ -690,15 +1022,29 @@
               "type": "object",
               "additionalProperties": true
             },
-            "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" }
+            "confirm": {
+              "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.",
+              "type": "string"
+            }
           },
-          "required": ["action", "target"]
+          "required": [
+            "action",
+            "target"
+          ]
         },
         {
           "properties": {
-            "action": { "const": "submit" },
-            "dataSource": { "description": "The ID of the dataSource to submit to.", "type": "string" },
-            "target": { "description": "The ID of the form to submit.", "type": "string" },
+            "action": {
+              "const": "submit"
+            },
+            "dataSource": {
+              "description": "The ID of the dataSource to submit to.",
+              "type": "string"
+            },
+            "target": {
+              "description": "The ID of the form to submit.",
+              "type": "string"
+            },
             "computedFields": {
               "description": "Optional. An array of fields whose values are computed at submit time from expressions referencing form fields. These are added to the submitted data.",
               "type": "array",
@@ -714,24 +1060,47 @@
                     "type": "string"
                   }
                 },
-                "required": ["field", "expression"]
+                "required": [
+                  "field",
+                  "expression"
+                ]
               }
             },
-            "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" },
+            "confirm": {
+              "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.",
+              "type": "string"
+            },
             "preserveFields": {
               "description": "Optional. An array of field names to preserve after the form is cleared on successful submit. Enables 'Add & Add Another' flows where contextual fields (e.g., the selected list) are kept while other fields reset.",
               "type": "array",
-              "items": { "type": "string" }
+              "items": {
+                "type": "string"
+              }
             }
           },
-          "required": ["action", "dataSource", "target"]
+          "required": [
+            "action",
+            "dataSource",
+            "target"
+          ]
         },
         {
           "properties": {
-            "action": { "const": "update" },
-            "dataSource": { "description": "The ID of the PUT dataSource to update.", "type": "string" },
-            "target": { "description": "The ID of the form whose values provide the update data.", "type": "string" },
-            "matchField": { "description": "The field name used to find the row to update. The row where this field matches the form value is updated.", "type": "string" },
+            "action": {
+              "const": "update"
+            },
+            "dataSource": {
+              "description": "The ID of the PUT dataSource to update.",
+              "type": "string"
+            },
+            "target": {
+              "description": "The ID of the form whose values provide the update data.",
+              "type": "string"
+            },
+            "matchField": {
+              "description": "The field name used to find the row to update. The row where this field matches the form value is updated.",
+              "type": "string"
+            },
             "computedFields": {
               "description": "Optional. An array of fields whose values are computed at update time from expressions referencing form fields. These are merged into the update data.",
               "type": "array",
@@ -747,27 +1116,48 @@
                     "type": "string"
                   }
                 },
-                "required": ["field", "expression"]
+                "required": [
+                  "field",
+                  "expression"
+                ]
               }
             },
-            "confirm": { "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.", "type": "string" }
+            "confirm": {
+              "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the action. The user must confirm to proceed.",
+              "type": "string"
+            }
           },
-          "required": ["action", "dataSource", "target", "matchField"]
+          "required": [
+            "action",
+            "dataSource",
+            "target",
+            "matchField"
+          ]
         },
         {
           "properties": {
-            "action": { "const": "showMessage" },
+            "action": {
+              "const": "showMessage"
+            },
             "message": {
               "description": "The text to display in a snackbar notification.",
               "type": "string"
             }
           },
-          "required": ["action", "message"]
+          "required": [
+            "action",
+            "message"
+          ]
         },
         {
           "properties": {
-            "action": { "const": "firstRecord" },
-            "target": { "description": "The form ID whose record cursor should move to the first record.", "type": "string" },
+            "action": {
+              "const": "firstRecord"
+            },
+            "target": {
+              "description": "The form ID whose record cursor should move to the first record.",
+              "type": "string"
+            },
             "filter": {
               "description": "Optional. A filter object to constrain which records the cursor navigates through.",
               "type": "object",
@@ -778,12 +1168,20 @@
               "$ref": "#/$defs/action"
             }
           },
-          "required": ["action", "target"]
+          "required": [
+            "action",
+            "target"
+          ]
         },
         {
           "properties": {
-            "action": { "const": "nextRecord" },
-            "target": { "description": "The form ID whose record cursor should advance to the next record.", "type": "string" },
+            "action": {
+              "const": "nextRecord"
+            },
+            "target": {
+              "description": "The form ID whose record cursor should advance to the next record.",
+              "type": "string"
+            },
             "filter": {
               "description": "Optional. A filter object to constrain which records the cursor navigates through.",
               "type": "object",
@@ -794,12 +1192,20 @@
               "$ref": "#/$defs/action"
             }
           },
-          "required": ["action", "target"]
+          "required": [
+            "action",
+            "target"
+          ]
         },
         {
           "properties": {
-            "action": { "const": "previousRecord" },
-            "target": { "description": "The form ID whose record cursor should move to the previous record.", "type": "string" },
+            "action": {
+              "const": "previousRecord"
+            },
+            "target": {
+              "description": "The form ID whose record cursor should move to the previous record.",
+              "type": "string"
+            },
             "filter": {
               "description": "Optional. A filter object to constrain which records the cursor navigates through.",
               "type": "object",
@@ -810,12 +1216,20 @@
               "$ref": "#/$defs/action"
             }
           },
-          "required": ["action", "target"]
+          "required": [
+            "action",
+            "target"
+          ]
         },
         {
           "properties": {
-            "action": { "const": "lastRecord" },
-            "target": { "description": "The form ID whose record cursor should move to the last record.", "type": "string" },
+            "action": {
+              "const": "lastRecord"
+            },
+            "target": {
+              "description": "The form ID whose record cursor should move to the last record.",
+              "type": "string"
+            },
             "filter": {
               "description": "Optional. A filter object to constrain which records the cursor navigates through.",
               "type": "object",
@@ -826,7 +1240,10 @@
               "$ref": "#/$defs/action"
             }
           },
-          "required": ["action", "target"]
+          "required": [
+            "action",
+            "target"
+          ]
         }
       ]
     },
@@ -842,7 +1259,11 @@
         "action": {
           "description": "The action type: 'update' sets new values on the row, 'delete' removes the row (with confirmation), 'copyRows' copies the parent row and linked child rows to create a duplicate.",
           "type": "string",
-          "enum": ["update", "delete", "copyRows"]
+          "enum": [
+            "update",
+            "delete",
+            "copyRows"
+          ]
         },
         "dataSource": {
           "description": "The ID of the dataSource (PUT for update, DELETE for delete) to perform the action.",
@@ -855,7 +1276,9 @@
         "values": {
           "description": "A map of field names to values to set when the action is triggered. Required for 'update' actions, not needed for 'delete'.",
           "type": "object",
-          "additionalProperties": { "type": "string" }
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "confirm": {
           "description": "Optional. When provided, the framework shows a confirmation dialog with this text before executing the row action. Overrides the default delete confirmation for delete actions.",
@@ -884,7 +1307,9 @@
         "resetValues": {
           "description": "For copyRows: fields to reset on copied children (e.g., {\"done\": \"false\"}).",
           "type": "object",
-          "additionalProperties": { "type": "string" }
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "hideWhen": {
           "description": "Optional. Hides the row action button when the specified field in the row matches the given value. Useful for conditionally showing actions (e.g., hide 'Complete' when status is already 'done').",
@@ -903,10 +1328,48 @@
               "type": "string"
             }
           },
-          "required": ["field"]
+          "required": [
+            "field"
+          ]
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
         }
       },
-      "required": ["label", "action"]
+      "required": [
+        "label",
+        "action"
+      ]
+    },
+    "rolesArray": {
+      "title": "Roles Array",
+      "description": "Optional. Restricts visibility to users with one of the listed roles. When absent or empty, visible to everyone. Admin always has access regardless.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ownership": {
+      "title": "Ownership (Row-Level Security)",
+      "description": "Optional. When enabled, the framework auto-injects the current user's ID on insert and filters queries to only return rows owned by the current user.",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "When true, enables row-level ownership filtering. Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "ownerField": {
+          "description": "The column name that stores the owner's user ID. Defaults to '_owner'.",
+          "type": "string",
+          "default": "_owner"
+        },
+        "adminOverride": {
+          "description": "When true (default), admin users bypass ownership filters and see all rows.",
+          "type": "boolean",
+          "default": true
+        }
+      }
     },
     "styleHint": {
       "title": "StyleHint Object",
@@ -914,14 +1377,38 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "variant": { "type": "string", "description": "Text: heading/subheading/body/caption. Button: filled/outlined/text/tonal." },
-        "emphasis": { "type": "string", "description": "Button color: primary/secondary/danger." },
-        "color": { "type": "string", "description": "Accent color: primary/success/warning/error/info, or named: green/red/blue/orange/purple/teal/pink/amber/indigo/grey." },
-        "icon": { "type": "string", "description": "Material icon name (e.g., 'add', 'check', 'star', 'shopping_cart')." },
-        "align": { "type": "string", "description": "Content alignment: left/center/right." },
-        "size": { "type": "string", "description": "Component size: compact/default/large." },
-        "density": { "type": "string", "description": "List row density: compact/default/comfortable." },
-        "elevation": { "type": "integer", "description": "Card shadow depth: 0, 1, 2, or 3." }
+        "variant": {
+          "type": "string",
+          "description": "Text: heading/subheading/body/caption. Button: filled/outlined/text/tonal."
+        },
+        "emphasis": {
+          "type": "string",
+          "description": "Button color: primary/secondary/danger."
+        },
+        "color": {
+          "type": "string",
+          "description": "Accent color: primary/success/warning/error/info, or named: green/red/blue/orange/purple/teal/pink/amber/indigo/grey."
+        },
+        "icon": {
+          "type": "string",
+          "description": "Material icon name (e.g., 'add', 'check', 'star', 'shopping_cart')."
+        },
+        "align": {
+          "type": "string",
+          "description": "Content alignment: left/center/right."
+        },
+        "size": {
+          "type": "string",
+          "description": "Component size: compact/default/large."
+        },
+        "density": {
+          "type": "string",
+          "description": "List row density: compact/default/comfortable."
+        },
+        "elevation": {
+          "type": "integer",
+          "description": "Card shadow depth: 0, 1, 2, or 3."
+        }
       }
     },
     "appSetting": {
@@ -936,7 +1423,12 @@
         "type": {
           "description": "The setting type. Determines the input widget used.",
           "type": "string",
-          "enum": ["text", "number", "select", "checkbox"]
+          "enum": [
+            "text",
+            "number",
+            "select",
+            "checkbox"
+          ]
         },
         "default": {
           "description": "The default value used when the user hasn't changed the setting. Checkbox defaults should be 'true' or 'false'.",
@@ -945,10 +1437,16 @@
         "options": {
           "description": "Required when type is 'select'. The list of allowed values.",
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       },
-      "required": ["label", "type", "default"]
+      "required": [
+        "label",
+        "type",
+        "default"
+      ]
     }
   }
 }

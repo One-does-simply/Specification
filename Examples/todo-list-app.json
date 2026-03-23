@@ -1,5 +1,6 @@
 {
   "appName": "To-Do List",
+  "auth": { "multiUser": false },
   "startPage": "viewTasksPage",
   "menu": [
     {
@@ -283,11 +284,13 @@
   "dataSources": {
     "tasksStore": {
       "url": "local://tasks",
-      "method": "POST"
+      "method": "POST",
+      "ownership": { "enabled": true }
     },
     "tasksReader": {
       "url": "local://tasks",
       "method": "GET",
+      "ownership": { "enabled": true, "adminOverride": true },
       "fields": [
         {
           "name": "taskName",

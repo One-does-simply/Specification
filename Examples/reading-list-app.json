@@ -1,5 +1,6 @@
 {
   "appName": "Reading List",
+  "auth": { "multiUser": false },
   "startPage": "myReadingListPage",
   "menu": [
     {
@@ -341,11 +342,13 @@
   "dataSources": {
     "booksStore": {
       "url": "local://books",
-      "method": "POST"
+      "method": "POST",
+      "ownership": { "enabled": true }
     },
     "booksReader": {
       "url": "local://books",
       "method": "GET",
+      "ownership": { "enabled": true, "adminOverride": true },
       "fields": [
         {
           "name": "bookTitle",

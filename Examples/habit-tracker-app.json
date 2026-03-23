@@ -1,5 +1,6 @@
 {
   "appName": "Habit Tracker",
+  "auth": { "multiUser": false },
   "startPage": "habitHistoryPage",
   "menu": [
     {
@@ -515,11 +516,13 @@
   "dataSources": {
     "habitsStore": {
       "url": "local://habits",
-      "method": "POST"
+      "method": "POST",
+      "ownership": { "enabled": true }
     },
     "habitsReader": {
       "url": "local://habits",
       "method": "GET",
+      "ownership": { "enabled": true, "adminOverride": true },
       "fields": [
         {
           "name": "habitName",
@@ -555,11 +558,13 @@
     },
     "habitLogStore": {
       "url": "local://habit_log",
-      "method": "POST"
+      "method": "POST",
+      "ownership": { "enabled": true }
     },
     "habitLogReader": {
       "url": "local://habit_log",
       "method": "GET",
+      "ownership": { "enabled": true, "adminOverride": true },
       "fields": [
         {
           "name": "date",
