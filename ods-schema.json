@@ -38,6 +38,11 @@
           "description": "The role automatically assigned to newly registered users. Defaults to 'user'.",
           "type": "string",
           "default": "user"
+        },
+        "selfRegistration": {
+          "description": "When true, the login screen shows a 'Sign Up' option allowing new users to create their own accounts. Supported in web frameworks; local/desktop frameworks may ignore or warn.",
+          "type": "boolean",
+          "default": false
         }
       }
     },

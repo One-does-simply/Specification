@@ -132,6 +132,36 @@ ODS specs support the following capabilities:
  * Toast notifications via `showMessage` action
  * `default` on fields — Magic values: `"NOW"` (current datetime), `"CURRENTDATE"` (current date), `"+7d"` (relative offset)
 
+### Multi-User & RBAC
+ * `auth.multiUser` — Enable login, user management, and role-based access control
+ * `auth.multiUserOnly` — Require admin setup before the app can run
+ * `auth.roles` — Custom roles beyond the built-in guest, user, and admin
+ * `auth.defaultRole` — Role assigned to newly created users (default: `"user"`)
+ * `auth.selfRegistration` — Allow users to sign up on the login screen (web frameworks)
+ * `roles` arrays on menu items, pages, components, columns, fields, and row actions
+ * `ownership` on dataSources — Row-level security with `ownerField` and `adminOverride`
+
+## Available Frameworks
+
+ODS specs are rendered by **frameworks** — each framework targets a different platform and storage model:
+
+| Framework | Platform | Storage | Auth | Best For |
+|-----------|----------|---------|------|----------|
+| **Flutter Local** | Desktop (Win/Mac/Linux), iOS, Android | SQLite (on-device) | Per-app user tables | Personal/single-user apps, offline-first |
+| **React Web** | Web browsers | PocketBase (server) | PocketBase auth + RBAC | Multi-user web apps, team collaboration |
+
+### Flutter Local Framework
+A native Flutter app that renders ODS specs on desktop and mobile. All data stays on the user's device in SQLite. User management is per-app with admin-created accounts. Self-registration is not supported (local-only).
+
+### React Web Framework
+A React 19 + TypeScript + Vite web application backed by PocketBase. Designed for multi-user applications with:
+ * PocketBase for data storage and built-in auth
+ * Self-registration support (`auth.selfRegistration`)
+ * Default app concept — non-admin users visiting the root URL get redirected to a configured app
+ * Admin dashboard with app management, user management, and PocketBase settings
+ * shadcn/ui components with Tailwind CSS for a polished UI
+ * Charts via Recharts (bar, line, pie)
+
 ## Minimal Spec Example
 
 The simplest valid ODS spec — one page, one text component:

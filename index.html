@@ -217,8 +217,9 @@
     <p class="tagline">Vibe Coding with Guardrails</p>
     <p class="subtitle">
       Describe your app in plain JSON. An AI Build Helper writes it for you.
-      A framework renders it instantly. Your data stays on your device.
-      And when you're ready, generate real source code and walk away.
+      A framework renders it instantly — on desktop, mobile, or the web.
+      Your data stays under your control. And when you're ready, generate
+      real source code and walk away.
     </p>
     <a class="cta" href="https://github.com/One-does-simply">View on GitHub</a>
   </div>
@@ -282,11 +283,29 @@
     </section>
 
     <section>
+      <h2>Two Frameworks, One Spec</h2>
+      <p>Write your spec once and run it anywhere. ODS currently ships two production-ready frameworks:</p>
+      <div class="problem-grid">
+        <div class="card">
+          <h3>Flutter Local</h3>
+          <p>Desktop &amp; mobile. SQLite storage on-device. Perfect for personal apps and offline-first use. No server required.</p>
+        </div>
+        <div class="card">
+          <h3>React Web</h3>
+          <p>Web-based with PocketBase backend. Built-in multi-user auth, self-registration, and role-based access. Perfect for team apps.</p>
+        </div>
+      </div>
+      <p style="margin-top: 16px; font-size: 0.95rem; color: var(--text-light);">
+        Both frameworks support the full ODS spec: forms, lists, charts, settings, help, tours, data export, code generation, and more. Multi-user apps with role-based access control work across both.
+      </p>
+    </section>
+
+    <section>
       <h2>The Off-Ramp</h2>
       <p>
         Unlike other platforms, ODS never locks you in. Your spec is a standard JSON file you own.
-        When you outgrow the framework, generate a full Flutter project — real source code with
-        models, database helpers, and UI widgets — and customize without limits.
+        When you outgrow the framework, generate real source code — a full Flutter project or React
+        application with models, database helpers, and UI widgets — and customize without limits.
         ODS is the on-ramp to real development, not a dead end.
       </p>
     </section>
@@ -305,6 +324,9 @@
         <a href="Examples/my_chores.json">My Chores</a>
         <a href="Examples/quiz-app.json">Quiz Master</a>
         <a href="Examples/team-survey-app.json">Team Survey</a>
+        <a href="Examples/team-tasks-app.json">Team Tasks (Multi-User)</a>
+        <a href="Examples/team-wiki-app.json">Team Wiki</a>
+        <a href="Examples/project-dashboard-app.json">Project Dashboard</a>
       </div>
       <p style="margin-top: 12px;">
         <a href="Examples/catalog.json" style="color: var(--indigo); font-weight: 600;">View the full catalog (JSON)</a>
@@ -313,10 +335,17 @@
 
     <section>
       <h2>Getting Started</h2>
+      <p><strong>For personal/desktop apps (Flutter Local):</strong></p>
       <p>
         <strong>1.</strong> Download the <a href="https://github.com/One-does-simply/Frameworks" style="color: var(--indigo);">Flutter Local Framework</a> and run it.<br>
         <strong>2.</strong> Pick some example apps to explore — or tap <strong>Create New</strong> to build your own with the AI Build Helper.<br>
         <strong>3.</strong> When you're ready to move on, use <strong>Export Data</strong> or <strong>Generate Code</strong> from the app menu.
+      </p>
+      <p style="margin-top: 16px;"><strong>For multi-user web apps (React Web):</strong></p>
+      <p>
+        <strong>1.</strong> Install <a href="https://pocketbase.io" style="color: var(--indigo);">PocketBase</a> and start it locally.<br>
+        <strong>2.</strong> Clone the <a href="https://github.com/One-does-simply/Frameworks" style="color: var(--indigo);">React Web Framework</a>, run <code>npm install &amp;&amp; npm run dev</code>.<br>
+        <strong>3.</strong> Log in as the PocketBase admin, load specs, and share app URLs with your team.
       </p>
     </section>
 
