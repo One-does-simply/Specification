@@ -3,7 +3,7 @@
     {
       "id": "customer-feedback",
       "name": "Customer Feedback",
-      "description": "Collect and view customer feedback with a simple form.",
+      "description": "Collect feedback with self-registration and role-based results. Multi-user with OAuth2 support.",
       "file": "customer-feedback-app.json"
     },
     {
@@ -51,14 +51,26 @@
     {
       "id": "team-survey",
       "name": "Team Survey",
-      "description": "Collect anonymous team feedback with aggregate results and charts.",
+      "description": "Multi-user survey with self-registration. Admin-only results and charts.",
       "file": "team-survey-app.json"
     },
     {
       "id": "team-wiki",
       "name": "Team Wiki",
-      "description": "A shared knowledge base with Markdown-formatted articles.",
+      "description": "Multi-user knowledge base with Markdown articles. Editor role and CURRENT_USER defaults.",
       "file": "team-wiki-app.json"
+    },
+    {
+      "id": "team-tasks",
+      "name": "Team Tasks",
+      "description": "Multi-user task tracker with manager role, row-level ownership, and role-gated actions.",
+      "file": "team-tasks-app.json"
+    },
+    {
+      "id": "team-approval",
+      "name": "Time Off Requests",
+      "description": "Multi-user approval workflow with manager review, ownership, and status tracking.",
+      "file": "team-approval-app.json"
     },
     {
       "id": "todo-list",
@@ -69,7 +81,7 @@
     {
       "id": "project-dashboard",
       "name": "Project Dashboard",
-      "description": "Manage tasks across projects with a tabbed dashboard, charts, and color-coded lists.",
+      "description": "Multi-user project management with tabbed dashboard, charts, and manager role.",
       "file": "project-dashboard-app.json"
     }
   ]

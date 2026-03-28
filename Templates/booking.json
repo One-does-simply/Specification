@@ -26,7 +26,8 @@
         {
           "label": "Name",
           "name": "name",
-          "type": "text"
+          "type": "text",
+          "default": "CURRENT_USER.NAME"
         },
         {
           "label": "Date",
@@ -46,7 +47,8 @@
         {
           "label": "Contact Email",
           "name": "contactEmail",
-          "type": "email"
+          "type": "email",
+          "default": "CURRENT_USER.EMAIL"
         },
         {
           "label": "Attendees",
@@ -71,6 +73,12 @@
     {
       "id": "wantMultiUser",
       "label": "Should this app support multiple users?",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "wantSelfRegistration",
+      "label": "Allow public sign-ups? (for customer-facing bookings)",
       "type": "checkbox",
       "default": false
     },
@@ -111,7 +119,8 @@
       "$if": "wantMultiUser",
       "then": {
         "multiUser": true,
-        "defaultRole": "user"
+        "defaultRole": "user",
+        "selfRegistration": { "$if": "wantSelfRegistration", "then": true }
       },
       "else": null
     },

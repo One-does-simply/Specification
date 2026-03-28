@@ -26,7 +26,8 @@
         {
           "label": "Name",
           "name": "name",
-          "type": "text"
+          "type": "text",
+          "default": "CURRENT_USER.NAME"
         },
         {
           "label": "Role",
@@ -74,11 +75,31 @@
       "type": "field-ref",
       "ref": "fields",
       "placeholder": "e.g., Rating, Recommend"
+    },
+    {
+      "id": "wantMultiUser",
+      "label": "Should results be restricted to admins only?",
+      "type": "checkbox",
+      "default": false
+    },
+    {
+      "id": "wantSelfRegistration",
+      "label": "Allow public sign-ups? (for external surveys)",
+      "type": "checkbox",
+      "default": false
     }
   ],
   "template": {
     "appName": "${appName}",
     "startPage": "submitPage",
+    "auth": {
+      "$if": "wantMultiUser",
+      "then": {
+        "multiUser": true,
+        "defaultRole": "user",
+        "selfRegistration": { "$if": "wantSelfRegistration", "then": true }
+      }
+    },
     "menu": [
       {
         "label": "Submit Response",
@@ -86,7 +107,11 @@
       },
       {
         "label": "Results",
-        "mapsTo": "resultsPage"
+        "mapsTo": "resultsPage",
+        "roles": {
+          "$if": "wantMultiUser",
+          "then": ["admin"]
+        }
       }
     ],
     "pages": {

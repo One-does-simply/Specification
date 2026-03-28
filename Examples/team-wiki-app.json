@@ -1,5 +1,10 @@
 {
   "appName": "Team Wiki",
+  "auth": {
+    "multiUser": true,
+    "roles": ["editor"],
+    "defaultRole": "editor"
+  },
   "startPage": "browseArticlesPage",
   "menu": [
     {
@@ -59,7 +64,8 @@
               "name": "author",
               "label": "Author",
               "type": "text",
-              "placeholder": "Your name"
+              "placeholder": "Your name",
+              "default": "CURRENT_USER.NAME"
             },
             {
               "name": "lastUpdated",
@@ -221,7 +227,8 @@
               "name": "author",
               "label": "Author",
               "type": "text",
-              "placeholder": "Your name"
+              "placeholder": "Your name",
+              "default": "CURRENT_USER.NAME"
             },
             {
               "name": "lastUpdated",

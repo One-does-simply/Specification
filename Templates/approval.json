@@ -31,7 +31,8 @@
         {
           "label": "Requested By",
           "name": "requestedBy",
-          "type": "text"
+          "type": "text",
+          "default": "CURRENT_USER.NAME"
         },
         {
           "label": "Date",
@@ -71,6 +72,12 @@
       "label": "Should this app support multiple users with role-based approvals?",
       "type": "checkbox",
       "default": false
+    },
+    {
+      "id": "wantSelfRegistration",
+      "label": "Allow users to sign up themselves? (for public-facing apps)",
+      "type": "checkbox",
+      "default": false
     }
   ],
   "template": {
@@ -81,7 +88,8 @@
       "then": {
         "multiUser": true,
         "roles": ["reviewer"],
-        "defaultRole": "user"
+        "defaultRole": "user",
+        "selfRegistration": { "$if": "wantSelfRegistration", "then": true }
       }
     },
     "menu": [

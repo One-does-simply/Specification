@@ -1,5 +1,10 @@
 {
   "appName": "Project Dashboard",
+  "auth": {
+    "multiUser": true,
+    "roles": ["manager"],
+    "defaultRole": "user"
+  },
   "startPage": "dashboardPage",
   "menu": [
     {
