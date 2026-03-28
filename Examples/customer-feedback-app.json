@@ -1,7 +1,9 @@
 {
   "appName": "Customer Feedback",
   "auth": {
-    "multiUser": false
+    "multiUser": true,
+    "selfRegistration": true,
+    "defaultRole": "user"
   },
   "startPage": "feedbackFormPage",
   "menu": [
@@ -38,14 +40,16 @@
               "label": "Your Name",
               "type": "text",
               "required": true,
-              "placeholder": "e.g., Jane Smith"
+              "placeholder": "e.g., Jane Smith",
+              "default": "CURRENT_USER"
             },
             {
               "name": "customerEmail",
               "label": "Email Address",
               "type": "email",
               "required": true,
-              "placeholder": "you@example.com"
+              "placeholder": "you@example.com",
+              "default": "CURRENT_USER_EMAIL"
             },
             {
               "name": "date",
@@ -127,6 +131,7 @@
         {
           "component": "button",
           "label": "View All Responses",
+          "roles": ["admin"],
           "onClick": [
             {
               "action": "navigate",
@@ -256,6 +261,7 @@
     "viewDetailPage": {
       "component": "page",
       "title": "Feedback Detail",
+      "roles": ["admin"],
       "content": [
         {
           "component": "detail",
@@ -395,10 +401,10 @@
     }
   },
   "help": {
-    "overview": "Customer Feedback lets you collect and review feedback from customers. Submit ratings and comments through the form, then browse all responses. Tap any response to see full details including comments. Ratings are color-coded from green (excellent) to red (poor).",
+    "overview": "Customer Feedback lets you collect and review feedback from customers. Anyone can submit feedback — just sign up or continue as guest. Admins can view all responses, see rating charts, and manage feedback entries.",
     "pages": {
       "feedbackFormPage": "Fill in name, email, select a rating, and add comments. Press Submit Feedback.",
-      "thankYouPage": "Feedback saved. Submit another or view all responses.",
+      "thankYouPage": "Feedback saved. Submit another or view all responses (admin only).",
       "viewFeedbackPage": "All feedback in a table with color-coded ratings. Filter by rating. Tap any row to see the full comment. Delete responses you no longer need.",
       "viewDetailPage": "View the full feedback detail including comments."
     }
@@ -406,7 +412,7 @@
   "tour": [
     {
       "title": "Welcome to Customer Feedback",
-      "content": "Collect feedback from customers and review it all in one place."
+      "content": "Collect feedback from customers and review it all in one place. Sign up to submit feedback, or log in as admin to view results."
     },
     {
       "title": "Submit Feedback",
@@ -414,8 +420,8 @@
       "page": "feedbackFormPage"
     },
     {
-      "title": "View All Responses",
-      "content": "Browse feedback with color-coded ratings. Tap any row for full details. Filter by rating level.",
+      "title": "View All Responses (Admin Only)",
+      "content": "Browse feedback with color-coded ratings. Tap any row for full details. Filter by rating level. Only admins can access this page.",
       "page": "viewFeedbackPage"
     }
   ]
