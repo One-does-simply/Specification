@@ -275,7 +275,7 @@
           "type": "string"
         },
         "default": {
-          "description": "Optional. A default value to pre-fill the field with when the form is first displayed. The user can change it. Supports magic values: 'NOW' (current datetime), 'CURRENTDATE' (current date), relative offsets like '+7d' (7 days from today) or '+1m' (1 month from today) for date/datetime fields, 'CURRENT_USER' (logged-in user's display name), and 'CURRENT_USER_EMAIL' (logged-in user's email, web frameworks only).",
+          "description": "Optional. A default value to pre-fill the field with when the form is first displayed. The user can change it. Supports magic values: 'NOW' (current datetime), 'CURRENTDATE' (current date), relative offsets like '+7d' or '+1m' for date/datetime fields, and CURRENT_USER dot-notation for logged-in user properties: 'CURRENT_USER.NAME' (display name), 'CURRENT_USER.EMAIL' (email, web frameworks only), 'CURRENT_USER.USERNAME'. Bare 'CURRENT_USER' is a legacy alias for CURRENT_USER.NAME.",
           "type": "string"
         },
         "formula": {

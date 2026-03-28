@@ -130,7 +130,7 @@ ODS specs support the following capabilities:
  * `tour` — Guided walkthrough steps for onboarding
  * `settings` — User-configurable app settings with defaults (persisted locally)
  * Toast notifications via `showMessage` action
- * `default` on fields — Magic values: `"NOW"` (current datetime), `"CURRENTDATE"` (current date), `"+7d"` (relative offset)
+ * `default` on fields — Magic values: `"NOW"` (current datetime), `"CURRENTDATE"` (current date), `"+7d"` (relative offset), `"CURRENT_USER.NAME"` (display name), `"CURRENT_USER.EMAIL"` (email, web only), `"CURRENT_USER.USERNAME"`
 
 ### Multi-User & RBAC
  * `auth.multiUser` — Enable login, user management, and role-based access control
