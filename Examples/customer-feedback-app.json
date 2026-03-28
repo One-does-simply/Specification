@@ -5,18 +5,18 @@
     "selfRegistration": true,
     "defaultRole": "user"
   },
-  "startPage": "feedbackFormPage",
+  "startPage": "viewFeedbackPage",
   "menu": [
-    {
-      "label": "Submit Feedback",
-      "mapsTo": "feedbackFormPage"
-    },
     {
       "label": "View Responses",
       "mapsTo": "viewFeedbackPage",
       "roles": [
         "admin"
       ]
+    },
+    {
+      "label": "Submit Feedback",
+      "mapsTo": "feedbackFormPage"
     }
   ],
   "pages": {
