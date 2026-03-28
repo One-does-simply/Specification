@@ -404,7 +404,7 @@
     "overview": "Customer Feedback lets you collect and review feedback from customers. Anyone can submit feedback — just sign up or continue as guest. Admins can view all responses, see rating charts, and manage feedback entries.",
     "pages": {
       "feedbackFormPage": "Fill in name, email, select a rating, and add comments. Press Submit Feedback.",
-      "thankYouPage": "Feedback saved. Submit another or view all responses (admin only).",
+      "thankYouPage": "Your feedback has been recorded. Thank you!",
       "viewFeedbackPage": "All feedback in a table with color-coded ratings. Filter by rating. Tap any row to see the full comment. Delete responses you no longer need.",
       "viewDetailPage": "View the full feedback detail including comments."
     }
