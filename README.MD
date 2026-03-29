@@ -132,6 +132,15 @@ ODS specs support the following capabilities:
  * Toast notifications via `showMessage` action
  * `default` on fields — Magic values: `"NOW"` (current datetime), `"CURRENTDATE"` (current date), `"+7d"` (relative offset), `"CURRENT_USER.NAME"` (display name), `"CURRENT_USER.EMAIL"` (email, web only), `"CURRENT_USER.USERNAME"`
 
+### Branding
+ * `branding.primaryColor` — Hex color seed; frameworks derive full light/dark palette from it
+ * `branding.accentColor` — Optional secondary color for highlights
+ * `branding.fontFamily` — Custom font (e.g., `"Inter"`, `"Georgia"`)
+ * `branding.logo` — URL to logo image for sidebar/drawer header
+ * `branding.favicon` — URL to browser tab icon (web frameworks)
+ * `branding.headerStyle` — `"solid"` (filled), `"light"` (default), or `"transparent"`
+ * `branding.cornerStyle` — `"rounded"` (default), `"sharp"`, or `"pill"`
+
 ### Multi-User & RBAC
  * `auth.multiUser` — Enable login, user management, and role-based access control
  * `auth.multiUserOnly` — Require admin setup before the app can run

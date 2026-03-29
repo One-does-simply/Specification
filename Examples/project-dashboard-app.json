@@ -5,6 +5,12 @@
     "roles": ["manager"],
     "defaultRole": "user"
   },
+  "branding": {
+    "primaryColor": "#1D4ED8",
+    "accentColor": "#059669",
+    "headerStyle": "solid",
+    "cornerStyle": "sharp"
+  },
   "startPage": "dashboardPage",
   "menu": [
     {

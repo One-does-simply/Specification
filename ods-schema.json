@@ -13,6 +13,49 @@
       "description": "The ID of the page to load when the app starts.",
       "type": "string"
     },
+    "branding": {
+      "description": "Optional. Customizes the app's visual identity. When omitted, the framework uses its built-in defaults (indigo primary, system font, rounded corners). Each framework translates these hints into its native theming system.",
+      "type": "object",
+      "properties": {
+        "primaryColor": {
+          "description": "The main brand color as a hex string (e.g., '#1E40AF'). Frameworks derive a full light/dark palette from this seed. Defaults to '#4F46E5' (indigo).",
+          "type": "string",
+          "pattern": "^#([0-9a-fA-F]{6})$",
+          "default": "#4F46E5"
+        },
+        "accentColor": {
+          "description": "Optional secondary brand color. Used for highlights, badges, and secondary actions. When omitted, derived from primaryColor.",
+          "type": "string",
+          "pattern": "^#([0-9a-fA-F]{6})$"
+        },
+        "fontFamily": {
+          "description": "Preferred font family (e.g., 'Inter', 'Roboto', 'Georgia'). Falls back to the framework default if unavailable.",
+          "type": "string"
+        },
+        "logo": {
+          "description": "URL to the app logo displayed in sidebar and login screen. Recommended: horizontal aspect ratio (e.g., 200x50). Supports PNG, SVG, JPG.",
+          "type": "string",
+          "format": "uri"
+        },
+        "favicon": {
+          "description": "URL to a small icon for the browser tab (web) or app context (desktop). Recommended: 32x32 or 64x64 PNG.",
+          "type": "string",
+          "format": "uri"
+        },
+        "headerStyle": {
+          "description": "Visual style of the top app bar. 'solid' fills with primaryColor, 'light' uses neutral background with colored text, 'transparent' removes the background.",
+          "type": "string",
+          "enum": ["solid", "light", "transparent"],
+          "default": "light"
+        },
+        "cornerStyle": {
+          "description": "Border-radius of buttons, cards, and inputs. 'rounded' is medium radius (default), 'sharp' for a corporate look, 'pill' for a playful feel.",
+          "type": "string",
+          "enum": ["rounded", "sharp", "pill"],
+          "default": "rounded"
+        }
+      }
+    },
     "auth": {
       "description": "Optional. Configures multi-user authentication and role-based access control. When omitted or multiUser is false, the app runs in single-user mode with no login or roles.",
       "type": "object",
