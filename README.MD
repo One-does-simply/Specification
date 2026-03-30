@@ -132,14 +132,14 @@ ODS specs support the following capabilities:
  * Toast notifications via `showMessage` action
  * `default` on fields — Magic values: `"NOW"` (current datetime), `"CURRENTDATE"` (current date), `"+7d"` (relative offset), `"CURRENT_USER.NAME"` (display name), `"CURRENT_USER.EMAIL"` (email, web only), `"CURRENT_USER.USERNAME"`
 
-### Branding
- * `branding.primaryColor` — Hex color seed; frameworks derive full light/dark palette from it
- * `branding.accentColor` — Optional secondary color for highlights
- * `branding.fontFamily` — Custom font (e.g., `"Inter"`, `"Georgia"`)
+### Branding & Theming
+ * `branding.theme` — Named theme from the catalog (e.g., `"corporate"`, `"nord"`, `"dracula"`). 35 themes available based on DaisyUI, each with light and dark variants. See `Themes/catalog.json`.
+ * `branding.mode` — `"light"`, `"dark"`, or `"system"` (follows OS preference)
  * `branding.logo` — URL to logo image for sidebar/drawer header
  * `branding.favicon` — URL to browser tab icon (web frameworks)
  * `branding.headerStyle` — `"solid"` (filled), `"light"` (default), or `"transparent"`
- * `branding.cornerStyle` — `"rounded"` (default), `"sharp"`, or `"pill"`
+ * `branding.fontFamily` — Custom font (e.g., `"Inter"`, `"Georgia"`)
+ * `branding.overrides` — Per-token overrides (e.g., `{"primary": "oklch(58% .158 242)"}`) for custom theming on top of a named theme
 
 ### Multi-User & RBAC
  * `auth.multiUser` — Enable login, user management, and role-based access control

@@ -64,25 +64,17 @@
       ]
     },
     {
-      "id": "brandColor",
-      "label": "Brand color (hex)",
-      "type": "text",
-      "placeholder": "#4F46E5",
-      "default": "#4F46E5"
-    },
-    {
-      "id": "cornerStyle",
-      "label": "Corner style",
+      "id": "theme",
+      "label": "App theme",
       "type": "select",
-      "options": ["rounded", "sharp", "pill"],
-      "default": "rounded"
+      "options": ["light", "dark", "cupcake", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua", "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", "cmyk", "autumn", "business", "acid", "lemonade", "night", "coffee", "winter", "dim", "nord", "sunset", "caramellatte", "abyss", "silk"],
+      "default": "light"
     }
   ],
   "template": {
     "appName": "${appName}",
     "branding": {
-      "primaryColor": "${brandColor}",
-      "cornerStyle": "${cornerStyle}"
+      "theme": "${theme}"
     },
     "startPage": "listPage",
     "menu": [
