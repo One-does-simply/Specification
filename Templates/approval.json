@@ -78,10 +78,28 @@
       "label": "Allow users to sign up themselves? (for public-facing apps)",
       "type": "checkbox",
       "default": false
+    },
+    {
+      "id": "brandColor",
+      "label": "Brand color (hex)",
+      "type": "text",
+      "placeholder": "#4F46E5",
+      "default": "#4F46E5"
+    },
+    {
+      "id": "cornerStyle",
+      "label": "Corner style",
+      "type": "select",
+      "options": ["rounded", "sharp", "pill"],
+      "default": "rounded"
     }
   ],
   "template": {
     "appName": "${appName}",
+    "branding": {
+      "primaryColor": "${brandColor}",
+      "cornerStyle": "${cornerStyle}"
+    },
     "startPage": "dashboardPage",
     "auth": {
       "$if": "wantMultiUser",
