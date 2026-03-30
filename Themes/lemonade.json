@@ -3,6 +3,16 @@
   "displayName": "Lemonade",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": ".5rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(17.238% .009 102.15)",
       "error": "oklch(86.19% .047 25.85)",
       "errorContent": "oklch(17.238% .009 25.85)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(82.762% .009 102.15)",
       "error": "oklch(86.19% .047 25.85)",
       "errorContent": "oklch(82.762% .009 25.85)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

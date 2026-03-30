@@ -3,6 +3,16 @@
   "displayName": "Valentine",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": "2rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(26% .079 36.259)",
       "error": "oklch(63% .237 25.331)",
       "errorContent": "oklch(97% .013 17.38)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": "2rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(74.0% .079 36.259)",
       "error": "oklch(63% .237 25.331)",
       "errorContent": "oklch(5% .013 17.38)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": "2rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

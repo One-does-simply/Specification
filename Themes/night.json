@@ -3,6 +3,16 @@
   "displayName": "Night",
   "author": "daisyui",
   "nativeScheme": "dark",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": ".5rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(83.352% .027 82.95)",
       "error": "oklch(71.785% .17 13.118)",
       "errorContent": "oklch(85.643% .034 13.118)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(16.648% .027 82.95)",
       "error": "oklch(71.785% .17 13.118)",
       "errorContent": "oklch(14.357% .034 13.118)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

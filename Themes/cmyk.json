@@ -3,6 +3,16 @@
   "displayName": "CMYK",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": ".5rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(14.247% .031 52.023)",
       "error": "oklch(62.013% .208 28.717)",
       "errorContent": "oklch(12.402% .041 28.717)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(85.753% .031 52.023)",
       "error": "oklch(62.013% .208 28.717)",
       "errorContent": "oklch(87.598% .041 28.717)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

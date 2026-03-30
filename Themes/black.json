@@ -3,6 +3,16 @@
   "displayName": "Black",
   "author": "daisyui",
   "nativeScheme": "dark",
+  "design": {
+    "radiusSelector": "0rem",
+    "radiusField": "0rem",
+    "radiusBox": "0rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(80.64099999999999% .042 109.769)",
       "error": "oklch(62.795% .257 29.233)",
       "errorContent": "oklch(87.441% .051 29.233)"
-    },
-    "design": {
-      "radiusSelector": "0rem",
-      "radiusField": "0rem",
-      "radiusBox": "0rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(19.359% .042 109.769)",
       "error": "oklch(62.795% .257 29.233)",
       "errorContent": "oklch(12.559% .051 29.233)"
-    },
-    "design": {
-      "radiusSelector": "0rem",
-      "radiusField": "0rem",
-      "radiusBox": "0rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

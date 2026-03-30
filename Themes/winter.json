@@ -3,6 +3,16 @@
   "displayName": "Winter",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": ".5rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(17.834% .009 71.47)",
       "error": "oklch(73.092% .11 20.076)",
       "errorContent": "oklch(14.618% .022 20.076)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(82.166% .009 71.47)",
       "error": "oklch(73.092% .11 20.076)",
       "errorContent": "oklch(85.382% .022 20.076)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

@@ -3,6 +3,16 @@
   "displayName": "Autumn",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": ".5rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 1,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(14.016% .032 56.844)",
       "error": "oklch(53.07% .241 24.16)",
       "errorContent": "oklch(90.614% .048 24.16)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(85.984% .032 56.844)",
       "error": "oklch(53.07% .241 24.16)",
       "errorContent": "oklch(9.385999999999996% .048 24.16)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   }
 }

@@ -3,6 +3,16 @@
   "displayName": "Abyss",
   "author": "daisyui",
   "nativeScheme": "dark",
+  "design": {
+    "radiusSelector": "2rem",
+    "radiusField": ".25rem",
+    "radiusBox": ".5rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 1,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(55.2% .1962 84.62)",
       "error": "oklch(65% .1985 24.22)",
       "errorContent": "oklch(73.0% .1985 24.22)"
-    },
-    "design": {
-      "radiusSelector": "2rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(44.8% .1962 84.62)",
       "error": "oklch(65% .1985 24.22)",
       "errorContent": "oklch(27% .1985 24.22)"
-    },
-    "design": {
-      "radiusSelector": "2rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   }
 }

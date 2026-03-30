@@ -3,6 +3,16 @@
   "displayName": "Lo-Fi",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "2rem",
+    "radiusField": ".25rem",
+    "radiusBox": ".5rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(17.674% .027 79.94)",
       "error": "oklch(78.66% .15 28.47)",
       "errorContent": "oklch(15.732% .03 28.47)"
-    },
-    "design": {
-      "radiusSelector": "2rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(82.326% .027 79.94)",
       "error": "oklch(78.66% .15 28.47)",
       "errorContent": "oklch(84.268% .03 28.47)"
-    },
-    "design": {
-      "radiusSelector": "2rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

@@ -3,6 +3,16 @@
   "displayName": "Aqua",
   "author": "daisyui",
   "nativeScheme": "dark",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": ".5rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 1,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(73.0% .077 45.635)",
       "error": "oklch(73.95% .19 27.33)",
       "errorContent": "oklch(85.21000000000001% .038 27.33)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(27% .077 45.635)",
       "error": "oklch(73.95% .19 27.33)",
       "errorContent": "oklch(14.79% .038 27.33)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   }
 }

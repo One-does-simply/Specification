@@ -3,6 +3,16 @@
   "displayName": "Wireframe",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "0rem",
+    "radiusField": ".25rem",
+    "radiusBox": ".25rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(92% .12 95.746)",
       "error": "oklch(44% .177 26.899)",
       "errorContent": "oklch(88% .062 18.334)"
-    },
-    "design": {
-      "radiusSelector": "0rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".25rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(8.0% .12 95.746)",
       "error": "oklch(69.0% .177 26.899)",
       "errorContent": "oklch(12.0% .062 18.334)"
-    },
-    "design": {
-      "radiusSelector": "0rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".25rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

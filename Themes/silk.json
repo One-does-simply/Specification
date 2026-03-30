@@ -3,6 +3,16 @@
   "displayName": "Silk",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "2rem",
+    "radiusField": ".5rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "2px",
+    "depth": 1,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(43.92% .1085 80)",
       "error": "oklch(75.1% .1814 22.37)",
       "errorContent": "oklch(35.1% .1814 22.37)"
-    },
-    "design": {
-      "radiusSelector": "2rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "2px",
-      "depth": 1,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(56.08% .1085 80)",
       "error": "oklch(75.1% .1814 22.37)",
       "errorContent": "oklch(64.9% .1814 22.37)"
-    },
-    "design": {
-      "radiusSelector": "2rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "2px",
-      "depth": 1,
-      "noise": 0
     }
   }
 }

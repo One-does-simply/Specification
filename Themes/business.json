@@ -3,6 +3,16 @@
   "displayName": "Business",
   "author": "daisyui",
   "nativeScheme": "dark",
+  "design": {
+    "radiusSelector": "0rem",
+    "radiusField": ".25rem",
+    "radiusBox": ".25rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(84.504% .023 81.519)",
       "error": "oklch(51.61% .146 29.674)",
       "errorContent": "oklch(9.677999999999997% .029 29.674)"
-    },
-    "design": {
-      "radiusSelector": "0rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".25rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(15.496% .023 81.519)",
       "error": "oklch(51.61% .146 29.674)",
       "errorContent": "oklch(90.322% .029 29.674)"
-    },
-    "design": {
-      "radiusSelector": "0rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".25rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

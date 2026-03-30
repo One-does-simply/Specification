@@ -3,6 +3,16 @@
   "displayName": "Acid",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": "1rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 1,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(18.202% .042 100.5)",
       "error": "oklch(64.84% .293 29.349)",
       "errorContent": "oklch(12.968% .058 29.349)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": "1rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(81.798% .042 100.5)",
       "error": "oklch(64.84% .293 29.349)",
       "errorContent": "oklch(87.032% .058 29.349)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": "1rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   }
 }

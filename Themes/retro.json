@@ -3,6 +3,16 @@
   "displayName": "Retro",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": ".25rem",
+    "radiusField": ".25rem",
+    "radiusBox": ".5rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(96% .059 95.617)",
       "error": "oklch(70% .191 22.216)",
       "errorContent": "oklch(40% .123 38.172)"
-    },
-    "design": {
-      "radiusSelector": ".25rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(5% .059 95.617)",
       "error": "oklch(70% .191 22.216)",
       "errorContent": "oklch(60.0% .123 38.172)"
-    },
-    "design": {
-      "radiusSelector": ".25rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

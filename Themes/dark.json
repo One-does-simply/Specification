@@ -3,6 +3,16 @@
   "displayName": "Dark",
   "author": "daisyui",
   "nativeScheme": "dark",
+  "design": {
+    "radiusSelector": ".5rem",
+    "radiusField": ".25rem",
+    "radiusBox": ".5rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 1,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(59.0% .112 45.904)",
       "error": "oklch(71% .194 13.428)",
       "errorContent": "oklch(73.0% .105 12.094)"
-    },
-    "design": {
-      "radiusSelector": ".5rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(41% .112 45.904)",
       "error": "oklch(71% .194 13.428)",
       "errorContent": "oklch(27% .105 12.094)"
-    },
-    "design": {
-      "radiusSelector": ".5rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 1,
-      "noise": 0
     }
   }
 }

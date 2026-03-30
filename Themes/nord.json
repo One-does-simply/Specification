@@ -3,6 +3,16 @@
   "displayName": "Nord",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "1rem",
+    "radiusField": ".25rem",
+    "radiusBox": ".5rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "1px",
+    "depth": 0,
+    "noise": 0
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(17.097% .017 84.093)",
       "error": "oklch(60.61% .12 15.341)",
       "errorContent": "oklch(12.122% .024 15.341)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(82.90299999999999% .017 84.093)",
       "error": "oklch(60.61% .12 15.341)",
       "errorContent": "oklch(87.878% .024 15.341)"
-    },
-    "design": {
-      "radiusSelector": "1rem",
-      "radiusField": ".25rem",
-      "radiusBox": ".5rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "1px",
-      "depth": 0,
-      "noise": 0
     }
   }
 }

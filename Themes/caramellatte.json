@@ -3,6 +3,16 @@
   "displayName": "Caramel Latte",
   "author": "daisyui",
   "nativeScheme": "light",
+  "design": {
+    "radiusSelector": "2rem",
+    "radiusField": ".5rem",
+    "radiusBox": "1rem",
+    "sizeSelector": ".25rem",
+    "sizeField": ".25rem",
+    "border": "2px",
+    "depth": 1,
+    "noise": 1
+  },
   "light": {
     "colorScheme": "light",
     "colors": {
@@ -26,16 +36,6 @@
       "warningContent": "oklch(41% .112 45.904)",
       "error": "oklch(70% .191 22.216)",
       "errorContent": "oklch(39% .141 25.723)"
-    },
-    "design": {
-      "radiusSelector": "2rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "2px",
-      "depth": 1,
-      "noise": 1
     }
   },
   "dark": {
@@ -61,16 +61,6 @@
       "warningContent": "oklch(59.0% .112 45.904)",
       "error": "oklch(70% .191 22.216)",
       "errorContent": "oklch(61.0% .141 25.723)"
-    },
-    "design": {
-      "radiusSelector": "2rem",
-      "radiusField": ".5rem",
-      "radiusBox": "1rem",
-      "sizeSelector": ".25rem",
-      "sizeField": ".25rem",
-      "border": "2px",
-      "depth": 1,
-      "noise": 1
     }
   }
 }
