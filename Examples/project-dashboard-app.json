@@ -6,10 +6,8 @@
     "defaultRole": "user"
   },
   "branding": {
-    "primaryColor": "#1D4ED8",
-    "accentColor": "#059669",
-    "headerStyle": "solid",
-    "cornerStyle": "sharp"
+    "theme": "corporate",
+    "headerStyle": "solid"
   },
   "startPage": "dashboardPage",
   "menu": [

@@ -14,23 +14,19 @@
       "type": "string"
     },
     "branding": {
-      "description": "Optional. Customizes the app's visual identity. When omitted, the framework uses its built-in defaults (indigo primary, system font, rounded corners). Each framework translates these hints into its native theming system.",
+      "description": "Optional. Customizes the app's visual identity using named themes from the ODS theme catalog (based on DaisyUI). When omitted, uses the 'light' theme. Each framework resolves the theme's design tokens into its native theming system.",
       "type": "object",
       "properties": {
-        "primaryColor": {
-          "description": "The main brand color as a hex string (e.g., '#1E40AF'). Frameworks derive a full light/dark palette from this seed. Defaults to '#4F46E5' (indigo).",
+        "theme": {
+          "description": "Name of a theme from the catalog (e.g., 'corporate', 'nord', 'dracula'). See Themes/catalog.json for all options. Defaults to 'light'.",
           "type": "string",
-          "pattern": "^#([0-9a-fA-F]{6})$",
-          "default": "#4F46E5"
+          "default": "light"
         },
-        "accentColor": {
-          "description": "Optional secondary brand color. Used for highlights, badges, and secondary actions. When omitted, derived from primaryColor.",
+        "mode": {
+          "description": "Color mode: 'light', 'dark', or 'system' (follows OS preference). Each theme has both light and dark variants.",
           "type": "string",
-          "pattern": "^#([0-9a-fA-F]{6})$"
-        },
-        "fontFamily": {
-          "description": "Preferred font family (e.g., 'Inter', 'Roboto', 'Georgia'). Falls back to the framework default if unavailable.",
-          "type": "string"
+          "enum": ["light", "dark", "system"],
+          "default": "system"
         },
         "logo": {
           "description": "URL to the app logo displayed in sidebar and login screen. Recommended: horizontal aspect ratio (e.g., 200x50). Supports PNG, SVG, JPG.",
@@ -43,16 +39,21 @@
           "format": "uri"
         },
         "headerStyle": {
-          "description": "Visual style of the top app bar. 'solid' fills with primaryColor, 'light' uses neutral background with colored text, 'transparent' removes the background.",
+          "description": "Visual style of the top app bar. 'solid' fills with primary color, 'light' uses neutral background, 'transparent' removes the background.",
           "type": "string",
           "enum": ["solid", "light", "transparent"],
           "default": "light"
         },
-        "cornerStyle": {
-          "description": "Border-radius of buttons, cards, and inputs. 'rounded' is medium radius (default), 'sharp' for a corporate look, 'pill' for a playful feel.",
-          "type": "string",
-          "enum": ["rounded", "sharp", "pill"],
-          "default": "rounded"
+        "fontFamily": {
+          "description": "Preferred font family (e.g., 'Inter', 'Roboto', 'Georgia'). Falls back to the framework default if unavailable.",
+          "type": "string"
+        },
+        "overrides": {
+          "description": "Per-token overrides on top of the selected theme. Keys are camelCase token names (e.g., 'primary', 'base100', 'radiusBox'). Values are oklch color strings or CSS length values. For custom themes, override as many tokens as needed.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },

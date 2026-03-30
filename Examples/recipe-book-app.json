@@ -2,8 +2,7 @@
   "appName": "Recipe Book",
   "auth": { "multiUser": false },
   "branding": {
-    "primaryColor": "#E11D48",
-    "cornerStyle": "pill"
+    "theme": "valentine"
   },
   "startPage": "browseRecipesPage",
   "menu": [

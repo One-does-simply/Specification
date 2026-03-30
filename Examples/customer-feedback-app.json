@@ -6,9 +6,8 @@
     "defaultRole": "user"
   },
   "branding": {
-    "primaryColor": "#0891B2",
-    "headerStyle": "solid",
-    "cornerStyle": "rounded"
+    "theme": "emerald",
+    "headerStyle": "solid"
   },
   "startPage": "viewFeedbackPage",
   "menu": [
