@@ -133,13 +133,15 @@ ODS specs support the following capabilities:
  * `default` on fields — Magic values: `"NOW"` (current datetime), `"CURRENTDATE"` (current date), `"+7d"` (relative offset), `"CURRENT_USER.NAME"` (display name), `"CURRENT_USER.EMAIL"` (email, web only), `"CURRENT_USER.USERNAME"`
 
 ### Branding & Theming
- * `branding.theme` — Named theme from the catalog (e.g., `"corporate"`, `"nord"`, `"dracula"`). 35 themes available based on DaisyUI, each with light and dark variants. See `Themes/catalog.json`.
+ * `branding.theme` — Named theme from the catalog (e.g., `"corporate"`, `"nord"`, `"dracula"`). 40 themes available, each with light and dark variants. Default: `"indigo"`. See `Themes/catalog.json`.
  * `branding.mode` — `"light"`, `"dark"`, or `"system"` (follows OS preference)
  * `branding.logo` — URL to logo image for sidebar/drawer header
  * `branding.favicon` — URL to browser tab icon (web frameworks)
  * `branding.headerStyle` — `"solid"` (filled), `"light"` (default), or `"transparent"`
  * `branding.fontFamily` — Custom font (e.g., `"Inter"`, `"Georgia"`)
  * `branding.overrides` — Per-token overrides (e.g., `{"primary": "oklch(58% .158 242)"}`) for custom theming on top of a named theme
+
+ **Theme origins and accessibility:** ODS themes are derived from the [DaisyUI](https://daisyui.com/) theme collection, but they are not used directly. Each theme has been audited and corrected to meet **WCAG AA contrast requirements** (minimum 4.5:1 ratio) for all color/content pairs (primary/primaryContent, secondary/secondaryContent, accent/accentContent, background/baseContent, error/errorContent). The original DaisyUI themes had 79 contrast violations across 40 themes — every one has been fixed by adjusting the `*Content` color lightness while preserving hue and chroma. Colors use the **OKLCH** color space for perceptually uniform color definitions. See [`Themes/README.md`](Themes/README.md) for the full theme catalog, architecture details, and instructions for creating custom themes.
 
 ### Multi-User & RBAC
  * `auth.multiUser` — Enable login, user management, and role-based access control

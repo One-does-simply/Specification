@@ -14,13 +14,13 @@
       "type": "string"
     },
     "branding": {
-      "description": "Optional. Customizes the app's visual identity using named themes from the ODS theme catalog (based on DaisyUI). When omitted, uses the 'light' theme. Each framework resolves the theme's design tokens into its native theming system.",
+      "description": "Optional. Customizes the app's visual identity using named themes from the ODS theme catalog (based on DaisyUI). When omitted, uses the 'indigo' theme. Each framework resolves the theme's design tokens into its native theming system.",
       "type": "object",
       "properties": {
         "theme": {
-          "description": "Name of a theme from the catalog (e.g., 'corporate', 'nord', 'dracula'). See Themes/catalog.json for all options. Defaults to 'light'.",
+          "description": "Name of a theme from the catalog (e.g., 'corporate', 'nord', 'dracula'). See Themes/catalog.json for all options. Defaults to 'indigo'.",
           "type": "string",
-          "default": "light"
+          "default": "indigo"
         },
         "mode": {
           "description": "Color mode: 'light', 'dark', or 'system' (follows OS preference). Each theme has both light and dark variants.",
