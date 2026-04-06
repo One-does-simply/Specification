@@ -256,6 +256,37 @@ A more realistic example with a form, list, and data source:
 }
 ```
 
+A kanban board with drag-and-drop:
+
+```json
+{
+  "appName": "Sprint Board",
+  "startPage": "board",
+  "pages": {
+    "board": {
+      "component": "page",
+      "title": "Sprint Board",
+      "content": [
+        {
+          "component": "kanban",
+          "dataSource": "taskReader",
+          "statusField": "status",
+          "titleField": "title",
+          "cardFields": ["title", "assignee", "priority"],
+          "searchable": true
+        }
+      ]
+    }
+  },
+  "dataSources": {
+    "taskReader": { "url": "local://tasks", "method": "GET" },
+    "taskWriter": { "url": "local://tasks", "method": "PUT" }
+  }
+}
+```
+
+The `statusField` must reference a `select`-type field. Its options become the board columns. Dragging a card to a new column automatically updates the status via the PUT dataSource. See `Examples/project-kanban.json` for a full working example.
+
 ## Schema Reference
 
 The authoritative schema is `ods-schema.json` in this directory. All valid ODS specs must conform to it. Framework authors should validate incoming specs against this schema (or its equivalent model layer) before rendering.
