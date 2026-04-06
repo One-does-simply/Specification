@@ -92,6 +92,7 @@ ODS specs support the following capabilities:
  * **text** — Static or data-aware text; supports `"format": "markdown"` for rich rendering
  * **form** — Data entry with fields, validation, defaults, formulas, and conditional visibility
  * **list** — Table or card layout with search, sort, filter, row coloring, row actions, and onRowTap navigation
+ * **kanban** — Drag-and-drop board view where a select field's options define columns. Cards show configurable fields with a sticky-note aesthetic. Drag between columns auto-updates the status field.
  * **button** — Triggers action chains (navigate, submit, update, showMessage)
  * **chart** — Bar, line, or pie charts from aggregated data
  * **summary** — KPI card with label, aggregate value, and icon

@@ -432,6 +432,9 @@
                 "$ref": "#/$defs/listComponent"
               },
               {
+                "$ref": "#/$defs/kanbanComponent"
+              },
+              {
                 "$ref": "#/$defs/formComponent"
               },
               {
@@ -705,6 +708,81 @@
         "columns"
       ]
     },
+    "kanbanComponent": {
+      "title": "Kanban Component",
+      "description": "Renders data as a kanban board with draggable cards. Columns are defined by a select-type field whose options become the board columns. Drag-and-drop moves cards between columns by updating the status field automatically.",
+      "type": "object",
+      "properties": {
+        "component": {
+          "const": "kanban"
+        },
+        "dataSource": {
+          "description": "The ID of the GET dataSource to read data from.",
+          "type": "string"
+        },
+        "statusField": {
+          "description": "The field name whose select options define the kanban columns. Must be a select-type field with an options array. Drag-and-drop updates this field automatically.",
+          "type": "string"
+        },
+        "titleField": {
+          "description": "Optional. The field name to display as the card title (rendered larger/bolder). Defaults to the first entry in cardFields.",
+          "type": "string"
+        },
+        "cardFields": {
+          "description": "Array of field names to display on each card. The first field is the card title unless titleField is specified.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rowActions": {
+          "description": "Optional. Action buttons displayed on each card.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rowAction"
+          }
+        },
+        "defaultSort": {
+          "description": "Optional. Default sort order for cards within each column.",
+          "type": "object",
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "direction": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "default": "asc"
+            }
+          },
+          "required": ["field"]
+        },
+        "searchable": {
+          "description": "Optional. When true, a search bar appears above the board. Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "visible": {
+          "description": "Optional. Expression-based visibility.",
+          "type": "string"
+        },
+        "visibleWhen": {
+          "$ref": "#/$defs/visibleWhen"
+        },
+        "styleHint": {
+          "$ref": "#/$defs/styleHint"
+        },
+        "roles": {
+          "$ref": "#/$defs/rolesArray"
+        }
+      },
+      "required": [
+        "component",
+        "dataSource",
+        "statusField",
+        "cardFields"
+      ]
+    },
     "formComponent": {
       "title": "Form Component",
       "type": "object",
@@ -915,6 +993,9 @@
                     },
                     {
                       "$ref": "#/$defs/listComponent"
+                    },
+                    {
+                      "$ref": "#/$defs/kanbanComponent"
                     },
                     {
                       "$ref": "#/$defs/formComponent"
