@@ -277,7 +277,7 @@ Every `*Content` color must have a contrast ratio of **at least 4.5:1** against 
 You can verify contrast with:
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 - The ODS Quick Build wizard (which shows contrast warnings in the color picker)
-- The audit script in this repository: run `python scripts/check_contrast.py` (coming soon)
+- Run the audit script: `python scripts/check_contrast.py` from the Specification directory. Use `--fix` to auto-correct failing pairs.
 
 The five pairs that must pass WCAG AA (4.5:1) in **both** light and dark modes:
 
