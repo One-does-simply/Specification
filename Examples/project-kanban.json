@@ -46,7 +46,7 @@
             { "name": "description", "label": "Description", "type": "multiline", "placeholder": "Describe the task..." },
             { "name": "status", "label": "Status", "type": "select", "required": true, "default": "To Do", "options": ["To Do", "In Progress", "Review", "Done"] },
             { "name": "priority", "label": "Priority", "type": "select", "default": "Medium", "options": ["Low", "Medium", "High", "Urgent"] },
-            { "name": "assignee", "label": "Assignee", "type": "text", "placeholder": "e.g., Alice" },
+            { "name": "assignee", "label": "Assignee", "type": "user", "placeholder": "e.g., Alice" },
             { "name": "dueDate", "label": "Due Date", "type": "date", "default": "+7d" }
           ]
         },

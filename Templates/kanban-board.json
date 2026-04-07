@@ -32,7 +32,7 @@
       "required": true,
       "presets": [
         { "label": "Title", "name": "title", "type": "text" },
-        { "label": "Assignee", "name": "assignee", "type": "text" },
+        { "label": "Assignee", "name": "assignee", "type": "user" },
         { "label": "Priority", "name": "priority", "type": "select", "options": ["Low", "Medium", "High", "Urgent"] },
         { "label": "Due Date", "name": "dueDate", "type": "date" },
         { "label": "Description", "name": "description", "type": "multiline" }

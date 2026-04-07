@@ -31,7 +31,7 @@
         {
           "label": "Requested By",
           "name": "requestedBy",
-          "type": "text",
+          "type": "user",
           "default": "CURRENT_USER.NAME"
         },
         {

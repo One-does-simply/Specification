@@ -86,7 +86,7 @@ The `Examples/` directory contains 12 working example specs that demonstrate the
 ODS specs support the following capabilities:
 
 ### Field Types
-`text`, `email`, `number`, `date`, `datetime`, `multiline`, `select` (with options), `checkbox`, `hidden` (carries data without rendering)
+`text`, `email`, `number`, `date`, `datetime`, `multiline`, `select` (with options), `checkbox`, `hidden` (carries data without rendering), `user` (dropdown of users in multi-user mode, plain text otherwise)
 
 ### Components
  * **text** — Static or data-aware text; supports `"format": "markdown"` for rich rendering

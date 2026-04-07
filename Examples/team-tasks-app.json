@@ -124,7 +124,7 @@
             { "name": "title", "type": "text", "label": "Task Title", "required": true },
             { "name": "description", "type": "multiline", "label": "Description" },
             { "name": "priority", "type": "select", "label": "Priority", "options": ["Low", "Medium", "High"], "default": "Medium" },
-            { "name": "assignedTo", "type": "text", "label": "Assign To", "roles": ["admin", "manager"] },
+            { "name": "assignedTo", "type": "user", "label": "Assign To", "roles": ["admin", "manager"] },
             { "name": "dueDate", "type": "date", "label": "Due Date", "default": "+7d" },
             { "name": "status", "type": "hidden", "default": "Open" }
           ]
@@ -151,7 +151,7 @@
             { "name": "title", "type": "text", "label": "Task Title", "required": true },
             { "name": "description", "type": "multiline", "label": "Description" },
             { "name": "priority", "type": "select", "label": "Priority", "options": ["Low", "Medium", "High"] },
-            { "name": "assignedTo", "type": "text", "label": "Assign To", "roles": ["admin", "manager"] },
+            { "name": "assignedTo", "type": "user", "label": "Assign To", "roles": ["admin", "manager"] },
             { "name": "dueDate", "type": "date", "label": "Due Date" },
             { "name": "status", "type": "select", "label": "Status", "options": ["Open", "In Progress", "Done"] }
           ]
@@ -210,7 +210,7 @@
         { "name": "title", "type": "text" },
         { "name": "description", "type": "multiline" },
         { "name": "priority", "type": "select", "options": ["Low", "Medium", "High"] },
-        { "name": "assignedTo", "type": "text" },
+        { "name": "assignedTo", "type": "user" },
         { "name": "dueDate", "type": "date" },
         { "name": "status", "type": "text" }
       ]

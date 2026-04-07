@@ -63,7 +63,7 @@
             {
               "name": "author",
               "label": "Author",
-              "type": "text",
+              "type": "user",
               "placeholder": "Your name",
               "default": "CURRENT_USER.NAME"
             },
@@ -226,7 +226,7 @@
             {
               "name": "author",
               "label": "Author",
-              "type": "text",
+              "type": "user",
               "placeholder": "Your name",
               "default": "CURRENT_USER.NAME"
             },
@@ -317,7 +317,7 @@
         },
         {
           "name": "author",
-          "type": "text"
+          "type": "user"
         },
         {
           "name": "lastUpdated",
