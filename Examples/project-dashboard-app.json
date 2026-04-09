@@ -9,7 +9,11 @@
     "theme": "corporate",
     "headerStyle": "solid"
   },
-  "startPage": "dashboardPage",
+  "startPage": {
+    "default": "addTaskPage",
+    "admin": "dashboardPage",
+    "manager": "dashboardPage"
+  },
   "menu": [
     {
       "label": "Dashboard",

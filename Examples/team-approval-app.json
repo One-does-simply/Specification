@@ -1,6 +1,10 @@
 {
   "appName": "Time Off Requests",
-  "startPage": "dashboardPage",
+  "startPage": {
+    "default": "myRequestsPage",
+    "admin": "dashboardPage",
+    "manager": "dashboardPage"
+  },
   "auth": {
     "multiUser": true,
     "roles": ["manager"],

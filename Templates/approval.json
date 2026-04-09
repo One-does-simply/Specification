@@ -92,7 +92,11 @@
     "branding": {
       "theme": "${theme}"
     },
-    "startPage": "dashboardPage",
+    "startPage": {
+      "default": "submitPage",
+      "admin": "dashboardPage",
+      "manager": "dashboardPage"
+    },
     "auth": {
       "$if": "wantMultiUser",
       "then": {

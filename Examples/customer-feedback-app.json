@@ -9,7 +9,10 @@
     "theme": "emerald",
     "headerStyle": "solid"
   },
-  "startPage": "viewFeedbackPage",
+  "startPage": {
+    "default": "feedbackFormPage",
+    "admin": "viewFeedbackPage"
+  },
   "menu": [
     {
       "label": "View Responses",

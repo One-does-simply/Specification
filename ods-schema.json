@@ -10,8 +10,24 @@
       "type": "string"
     },
     "startPage": {
-      "description": "The ID of the page to load when the app starts.",
-      "type": "string"
+      "description": "The ID of the page to load when the app starts. Can be a string (same page for everyone) or an object mapping roles to page IDs. When an object, 'default' is used for roles not listed.",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "default": {
+              "description": "Fallback start page for roles not explicitly listed.",
+              "type": "string"
+            },
+            "admin": { "type": "string" },
+            "user": { "type": "string" },
+            "guest": { "type": "string" }
+          },
+          "required": ["default"],
+          "additionalProperties": { "type": "string" }
+        }
+      ]
     },
     "branding": {
       "description": "Optional. Customizes the app's visual identity using named themes from the ODS theme catalog (based on DaisyUI). When omitted, uses the 'indigo' theme. Each framework resolves the theme's design tokens into its native theming system.",

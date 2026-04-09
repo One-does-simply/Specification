@@ -1,6 +1,10 @@
 {
   "appName": "Team Tasks",
-  "startPage": "dashboardPage",
+  "startPage": {
+    "default": "myTasksPage",
+    "admin": "dashboardPage",
+    "manager": "dashboardPage"
+  },
   "auth": {
     "multiUser": true,
     "roles": ["manager"],

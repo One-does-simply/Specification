@@ -5,7 +5,10 @@
     "selfRegistration": true,
     "defaultRole": "user"
   },
-  "startPage": "takeSurveyPage",
+  "startPage": {
+    "default": "takeSurveyPage",
+    "admin": "resultsPage"
+  },
   "menu": [
     {
       "label": "Take Survey",
